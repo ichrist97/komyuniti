@@ -1,1 +1,0 @@
-{"version":3,"file":"resolver.js","sourceRoot":"","sources":["../../src/resolvers/resolver.ts"],"names":[],"mappings":";;;AAAA,uEAAuE;AACvE,sEAAsE;AACzD,QAAA,SAAS,GAAG;IACvB,KAAK,EAAE;QACL,KAAK,EAAE,GAAG,EAAE,CAAC,KAAK;KACnB;CACF,CAAC;AAEF,MAAM,KAAK,GAAG;IACZ;QACE,KAAK,EAAE,eAAe;QACtB,MAAM,EAAE,aAAa;KACtB;IACD;QACE,KAAK,EAAE,eAAe;QACtB,MAAM,EAAE,aAAa;KACtB;CACF,CAAC"}
