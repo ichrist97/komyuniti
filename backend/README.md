@@ -28,6 +28,10 @@ Additionally install this recommended but not mandatory extension:
 
 - GraphQL
 
+#### VSCode
+
+When using VSCode copy the `settings.json` from the top-level directory `development_assets/vscode` into your `.vscode` directory in the backend directory in order to activate the extensions.
+
 ## Run
 
 Install dependencies:
