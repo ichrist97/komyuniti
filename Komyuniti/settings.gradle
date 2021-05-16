@@ -1,0 +1,2 @@
+rootProject.name = "Komyuniti"
+include ':app'
