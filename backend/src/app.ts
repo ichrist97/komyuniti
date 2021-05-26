@@ -41,22 +41,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, "public")));
 app.use((req, res, next) => validateTokensMiddleware(req as CommonRequest, res, next));
-// chain jwt signing secrets to every request
-/*
-app.use((req, res, next) => {
-  const accessTokenSecret = process.env.ACCESS_TOKEN_SECRET;
-  const refreshTokenSecret = process.env.REFRESH_TOKEN_SECRET;
-
-  // secrets not ready
-  if (!accessTokenSecret || !refreshTokenSecret) {
-    console.error("Error while loading secrets!");
-    process.exit(1);
-  }
-
-  (<CommonRequest>req).secrets = { accessTokenSecret, refreshTokenSecret };
-  next();
-});
-*/
 
 /*
  * REST ROUTES

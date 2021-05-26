@@ -48,6 +48,7 @@ export async function login(parent, args, context, info): Promise<Tokens> {
 }
 
 export async function refreshAccessToken(parent, args, context, info): Promise<void> {
+  // token is saved in database
   const refreshToken = RefreshToken.findOne({ token: args.token });
   if (!refreshToken) {
     throw new Error("Refresh token not found or invalid");
@@ -58,14 +59,15 @@ export async function refreshAccessToken(parent, args, context, info): Promise<v
     throw new Error("Error while reading secrets");
   }
 
-  jwt.verify(args.token, secrets.refreshTokenSecret, (err, user) => {
+  // sent token is valid and equal to saved refresh token
+  return jwt.verify(args.token, secrets.refreshTokenSecret, (err, token) => {
     // token is invalid
     if (err) {
       throw new Error("Token invalid");
     }
 
     // new access token
-    const accessToken = jwt.sign({ userId: user.id }, secrets.accessTokenSecret, {
+    const accessToken = jwt.sign({ userId: token.userId }, secrets.accessTokenSecret, {
       expiresIn: accessTokenTTL,
     });
 
