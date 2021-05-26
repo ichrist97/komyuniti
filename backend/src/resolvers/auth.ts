@@ -74,6 +74,10 @@ export async function refreshAccessToken(parent, args, context, info): Promise<v
 }
 
 export async function logout(parent, args, context, info): Promise<string> {
-  await RefreshToken.deleteOne({ token: args.token });
+  await RefreshToken.deleteOne({ token: args.token })
+    .then()
+    .catch((err) => {
+      throw new Error("Refresh token could not be deleted during logout");
+    });
   return `Deleted refresh token ${args.token}`;
 }
