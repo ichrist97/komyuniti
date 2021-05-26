@@ -16,6 +16,13 @@ MONGO_PORT=27017
 MONGO_DATABASE=msp
 ```
 
+Additionally define the following secrets in the `.env`-file as they will be used to sign and verify the jwt tokens for authentication in the API.
+
+```
+ACCESS_TOKEN_SECRET="mysecret"
+REFRESH_TOKEN_SECRET="mysecret"
+```
+
 ### Editor
 
 Use the editor of your choice, but install the following extensions to use the common specified settings for the project.

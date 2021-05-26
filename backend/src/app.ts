@@ -8,6 +8,9 @@ import { connectDB } from "./database/mongo";
 import { typeDefs } from "./schemas/schema";
 import { resolvers } from "./resolvers/resolver";
 import { router as indexRouter } from "./routes/index";
+import { validateTokensMiddleware } from "./middleware/validateTokens";
+import { CommonRequest } from "./types/types";
+import { readSecrets } from "./util/auth";
 
 // read .env config file
 dotenv.config();
@@ -15,10 +18,17 @@ dotenv.config();
 // connect to database
 connectDB();
 
+// check if  local secrets are present
+if (!readSecrets()) {
+  console.error("Error while loading secrets!");
+  process.exit(1);
+}
+
 const app = express();
 const server = new ApolloServer({
   typeDefs,
   resolvers,
+  context: ({ req, res }) => ({ req, res }),
 });
 const graphQlPath = "/graphql";
 server.applyMiddleware({ app, path: graphQlPath });
@@ -30,12 +40,23 @@ app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, "public")));
+app.use((req, res, next) => validateTokensMiddleware(req as CommonRequest, res, next));
+// chain jwt signing secrets to every request
+/*
+app.use((req, res, next) => {
+  const accessTokenSecret = process.env.ACCESS_TOKEN_SECRET;
+  const refreshTokenSecret = process.env.REFRESH_TOKEN_SECRET;
 
-app.use((req, res) => {
-  res.status(200);
-  res.send("Hello!");
-  res.end();
+  // secrets not ready
+  if (!accessTokenSecret || !refreshTokenSecret) {
+    console.error("Error while loading secrets!");
+    process.exit(1);
+  }
+
+  (<CommonRequest>req).secrets = { accessTokenSecret, refreshTokenSecret };
+  next();
 });
+*/
 
 /*
  * REST ROUTES
