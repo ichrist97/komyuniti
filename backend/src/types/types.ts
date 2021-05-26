@@ -1,7 +1,6 @@
 import express from "express";
 
 export interface CommonRequest extends express.Request {
-  secrets: Secrets;
   user: IUser;
 }
 

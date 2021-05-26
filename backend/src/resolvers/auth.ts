@@ -14,6 +14,12 @@ export async function signup(parent, args, context, info): Promise<Tokens> {
     throw new Error("Error while reading secrets");
   }
 
+  // check if user for this email already exists
+  const userDB = await User.findOne({ email: args.email });
+  if (userDB) {
+    throw new Error("Account for this email already exists");
+  }
+
   return user
     .save()
     .then((doc: IUser) => {
