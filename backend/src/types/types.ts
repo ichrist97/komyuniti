@@ -4,6 +4,13 @@ export interface CommonRequest extends express.Request {
   user: IUser;
 }
 
+// result of verifying jwt token
+export interface VerifiedUser {
+  userId: string;
+  exp: number;
+  iat: number;
+}
+
 export interface Secrets {
   accessTokenSecret: string;
   refreshTokenSecret: string;

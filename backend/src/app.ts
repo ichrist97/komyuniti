@@ -18,36 +18,24 @@ dotenv.config();
 // connect to database
 connectDB();
 
-// check if  local secrets are present
-if (!readSecrets()) {
+// check if local secrets are present
+if (!readSecrets() || !readSecrets()?.accessTokenSecret || !readSecrets()?.refreshTokenSecret) {
   console.error("Error while loading secrets!");
   process.exit(1);
 }
 
 const app = express();
-const server = new ApolloServer({
-  typeDefs,
-  resolvers,
-  context: ({ req, res }) => ({ req, res }),
-});
-const graphQlPath = "/graphql";
-server.applyMiddleware({ app, path: graphQlPath });
 
-/*
- * EXPRESS MIDDLWARE
- */
+// EXPRESS MIDDLWARE
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, "public")));
+
+// handle jwt authentication
 app.use((req, res, next) => validateTokensMiddleware(req as CommonRequest, res, next));
 
-/*
- * REST ROUTES
- */
-app.use("/", indexRouter);
-
-// error handler
+// express error handler
 app.use(function (err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
@@ -57,6 +45,18 @@ app.use(function (err, req, res, next) {
   res.status(err.status || 500);
   res.render("error");
 });
+
+// EXPRESS REST ROUTES
+app.use("/", indexRouter);
+
+// APOLLO SERVER
+const server = new ApolloServer({
+  typeDefs,
+  resolvers,
+  context: ({ req, res }) => ({ req: req as CommonRequest, res }),
+});
+const graphQlPath = "/graphql";
+server.applyMiddleware({ app, path: graphQlPath });
 
 const PORT = process.env.APP_PORT || 3000;
 const httpServer = createServer(app);

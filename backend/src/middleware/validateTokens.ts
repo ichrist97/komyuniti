@@ -1,7 +1,6 @@
 import jwt from "jsonwebtoken";
 import express from "express";
-import { CommonRequest, IUser } from "../types/types";
-import { setTokens } from "../util/tokens";
+import { CommonRequest, IUser, VerifiedUser } from "../types/types";
 import user from "../models/user";
 import { readSecrets } from "../util/auth";
 
@@ -9,11 +8,11 @@ const authenticateJWT = (token: string, accessTokenSecret: string): Promise<IUse
   return new Promise((resolve, reject) => {
     jwt.verify(token, accessTokenSecret, async (err, verifiedUser) => {
       // error or incorrect hash
-      if (err) {
+      if (err || !verifiedUser) {
         return reject(err);
       }
       // successful
-      const doc = (await user.findOne({ name: (<IUser>verifiedUser).name })) as IUser;
+      const doc = (await user.findById((<VerifiedUser>verifiedUser).userId)) as IUser;
       return resolve({ id: doc.id, email: doc.email, password: doc.password, name: doc.name });
     });
   });
@@ -30,33 +29,21 @@ export async function validateTokensMiddleware(
     throw new Error("Error while reading secrets");
   }
 
-  const refreshToken = req.headers["x-refresh-token"] as string;
-  const accessToken = req.headers["x-access-token"] as string;
-  // one or both tokens missing as string
-  if (!accessToken && !refreshToken) return next();
-
-  const accessUser = await authenticateJWT(accessToken, secrets.accessTokenSecret);
-  if (accessUser) {
-    req.user = accessUser;
+  const authHeader = req.headers["authorization"] as string;
+  if (!authHeader) {
     return next();
   }
 
-  const refreshUser = await authenticateJWT(refreshToken, secrets.refreshTokenSecret);
-  if (refreshUser) {
-    // valid user and user token not invalidated
-    //if (!user || user.tokenCount !== decodedRefreshToken.user.count) return next();
-    req.user = refreshUser;
-    // refresh the tokens
-    const userTokens = setTokens(
-      refreshUser.id,
-      secrets.accessTokenSecret,
-      secrets.refreshTokenSecret
-    );
-    res.set({
-      "Access-Control-Expose-Headers": "x-access-token,x-refresh-token",
-      "x-access-token": userTokens.accessToken,
-      "x-refresh-token": userTokens.refreshToken,
-    });
+  const accessToken = authHeader.replace("Bearer ", ""); // extract token
+  // access token or header is missing
+  try {
+    const accessUser = await authenticateJWT(accessToken, secrets.accessTokenSecret);
+    if (accessUser) {
+      req.user = accessUser;
+      return next();
+    }
+  } catch (err) {
+    // authentication failed or no authentication info provided
     return next();
   }
   next();
