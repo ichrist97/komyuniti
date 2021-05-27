@@ -5,12 +5,8 @@ import { IUser, Tokens } from "../types/types";
 import RefreshToken from "../models/refreshToken";
 import jwt from "jsonwebtoken";
 import { readSecrets } from "../util/auth";
-import { AuthenticationError } from "apollo-server-express";
 
 export async function loggedInUser(parent, args, context, info): Promise<IUser> {
-  if (!context.req.user) {
-    throw new AuthenticationError("Must authenticate");
-  }
   const user = (await User.findById(context.req.user.id)) as IUser;
   if (!user) {
     throw new Error("Logged in user could not be found");
