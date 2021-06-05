@@ -17,6 +17,7 @@
     "dotenv": "^9.0.2",
     "express": "~4.16.1",
     "graphql": "^15.5.0",
+    "graphql-tools": "^4.0.8",
     "http-errors": "~1.6.3",
     "jade": "~1.11.0",
     "jsonwebtoken": "^8.5.1",

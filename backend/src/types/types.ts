@@ -26,9 +26,34 @@ export interface IUser {
   email: string;
   name: string;
   password: string;
+  friends?: string[];
 }
 
 export interface RefreshToken {
   id: string;
   token: string;
+}
+
+export interface IEvent {
+  id: string;
+  name: string;
+  description: string;
+  date: string;
+  invitedUsers: string[];
+  acceptedUsers: string[];
+  locationId: string;
+}
+
+export interface IContext {
+  req: CommonRequest;
+  res: express.Response;
+}
+export interface ILocation {
+  id: string;
+  longitude: number;
+  latitude: number;
+  country?: string;
+  city?: string;
+  postalCode?: number;
+  address?: string;
 }
