@@ -13,6 +13,7 @@ const userSchema = new mongoose.Schema<IUser>({
   },
   name: { type: String, required: true },
   password: { type: String, required: true },
+  friends: { type: [String] },
 });
 
 export default mongoose.model<IUser>("User", userSchema);
