@@ -18,4 +18,7 @@
     <color name="grey3">#BDBDBD</color>
     <color name="grey4">#666666</color>
 
+    //material colors
+    <color name="color_primary">#32B8D6</color>
+    <color name="colorPrimaryVariant">#63E4F2</color>
 </resources>

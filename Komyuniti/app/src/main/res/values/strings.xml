@@ -12,5 +12,9 @@
     <string name="btn_login">Login</string>
     <string name="tv_forgot_password"><u>Forgot password?</u></string>
 
-
+    <string name="profile">Profile</string>
+    <string name="profile_name">Placeholder Name</string>
+    <string name="profile_description">Tell something about yourself</string>
+    <string name="profile_friends">Friends</string>
+    <string name="profile_profile">Profile</string>
 </resources>
