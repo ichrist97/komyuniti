@@ -48,6 +48,7 @@ export interface IContext {
   req: CommonRequest;
   res: express.Response;
 }
+
 export interface ILocation {
   id: string;
   longitude: number;
@@ -56,4 +57,12 @@ export interface ILocation {
   city?: string;
   postalCode?: number;
   address?: string;
+}
+
+export interface IKomyuniti {
+  id: string;
+  name: string;
+  members: string[];
+  createdAt: string;
+  events: string[];
 }

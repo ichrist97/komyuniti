@@ -3,6 +3,15 @@ import { IUser, IContext } from "../types/types";
 import mongoose from "mongoose";
 import { GraphQLResolveInfo } from "graphql";
 
+export const resolver = {
+  friends: async (user: IUser): Promise<IUser[]> => {
+    // gather users from db by userIds
+    const ids = user.friends?.map((userId: string) => mongoose.Types.ObjectId(userId));
+    const users = await User.find({ _id: { $in: ids } });
+    return users;
+  },
+};
+
 export async function addFriend(
   parent,
   args,

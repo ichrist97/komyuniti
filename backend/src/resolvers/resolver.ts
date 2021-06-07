@@ -1,6 +1,6 @@
 import { login, signup, logout, loggedInUser, refreshAccessToken } from "./auth";
 import { AuthenticationError } from "apollo-server-express";
-import { addFriend, removeFriend, getUser, getUsers } from "./user";
+import { addFriend, removeFriend, getUser, getUsers, resolver as userResolver } from "./user";
 import {
   getEvent,
   getEvents,
@@ -9,10 +9,22 @@ import {
   deleteEvent,
   acceptEventInvitation,
   declineEventInvitation,
+  resolver as eventResolver,
 } from "./event";
-import { IUser, IEvent, Tokens, IContext, ILocation } from "../types/types";
+import { IUser, IEvent, Tokens, IContext, ILocation, IKomyuniti } from "../types/types";
 import { IResolvers } from "graphql-tools";
 import { getLocation, getLocations } from "./location";
+import {
+  getKomyuniti,
+  getKomyunities,
+  createKomyuniti,
+  updateKomyuniti,
+  deleteKomyuniti,
+  addMember,
+  addMembers,
+  removeMember,
+  resolver as komyunitiResolver,
+} from "./komyuniti";
 
 function _checkAuth(context: IContext): void {
   if (!context.req.user) {
@@ -27,6 +39,8 @@ export const resolvers: IResolvers = {
     /*
      * private resources
      */
+
+    // user
     loggedInUser: (parent, args, context, info): Promise<IUser> => {
       _checkAuth(context);
       return loggedInUser(parent, args, context, info);
@@ -39,6 +53,8 @@ export const resolvers: IResolvers = {
       _checkAuth(context);
       return getUsers(parent, args, context, info);
     },
+
+    // event
     event: (parent, args, context, info): Promise<IEvent> => {
       _checkAuth(context);
       return getEvent(parent, args, context, info);
@@ -47,6 +63,8 @@ export const resolvers: IResolvers = {
       _checkAuth(context);
       return getEvents(parent, args, context, info);
     },
+
+    // location
     location: (parent, args, context, info): Promise<ILocation> => {
       _checkAuth(context);
       return getLocation(parent, args, context, info);
@@ -54,6 +72,16 @@ export const resolvers: IResolvers = {
     locations: (parent, args, context, info): Promise<ILocation[]> => {
       _checkAuth(context);
       return getLocations(parent, args, context, info);
+    },
+
+    // komyuniti
+    komyuniti: (parent, args, context, info): Promise<IKomyuniti> => {
+      _checkAuth(context);
+      return getKomyuniti(parent, args, context, info);
+    },
+    komyunities: (parent, args, context, info): Promise<IKomyuniti[]> => {
+      _checkAuth(context);
+      return getKomyunities(parent, args, context, info);
     },
   },
   Mutation: {
@@ -69,6 +97,8 @@ export const resolvers: IResolvers = {
     /*
      * private resources
      */
+
+    // user
     addFriend: (parent, args, context, info): Promise<string> => {
       _checkAuth(context);
       return addFriend(parent, args, context, info);
@@ -77,6 +107,8 @@ export const resolvers: IResolvers = {
       _checkAuth(context);
       return removeFriend(parent, args, context, info);
     },
+
+    // event
     createEvent: (parent, args, context, info): Promise<IEvent> => {
       _checkAuth(context);
       return createEvent(parent, args, context, info);
@@ -97,5 +129,36 @@ export const resolvers: IResolvers = {
       _checkAuth(context);
       return declineEventInvitation(parent, args, context, info);
     },
+
+    // komyuniti
+    createKomyuniti: (parent, args, context, info): Promise<IKomyuniti> => {
+      _checkAuth(context);
+      return createKomyuniti(parent, args, context, info);
+    },
+    updateKomyuniti: (parent, args, context, info): Promise<IKomyuniti | null> => {
+      _checkAuth(context);
+      return updateKomyuniti(parent, args, context, info);
+    },
+    deleteKomyuniti: (parent, args, context, info): Promise<string> => {
+      _checkAuth(context);
+      return deleteKomyuniti(parent, args, context, info);
+    },
+    addMember: (parent, args, context, info): Promise<IKomyuniti | null> => {
+      _checkAuth(context);
+      return addMember(parent, args, context, info);
+    },
+    addMembers: (parent, args, context, info): Promise<IKomyuniti | null> => {
+      _checkAuth(context);
+      return addMembers(parent, args, context, info);
+    },
+    removeMember: (parent, args, context, info): Promise<IKomyuniti | null> => {
+      _checkAuth(context);
+      return removeMember(parent, args, context, info);
+    },
   },
+
+  // custom types
+  User: userResolver,
+  Event: eventResolver,
+  Komyuniti: komyunitiResolver,
 };
