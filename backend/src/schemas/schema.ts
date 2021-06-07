@@ -19,16 +19,12 @@ export const typeDefs = gql`
     refreshToken: String
   }
 
-  type RefreshToken {
-    token: String
-  }
-
   # user model
   type User {
     id: String!
     name: String!
     email: String!
-    friends: [String]
+    friends: [User]!
   }
 
   type Event {
@@ -36,9 +32,9 @@ export const typeDefs = gql`
     name: String!
     description: String
     date: String!
-    invitedUsers: [String] # userIds
-    acceptedUsers: [String] # userIds
-    locationId: String
+    invitedUsers: [User]! # userIds
+    acceptedUsers: [User]! # userIds
+    location: Location
   }
 
   type Location {
@@ -49,6 +45,14 @@ export const typeDefs = gql`
     city: String
     postalCode: Int
     address: String
+  }
+
+  type Komyuniti {
+    id: String!
+    name: String!
+    members: [User!]!
+    createdAt: String!
+    events: [Event!]!
   }
 
   type Query {
@@ -66,6 +70,10 @@ export const typeDefs = gql`
     # location
     location(id: String!): Location
     locations(ids: [String!]): [Location]
+
+    # komyuniti
+    komyuniti(id: String!): Komyuniti
+    komyunities(ids: [String!]): [Komyuniti]
   }
 
   type Mutation {
@@ -98,5 +106,13 @@ export const typeDefs = gql`
     deleteEvent(id: String!): String
     acceptEventInvitation(id: String!): Event
     declineEventInvitation(id: String!): Event
+
+    # komyuniti
+    createKomyuniti(name: String!, members: [String!]!): Komyuniti
+    updateKomyuniti(id: String!, name: String, members: [String!]): Komyuniti
+    deleteKomyuniti(id: String!): String
+    addMember(id: String!, userId: String!): Komyuniti
+    addMembers(id: String!, userIds: [String!]!): Komyuniti
+    removeMember(id: String!, userId: String!): Komyuniti
   }
 `;

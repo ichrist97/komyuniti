@@ -1,7 +1,27 @@
-import { IEvent, ILocation } from "../types/types";
+import { IEvent, ILocation, IUser } from "../types/types";
 import Event from "../models/event";
+import Location from "../models/location";
+import User from "../models/user";
 import mongoose from "mongoose";
 import { createLocation, updateLocation } from "./location";
+
+export const resolver = {
+  location: async (event: IEvent): Promise<ILocation> => {
+    return (await Location.findById(event.locationId)) as ILocation;
+  },
+  invitedUsers: async (event: IEvent): Promise<IUser[]> => {
+    // gather users from db by userIds
+    const ids = event.invitedUsers.map((userId: string) => mongoose.Types.ObjectId(userId));
+    const users = await User.find({ _id: { $in: ids } });
+    return users;
+  },
+  acceptedUsers: async (event: IEvent): Promise<IUser[]> => {
+    // gather users from db by userIds
+    const ids = event.invitedUsers.map((userId: string) => mongoose.Types.ObjectId(userId));
+    const users = await User.find({ _id: { $in: ids } });
+    return users;
+  },
+};
 
 export async function getEvent(parent, args, context, info): Promise<IEvent> {
   return (await Event.findById(args.id)) as IEvent;

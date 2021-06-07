@@ -1,8 +1,7 @@
 import mongoose from "mongoose";
 import { IEvent } from "../types/types";
-//import { locationSchema } from "./location";
 
-const userSchema = new mongoose.Schema<IEvent>({
+const eventSchema = new mongoose.Schema<IEvent>({
   name: {
     type: String,
     required: true,
@@ -14,4 +13,4 @@ const userSchema = new mongoose.Schema<IEvent>({
   locationId: { type: String },
 });
 
-export default mongoose.model<IEvent>("Event", userSchema);
+export default mongoose.model<IEvent>("Event", eventSchema);
