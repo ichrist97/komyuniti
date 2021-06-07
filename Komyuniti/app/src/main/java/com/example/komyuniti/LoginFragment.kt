@@ -15,8 +15,10 @@ class LoginFragment : Fragment() {
         val binding = FragmentLoginBinding.inflate(inflater, container, false)
         fragmentLoginBinding = binding
         binding.btnSignUpLogin.setOnClickListener{ view : View ->
-            //Navigation.createNavigateOnClickListener(R.id.action_loginFragment_to_registerFragment)
             Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_registerFragment)
+        }
+        binding.btnLogin.setOnClickListener{ view : View ->
+            //TODO: navigate to first profile fragment
         }
         return binding.root
     }

@@ -4,10 +4,15 @@ import LaunchDetailsQuery
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.findNavController
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.setupActionBarWithNavController
+import androidx.navigation.ui.setupWithNavController
 import com.apollographql.apollo.ApolloClient
 import com.apollographql.apollo.coroutines.await
 import com.apollographql.apollo.exception.ApolloException
 import com.example.komyuniti.databinding.ActivityMainBinding
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
@@ -27,6 +32,7 @@ class MainActivity : AppCompatActivity() {
 
         val scope: CoroutineScope = MainScope()
 
+
         scope.launch {
             val response = try {
                 apolloClient.query(LaunchDetailsQuery(id = "83")).await()
@@ -44,6 +50,20 @@ class MainActivity : AppCompatActivity() {
             // launch now contains a typesafe model of your data
             Log.d("MainActivity","Launch site: ${launch.site}")
         }
+
+        //Controller für Bottom Navigation
+        val navView: BottomNavigationView = binding.navView
+        val navController = findNavController(R.id.nav_host_fragment_activity_main2)
+        // Passing each menu ID as a set of Ids because each
+        // menu should be considered as top level destinations.
+        val appBarConfiguration = AppBarConfiguration(
+            setOf(
+                R.id.navigation_feed, R.id.navigation_events, R.id.navigation_profile
+            )
+        )
+        setupActionBarWithNavController(navController, appBarConfiguration)
+        navView.setupWithNavController(navController)
+
 
     }
 }

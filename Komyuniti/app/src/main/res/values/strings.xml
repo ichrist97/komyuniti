@@ -17,4 +17,8 @@
     <string name="profile_description">Tell something about yourself</string>
     <string name="profile_friends">Friends</string>
     <string name="profile_profile">Profile</string>
+    <string name="title_activity_main2">MainActivity</string>
+    <string name="title_feed">Feed</string>
+    <string name="title_events">Events</string>
+    <string name="title_profile">Profile</string>
 </resources>

@@ -62,7 +62,8 @@
         app:layout_constraintEnd_toEndOf="@+id/et_password_login"
         app:layout_constraintStart_toStartOf="@+id/et_password_login"
         app:layout_constraintTop_toBottomOf="@+id/tv_forgot_password"
-        app:layout_constraintVertical_bias="0.100000024" />
+        app:layout_constraintVertical_bias="0.100000024"
+        />
 
     <TextView
         android:id="@+id/tv_or_login"
@@ -72,6 +73,7 @@
         android:layout_marginTop="8dp"
         android:text="@string/tv_or"
         android:textSize="@dimen/or_size"
+        android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="@+id/btn_login"
         app:layout_constraintStart_toStartOf="@+id/btn_login"
         app:layout_constraintTop_toBottomOf="@+id/btn_login" />
