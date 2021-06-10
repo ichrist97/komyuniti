@@ -20,7 +20,7 @@ connectDB();
 
 // check if local secrets are present
 if (!readSecrets() || !readSecrets()?.accessTokenSecret || !readSecrets()?.refreshTokenSecret) {
-  console.error("Error while loading secrets!");
+  console.error("Error while loading secrets! Make sure to provide secrets.");
   process.exit(1);
 }
 

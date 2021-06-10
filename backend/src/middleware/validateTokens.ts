@@ -13,7 +13,7 @@ const authenticateJWT = (token: string, accessTokenSecret: string): Promise<IUse
       }
       // successful
       const doc = (await user.findById((<VerifiedUser>verifiedUser).userId)) as IUser;
-      return resolve({ id: doc.id, email: doc.email, password: doc.password, name: doc.name });
+      return resolve(doc);
     });
   });
 };
