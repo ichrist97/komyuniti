@@ -17,22 +17,13 @@ export async function addFriend(
   args,
   context: IContext,
   info: GraphQLResolveInfo
-): Promise<string> {
-  const loggedInUser = (await User.findById(context.req.user.id)) as IUser;
-  const model = new User({
-    email: loggedInUser.email,
-    name: loggedInUser.name,
-    password: loggedInUser.password,
-    friends: loggedInUser.friends ?? [],
-  });
+): Promise<IUser | null> {
+  const user = (await User.findById(context.req.user.id)) as IUser;
 
   // add new friend id
-  model.friends?.push(args.userId);
-  return model
-    .save()
-    .then(() => {
-      return `Added new friend: ${args.userId}`;
-    })
+  user.friends.push(args.userId);
+  return User.findOneAndUpdate({ _id: user.id }, user)
+    .then((doc) => doc)
     .catch((err) => {
       throw new Error(err);
     });

@@ -44,6 +44,7 @@ export async function createEvent(parent, args, context, info): Promise<IEvent> 
   const date = args.date;
   const invitedUsers = args.invitedUsers ?? [];
   const acceptedUsers = args.acceptedUsers ?? [];
+  const komyunitiId = args.komyunitiId ?? null;
 
   // create location if given in args
   let location: ILocation | null = null;
@@ -57,12 +58,14 @@ export async function createEvent(parent, args, context, info): Promise<IEvent> 
 
   // create and save event
   const event = new Event({
-    name,
-    description,
-    date,
-    invitedUsers,
-    acceptedUsers,
+    name: name,
+    description: description,
+    createdAt: Date.now(),
+    date: date,
+    invitedUsers: invitedUsers,
+    acceptedUsers: acceptedUsers,
     locationId: location?.id,
+    komyunitiId: komyunitiId,
   });
   return event
     .save()
@@ -88,7 +91,10 @@ export async function updateEvent(parent, args, context, info): Promise<IEvent |
     event.invitedUsers = args.invitedUsers;
   }
   if (args.location !== undefined) {
-    await updateLocation(event.locationId, args.location);
+    await updateLocation(event, args.location);
+  }
+  if (args.komyunitiId !== undefined) {
+    event.komyunitiId = args.komyunitiId;
   }
 
   return Event.findOneAndUpdate({ _id: args.id }, event)
