@@ -30,7 +30,8 @@ export const typeDefs = gql`
     id: String!
     name: String!
     email: String!
-    friends: [User]!
+    createdAt: Int!
+    friends: [User!]!
   }
 
   type Event {
@@ -38,6 +39,7 @@ export const typeDefs = gql`
     name: String!
     description: String
     date: String!
+    createdAt: Int!
     invitedUsers: [User]! # userIds
     acceptedUsers: [User]! # userIds
     location: Location
@@ -57,13 +59,14 @@ export const typeDefs = gql`
     id: String!
     name: String!
     members: [User!]!
-    createdAt: String!
+    createdAt: Int!
     events: [Event!]!
   }
 
   type TaskManagement {
     id: String!
     event: Event!
+    createdAt: Int!
     tasks: [Task!]!
   }
 
@@ -71,6 +74,7 @@ export const typeDefs = gql`
     id: String!
     user: User
     title: String!
+    createdAt: Int!
     description: String
     priority: String
     done: Boolean!
