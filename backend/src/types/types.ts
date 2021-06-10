@@ -25,8 +25,9 @@ export interface IUser {
   id: string;
   email: string;
   name: string;
+  createdAt: number;
   password: string;
-  friends?: string[];
+  friends: string[];
 }
 
 export interface RefreshToken {
@@ -37,11 +38,13 @@ export interface RefreshToken {
 export interface IEvent {
   id: string;
   name: string;
-  description: string;
+  description?: string;
   date: string;
+  createdAt: number;
   invitedUsers: string[];
   acceptedUsers: string[];
-  locationId: string;
+  locationId?: string;
+  komyunitiId?: string;
 }
 
 export interface IContext {
@@ -63,6 +66,28 @@ export interface IKomyuniti {
   id: string;
   name: string;
   members: string[];
-  createdAt: string;
-  events: string[];
+  createdAt: number;
+}
+
+export interface ITaskManagement {
+  id: string;
+  eventId: string;
+  createdAt: number;
+}
+
+export interface ITask {
+  id: string;
+  userId?: string;
+  taskMgmtId: string;
+  createdAt: number;
+  title: string;
+  description?: string;
+  priority?: TaskPriority;
+  done: boolean;
+}
+
+export enum TaskPriority {
+  Low = "Low",
+  Medium = "Medium",
+  High = "High",
 }

@@ -16,7 +16,13 @@ export async function loggedInUser(parent, args, context, info): Promise<IUser> 
 
 export async function signup(parent, args, context, info): Promise<Tokens> {
   const passwordHash = await hashPassword(args.password);
-  const user = new User({ email: args.email, password: passwordHash, name: args.name });
+  const user = new User({
+    email: args.email,
+    password: passwordHash,
+    name: args.name,
+    createdAt: Date.now(),
+    friends: [],
+  });
   const secrets = readSecrets();
   if (!secrets) {
     throw new Error("Error while reading secrets");

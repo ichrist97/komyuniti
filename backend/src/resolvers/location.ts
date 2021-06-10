@@ -1,5 +1,6 @@
 import Location from "../models/location";
-import { ILocation } from "../types/types";
+import Event from "../models/event";
+import { ILocation, IEvent } from "../types/types";
 import mongoose from "mongoose";
 
 export async function createLocation(location: ILocation): Promise<ILocation> {
@@ -21,19 +22,42 @@ export async function createLocation(location: ILocation): Promise<ILocation> {
 }
 
 export async function updateLocation(
-  existingLocationId: string,
+  event: IEvent,
   location: ILocation
 ): Promise<ILocation | null> {
-  return Location.findOneAndUpdate(
-    { _id: existingLocationId },
-    {
+  // update location
+  if (event.locationId) {
+    return Location.findOneAndUpdate(
+      { _id: event.locationId },
+      {
+        latitude: location.latitude,
+        longitude: location.longitude,
+        city: location?.city,
+        postalCode: location?.postalCode,
+        address: location?.address,
+      }
+    );
+  } else {
+    // create new location
+    const locationModel = new Location({
       latitude: location.latitude,
       longitude: location.longitude,
       city: location?.city,
       postalCode: location?.postalCode,
       address: location?.address,
-    }
-  );
+    });
+    return locationModel
+      .save()
+      .then(async (doc: ILocation) => {
+        // save new location doc id in event
+        event.locationId = doc.id;
+        await Event.findOneAndUpdate({ _id: event.id }, event);
+        return doc;
+      })
+      .catch((err) => {
+        throw new Error(err);
+      });
+  }
 }
 
 export async function getLocation(parent, args, context, info): Promise<ILocation> {

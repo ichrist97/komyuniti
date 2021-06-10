@@ -12,9 +12,8 @@ export const resolver = {
     return members;
   },
   events: async (komyuniti: IKomyuniti): Promise<IEvent[]> => {
-    // gather event from db by eventIds
-    const ids = komyuniti.members.map((eventId: string) => mongoose.Types.ObjectId(eventId));
-    const events = await Event.find({ _id: { $in: ids } });
+    // gather event from db by komyunitiId
+    const events = await Event.find({ komyunitiId: { $eq: komyuniti.id } });
     return events;
   },
 };
@@ -39,7 +38,6 @@ export async function createKomyuniti(parent, args, context, info): Promise<IKom
       name: args.name,
       members: args.members,
       createdAt: Date.now(),
-      events: [],
     });
     komyunitiModel
       .save()

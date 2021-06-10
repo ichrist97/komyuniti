@@ -13,6 +13,12 @@ export const typeDefs = gql`
     address: String
   }
 
+  enum TaskPriority {
+    Low
+    Medium
+    High
+  }
+
   # authentication payload for logging in
   type AuthPayload {
     accessToken: String
@@ -55,6 +61,21 @@ export const typeDefs = gql`
     events: [Event!]!
   }
 
+  type TaskManagement {
+    id: String!
+    event: Event!
+    tasks: [Task!]!
+  }
+
+  type Task {
+    id: String!
+    user: User
+    title: String!
+    description: String
+    priority: String
+    done: Boolean!
+  }
+
   type Query {
     # authentication
     loggedInUser: User
@@ -74,6 +95,14 @@ export const typeDefs = gql`
     # komyuniti
     komyuniti(id: String!): Komyuniti
     komyunities(ids: [String!]): [Komyuniti]
+
+    # taskManagement
+    taskManagement(id: String!): TaskManagement
+    taskManagements(ids: [String!]): [TaskManagement]
+
+    # tasks
+    task(id: String!): Task
+    tasks(ids: [String!]): [Task]
   }
 
   type Mutation {
@@ -114,5 +143,27 @@ export const typeDefs = gql`
     addMember(id: String!, userId: String!): Komyuniti
     addMembers(id: String!, userIds: [String!]!): Komyuniti
     removeMember(id: String!, userId: String!): Komyuniti
+
+    # task management
+    createTaskManagement(eventId: String!): TaskManagement
+    deleteTaskManagement(id: String!): String
+
+    # tasks
+    createTask(
+      title: String!
+      taskMgmtId: String!
+      userId: String
+      description: String
+      priority: TaskPriority
+    ): Task
+    updateTask(
+      id: String!
+      title: String
+      userId: String
+      description: String
+      priority: TaskPriority
+      done: Boolean
+    ): Task
+    deleteTask(id: String!): String
   }
 `;

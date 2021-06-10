@@ -11,7 +11,16 @@ import {
   declineEventInvitation,
   resolver as eventResolver,
 } from "./event";
-import { IUser, IEvent, Tokens, IContext, ILocation, IKomyuniti } from "../types/types";
+import {
+  IUser,
+  IEvent,
+  Tokens,
+  IContext,
+  ILocation,
+  IKomyuniti,
+  ITaskManagement,
+  ITask,
+} from "../types/types";
 import { IResolvers } from "graphql-tools";
 import { getLocation, getLocations } from "./location";
 import {
@@ -25,6 +34,21 @@ import {
   removeMember,
   resolver as komyunitiResolver,
 } from "./komyuniti";
+import {
+  getTaskMgmt,
+  createTaskMgmt,
+  deleteTaskMgmt,
+  getTaskMgmts,
+  resolver as taskMgmtResolver,
+} from "./taskMgmt";
+import {
+  getTask,
+  getTasks,
+  createTask,
+  updateTask,
+  deleteTask,
+  resolver as taskResolver,
+} from "./task";
 
 function _checkAuth(context: IContext): void {
   if (!context.req.user) {
@@ -83,6 +107,26 @@ export const resolvers: IResolvers = {
       _checkAuth(context);
       return getKomyunities(parent, args, context, info);
     },
+
+    // task management
+    taskManagement: (parent, args, context, info): Promise<ITaskManagement> => {
+      _checkAuth(context);
+      return getTaskMgmt(parent, args, context, info);
+    },
+    taskManagements: (parent, args, context, info): Promise<ITaskManagement[]> => {
+      _checkAuth(context);
+      return getTaskMgmts(parent, args, context, info);
+    },
+
+    // tasks
+    task: (parent, args, context, info): Promise<ITask> => {
+      _checkAuth(context);
+      return getTask(parent, args, context, info);
+    },
+    tasks: (parent, args, context, info): Promise<ITask[]> => {
+      _checkAuth(context);
+      return getTasks(parent, args, context, info);
+    },
   },
   Mutation: {
     /*
@@ -99,7 +143,7 @@ export const resolvers: IResolvers = {
      */
 
     // user
-    addFriend: (parent, args, context, info): Promise<string> => {
+    addFriend: (parent, args, context, info): Promise<IUser | null> => {
       _checkAuth(context);
       return addFriend(parent, args, context, info);
     },
@@ -155,10 +199,36 @@ export const resolvers: IResolvers = {
       _checkAuth(context);
       return removeMember(parent, args, context, info);
     },
+
+    // task management
+    createTaskManagement: (parent, args, context, info): Promise<ITaskManagement> => {
+      _checkAuth(context);
+      return createTaskMgmt(parent, args, context, info);
+    },
+    deleteTaskManagement: (parent, args, context, info): Promise<string> => {
+      _checkAuth(context);
+      return deleteTaskMgmt(parent, args, context, info);
+    },
+
+    // tasks
+    createTask: (parent, args, context, info): Promise<ITask> => {
+      _checkAuth(context);
+      return createTask(parent, args, context, info);
+    },
+    updateTask: (parent, args, context, info): Promise<ITask | null> => {
+      _checkAuth(context);
+      return updateTask(parent, args, context, info);
+    },
+    deleteTask: (parent, args, context, info): Promise<string> => {
+      _checkAuth(context);
+      return deleteTask(parent, args, context, info);
+    },
   },
 
   // custom types
   User: userResolver,
   Event: eventResolver,
   Komyuniti: komyunitiResolver,
+  TaskManagement: taskMgmtResolver,
+  Task: taskResolver,
 };
