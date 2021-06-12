@@ -19,7 +19,12 @@ export const resolver = {
 };
 
 export async function getKomyuniti(parent, args, context, info): Promise<IKomyuniti> {
-  return (await Komyuniti.findById(args.id)) as IKomyuniti;
+  // check authorization if user is member
+  const komyuniti = (await Komyuniti.findById(args.id)) as IKomyuniti;
+  if (!komyuniti.members.includes(context.req?.user?.id)) {
+    throw new Error("User is not a member of komyuniti");
+  }
+  return komyuniti;
 }
 
 export async function getKomyunities(parent, args, context, info): Promise<IKomyuniti[]> {
@@ -33,23 +38,29 @@ export async function getKomyunities(parent, args, context, info): Promise<IKomy
 }
 
 export async function createKomyuniti(parent, args, context, info): Promise<IKomyuniti> {
-  return new Promise<IKomyuniti>((resolve, reject) => {
-    const komyunitiModel = new Komyuniti({
-      name: args.name,
-      members: args.members,
-      createdAt: Date.now(),
-    });
-    komyunitiModel
-      .save()
-      .then((doc: IKomyuniti) => {
-        resolve(doc);
-      })
-      .catch((err) => reject(err));
+  const komyunitiModel = new Komyuniti({
+    name: args.name,
+    members: args.members,
+    createdAt: Date.now(),
+    admins: [context.req?.user?.id],
   });
+  return komyunitiModel
+    .save()
+    .then((doc: IKomyuniti) => {
+      return doc;
+    })
+    .catch((err) => {
+      throw new Error(err);
+    });
 }
 
 export async function updateKomyuniti(parent, args, context, info): Promise<IKomyuniti | null> {
   const komyuniti = (await Komyuniti.findById(args.id)) as IKomyuniti;
+
+  // check authorization if user is a admin
+  if (!komyuniti.admins.includes(context.req?.user?.id)) {
+    throw new Error("User is not an admin of komyuniti");
+  }
 
   // update given args
   if (args.name !== undefined) {
@@ -68,6 +79,12 @@ export async function updateKomyuniti(parent, args, context, info): Promise<IKom
 
 export async function addMember(parent, args, context, info): Promise<IKomyuniti | null> {
   const komyuniti = (await Komyuniti.findById(args.id)) as IKomyuniti;
+
+  // check authorization if user is a admin
+  if (!komyuniti.admins.includes(context.req?.user?.id)) {
+    throw new Error("User is not an admin of komyuniti");
+  }
+
   komyuniti.members.push(args.userId);
   return Komyuniti.findOneAndUpdate({ _id: args.id }, komyuniti)
     .then((doc) => doc)
@@ -78,6 +95,12 @@ export async function addMember(parent, args, context, info): Promise<IKomyuniti
 
 export async function addMembers(parent, args, context, info): Promise<IKomyuniti | null> {
   const komyuniti = (await Komyuniti.findById(args.id)) as IKomyuniti;
+
+  // check authorization if user is a admin
+  if (!komyuniti.admins.includes(context.req?.user?.id)) {
+    throw new Error("User is not an admin of komyuniti");
+  }
+
   komyuniti.members.concat(args.userIds); // merge both lists of userIds
   return Komyuniti.findOneAndUpdate({ _id: args.id }, komyuniti)
     .then((doc) => doc)
@@ -89,8 +112,15 @@ export async function addMembers(parent, args, context, info): Promise<IKomyunit
 export async function removeMember(parent, args, context, info): Promise<IKomyuniti | null> {
   const komyuniti = (await Komyuniti.findById(args.id)) as IKomyuniti;
 
+  // check authorization if user is a admin
+  if (!komyuniti.admins.includes(context.req?.user?.id)) {
+    throw new Error("User is not an admin of komyuniti");
+  }
+
   // remove member id
   komyuniti.members = komyuniti.members.filter((userId: string) => userId !== args.userId);
+  // remove also from admin if removedMember is admin
+  komyuniti.admins = komyuniti.admins.filter((userId: string) => userId !== args.userId);
 
   return Komyuniti.findOneAndUpdate({ _id: args.id }, komyuniti)
     .then((doc) => doc)
@@ -100,6 +130,13 @@ export async function removeMember(parent, args, context, info): Promise<IKomyun
 }
 
 export async function deleteKomyuniti(parent, args, context, info): Promise<string> {
+  const komyuniti = (await Komyuniti.findById(args.id)) as IKomyuniti;
+
+  // check authorization if user is a admin
+  if (!komyuniti.admins.includes(context.req?.user?.id)) {
+    throw new Error("User is not an admin of komyuniti");
+  }
+
   return Komyuniti.findByIdAndRemove(args.id)
     .then(() => `Deleted komyuniti ${args.id}`)
     .catch((err) => {

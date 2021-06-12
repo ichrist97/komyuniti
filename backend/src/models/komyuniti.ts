@@ -5,6 +5,7 @@ const komyunitiSchema = new mongoose.Schema<IKomyuniti>({
   name: { type: String, required: true },
   createdAt: { type: Number, required: true },
   members: { type: [String], required: true },
+  admins: { type: [String], required: true },
 });
 
 export default mongoose.model<IKomyuniti>("Komyuniti", komyunitiSchema);

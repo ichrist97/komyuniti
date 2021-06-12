@@ -20,6 +20,7 @@ import {
   IKomyuniti,
   ITaskManagement,
   ITask,
+  IChatMessage,
 } from "../types/types";
 import { IResolvers } from "graphql-tools";
 import { getLocation, getLocations } from "./location";
@@ -49,16 +50,31 @@ import {
   deleteTask,
   resolver as taskResolver,
 } from "./task";
+import {
+  createMessage,
+  subscribeChat,
+  updateMessage,
+  deleteMessage,
+  getMessage,
+  getMessages,
+} from "./chat";
 
 function _checkAuth(context: IContext): void {
-  if (!context.req.user) {
+  // user must be verified for queries, mutations or for subscriptions
+  if (!context.req?.user && !context.user) {
     throw new AuthenticationError("Must authenticate");
   }
 }
 
-// Resolvers define the technique for fetching the types defined in the
-// schema. This resolver retrieves books from the "books" array above.
 export const resolvers: IResolvers = {
+  Subscription: {
+    messageCreated: {
+      // subscribeChat returns a function 'ResolverFn', therefore run the returned
+      // function with () and get the wanted asyncIterator for the subscription
+      subscribe: (parent, args, context, info) => subscribeChat(parent, args, context, info)(),
+    },
+  },
+
   Query: {
     /*
      * private resources
@@ -127,6 +143,16 @@ export const resolvers: IResolvers = {
       _checkAuth(context);
       return getTasks(parent, args, context, info);
     },
+
+    // chat
+    message: (parent, args, context, info): Promise<IChatMessage> => {
+      _checkAuth(context);
+      return getMessage(parent, args, context, info);
+    },
+    messages: (parent, args, context, info): Promise<IChatMessage[]> => {
+      _checkAuth(context);
+      return getMessages(parent, args, context, info);
+    },
   },
   Mutation: {
     /*
@@ -147,7 +173,7 @@ export const resolvers: IResolvers = {
       _checkAuth(context);
       return addFriend(parent, args, context, info);
     },
-    removeFriend: (parent, args, context, info): Promise<string> => {
+    removeFriend: (parent, args, context, info): Promise<IUser | null> => {
       _checkAuth(context);
       return removeFriend(parent, args, context, info);
     },
@@ -222,6 +248,20 @@ export const resolvers: IResolvers = {
     deleteTask: (parent, args, context, info): Promise<string> => {
       _checkAuth(context);
       return deleteTask(parent, args, context, info);
+    },
+
+    // chat
+    createMessage: (parent, args, context, info): Promise<IChatMessage> => {
+      _checkAuth(context);
+      return createMessage(parent, args, context, info);
+    },
+    updateMessage: (parent, args, context, info): Promise<IChatMessage | null> => {
+      _checkAuth(context);
+      return updateMessage(parent, args, context, info);
+    },
+    deleteMessage: (parent, args, context, info): Promise<string> => {
+      _checkAuth(context);
+      return deleteMessage(parent, args, context, info);
     },
   },
 

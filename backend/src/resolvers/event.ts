@@ -1,5 +1,6 @@
-import { IEvent, ILocation, IUser } from "../types/types";
+import { IEvent, ILocation, IUser, IKomyuniti } from "../types/types";
 import Event from "../models/event";
+import Komyuniti from "../models/komyuniti";
 import Location from "../models/location";
 import User from "../models/user";
 import mongoose from "mongoose";
@@ -38,13 +39,13 @@ export async function getEvents(parent, args, context, info): Promise<IEvent[]> 
 }
 
 export async function createEvent(parent, args, context, info): Promise<IEvent> {
-  // args
-  const name = args.name;
-  const description = args.description ?? null;
-  const date = args.date;
-  const invitedUsers = args.invitedUsers ?? [];
-  const acceptedUsers = args.acceptedUsers ?? [];
-  const komyunitiId = args.komyunitiId ?? null;
+  // check authorization if user is allowed to create event in komyuniti
+  if (args.komyunitiId !== undefined) {
+    const komyuniti = (await Komyuniti.findById(args.komyunitiId)) as IKomyuniti;
+    if (!komyuniti.members.includes(context.req?.user?.id)) {
+      throw new Error("User is not a member of komyuniti");
+    }
+  }
 
   // create location if given in args
   let location: ILocation | null = null;
@@ -58,14 +59,15 @@ export async function createEvent(parent, args, context, info): Promise<IEvent> 
 
   // create and save event
   const event = new Event({
-    name: name,
-    description: description,
+    name: args.name,
+    description: args.description ?? null,
     createdAt: Date.now(),
-    date: date,
-    invitedUsers: invitedUsers,
-    acceptedUsers: acceptedUsers,
+    date: args.date,
+    admins: [context.req?.user?.id],
+    invitedUsers: args.invitedUsers ?? [],
+    acceptedUsers: args.acceptedUsers ?? [],
     locationId: location?.id,
-    komyunitiId: komyunitiId,
+    komyunitiId: args.komyunitiId,
   });
   return event
     .save()
@@ -77,6 +79,12 @@ export async function createEvent(parent, args, context, info): Promise<IEvent> 
 
 export async function updateEvent(parent, args, context, info): Promise<IEvent | null> {
   const event = (await Event.findById(args.id)) as IEvent;
+
+  // check authorization
+  if (!event.acceptedUsers.includes(context.req?.user?.id)) {
+    throw new Error("User is not authorized as event admin");
+  }
+
   // update given args
   if (args.name !== undefined) {
     event.name = args.name;
@@ -105,6 +113,12 @@ export async function updateEvent(parent, args, context, info): Promise<IEvent |
 }
 
 export async function deleteEvent(parent, args, context, info): Promise<string> {
+  const event = (await Event.findById(args.id)) as IEvent;
+  // check authorization
+  if (!event.acceptedUsers.includes(context.req?.user?.id)) {
+    throw new Error("User is not authorized as event admin");
+  }
+
   return Event.findByIdAndRemove(args.id)
     .then(() => `Removed event ${args.id}`)
     .catch((err) => {
@@ -117,8 +131,7 @@ export async function acceptEventInvitation(parent, args, context, info): Promis
 
   // check if user is invited
   if (!event.invitedUsers.includes(context.req.user.id)) {
-    // not invited, do nothing
-    return event;
+    throw new Error("User is not invited to event");
   }
 
   const user = context.req.user;
@@ -138,6 +151,11 @@ export async function acceptEventInvitation(parent, args, context, info): Promis
 
 export async function declineEventInvitation(parent, args, context, info): Promise<IEvent | null> {
   const event = (await Event.findById(args.id)) as IEvent;
+
+  // check if user is invited
+  if (!event.invitedUsers.includes(context.req.user.id)) {
+    throw new Error("User is not invited to event");
+  }
 
   // remove logged in user from invitation
   const user = context.req.user;

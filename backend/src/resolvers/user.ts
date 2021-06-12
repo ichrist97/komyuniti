@@ -18,7 +18,12 @@ export async function addFriend(
   context: IContext,
   info: GraphQLResolveInfo
 ): Promise<IUser | null> {
-  const user = (await User.findById(context.req.user.id)) as IUser;
+  const user = (await User.findById(context.req?.user?.id)) as IUser;
+
+  // check if is already friend
+  if (user.friends.includes(args.userId)) {
+    throw new Error("User is already a friend");
+  }
 
   // add new friend id
   user.friends.push(args.userId);
@@ -29,24 +34,20 @@ export async function addFriend(
     });
 }
 
-export async function removeFriend(parent, args, context: IContext, info): Promise<string> {
-  const loggedInUser = (await User.findById(context.req.user.id)) as IUser;
-  const model = new User({
-    email: loggedInUser.email,
-    name: loggedInUser.name,
-    password: loggedInUser.password,
-    friends: loggedInUser.friends ?? [],
-  });
+export async function removeFriend(parent, args, context: IContext, info): Promise<IUser | null> {
+  const loggedInUser = (await User.findById(context.req?.user?.id)) as IUser;
+
+  // check if is friend
+  if (!loggedInUser.friends.includes(args.userId)) {
+    throw new Error("User is not a friend");
+  }
 
   // remove friend by id
-  model.friends = model.friends?.filter((friendId) => {
+  loggedInUser.friends = loggedInUser.friends?.filter((friendId) => {
     friendId !== args.userId;
   });
-  return model
-    .save()
-    .then(() => {
-      return `Removed friend: ${args.userId}`;
-    })
+  return User.findOneAndUpdate({ _id: loggedInUser.id }, loggedInUser)
+    .then((doc) => doc)
     .catch((err) => {
       throw new Error(err);
     });

@@ -41,8 +41,7 @@ export async function signup(parent, args, context, info): Promise<Tokens> {
       return tokens;
     })
     .catch((err) => {
-      console.error(err);
-      throw new Error("New user could not be created");
+      throw new Error(err);
     });
 }
 
