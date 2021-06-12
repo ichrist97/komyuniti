@@ -1,6 +1,5 @@
 import jwt from "jsonwebtoken";
-import express from "express";
-import { CommonRequest, IUser, VerifiedUser } from "../types/types";
+import { IUser, VerifiedUser } from "../types/types";
 import user from "../models/user";
 import { readSecrets } from "../util/auth";
 
@@ -18,33 +17,23 @@ const authenticateJWT = (token: string, accessTokenSecret: string): Promise<IUse
   });
 };
 
-export async function validateTokensMiddleware(
-  req: CommonRequest,
-  res: express.Response,
-  next: express.NextFunction
-): Promise<void> {
+export async function validateAuth(authHeader: string | null): Promise<IUser | null> {
   // read local secrets
   const secrets = readSecrets();
   if (!secrets) {
     throw new Error("Error while reading secrets");
   }
 
-  const authHeader = req.headers["authorization"] as string;
   if (!authHeader) {
-    return next();
+    return null;
   }
 
   const accessToken = authHeader.replace("Bearer ", ""); // extract token
   // access token or header is missing
   try {
     const accessUser = await authenticateJWT(accessToken, secrets.accessTokenSecret);
-    if (accessUser) {
-      req.user = accessUser;
-      return next();
-    }
+    return accessUser;
   } catch (err) {
-    // authentication failed or no authentication info provided
-    return next();
+    return null;
   }
-  next();
 }

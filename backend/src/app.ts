@@ -2,13 +2,13 @@ import express from "express";
 import path from "path";
 import dotenv from "dotenv";
 import logger from "morgan";
-import { ApolloServer } from "apollo-server-express";
-import { createServer } from "http";
+import http from "http";
+import { ApolloServer, AuthenticationError } from "apollo-server-express";
 import { connectDB } from "./database/mongo";
 import { typeDefs } from "./schemas/schema";
 import { resolvers } from "./resolvers/resolver";
 import { router as indexRouter } from "./routes/index";
-import { validateTokensMiddleware } from "./middleware/validateTokens";
+import { validateAuth } from "./middleware/validateTokens";
 import { CommonRequest } from "./types/types";
 import { readSecrets } from "./util/auth";
 
@@ -25,15 +25,13 @@ if (!readSecrets() || !readSecrets()?.accessTokenSecret || !readSecrets()?.refre
 }
 
 const app = express();
+const server = http.createServer(app);
 
 // EXPRESS MIDDLWARE
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, "public")));
-
-// handle jwt authentication
-app.use((req, res, next) => validateTokensMiddleware(req as CommonRequest, res, next));
 
 // express error handler
 app.use(function (err, req, res, next) {
@@ -50,16 +48,54 @@ app.use(function (err, req, res, next) {
 app.use("/", indexRouter);
 
 // APOLLO SERVER
-const server = new ApolloServer({
+const graphQlPath = "/graphql";
+const subscriptionsPath = "/subscriptions";
+const apolloServer = new ApolloServer({
   typeDefs,
   resolvers,
-  context: ({ req, res }) => ({ req: req as CommonRequest, res }),
-});
-const graphQlPath = "/graphql";
-server.applyMiddleware({ app, path: graphQlPath });
+  // additional endpoint for subscriptions
+  subscriptions: {
+    path: subscriptionsPath,
+    onConnect: async (connectionParams) => {
+      /*
+       * If request is a subscription, then the jwt token will be verifierd here
+       * and directly added to the context. Afterwards the context should not be
+       * modified again
+       */
+      if (connectionParams["Authorization"]) {
+        const authHeader = connectionParams["Authorization"] as string;
+        const user = await validateAuth(authHeader);
 
+        if (!user) {
+          throw new AuthenticationError("Authenication failed!");
+        }
+        return { user: user };
+      }
+      throw new AuthenticationError("Missing auth token!");
+    },
+  },
+  context: async ({ req, res, connection }) => {
+    // request is subscription
+    if (connection) {
+      return connection.context;
+    }
+
+    // run authentication middleware to get logged in user for queries and mutations
+    const authHeader = (req?.headers.authorization as string) ?? null;
+    const user = await validateAuth(authHeader);
+    (<CommonRequest>req).user = user;
+    return { req: req as CommonRequest, res };
+  },
+});
+
+apolloServer.applyMiddleware({ app });
+
+// activate subscriptions
+apolloServer.installSubscriptionHandlers(server);
+
+// run app
 const PORT = process.env.APP_PORT || 3000;
-const httpServer = createServer(app);
-httpServer.listen({ port: PORT }, () =>
-  console.log(`🚀GraphQL-Server is running on http://localhost:${PORT}${graphQlPath}`)
-);
+server.listen({ port: PORT }, () => {
+  console.log(`🚀 GraphQL-Server is running on http://localhost:${PORT}${graphQlPath}`);
+  console.log(`🚀 Subscriptions are ready on ws://localhost:${PORT}${subscriptionsPath}`);
+});

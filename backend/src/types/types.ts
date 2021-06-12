@@ -1,7 +1,7 @@
 import express from "express";
 
 export interface CommonRequest extends express.Request {
-  user: IUser;
+  user: IUser | null;
 }
 
 // result of verifying jwt token
@@ -41,6 +41,7 @@ export interface IEvent {
   description?: string;
   date: string;
   createdAt: number;
+  admins: string[];
   invitedUsers: string[];
   acceptedUsers: string[];
   locationId?: string;
@@ -48,8 +49,9 @@ export interface IEvent {
 }
 
 export interface IContext {
-  req: CommonRequest;
-  res: express.Response;
+  req?: CommonRequest;
+  res?: express.Response;
+  user?: IUser | null;
 }
 
 export interface ILocation {
@@ -66,6 +68,7 @@ export interface IKomyuniti {
   id: string;
   name: string;
   members: string[];
+  admins: string[];
   createdAt: number;
 }
 
@@ -90,4 +93,12 @@ export enum TaskPriority {
   Low = "Low",
   Medium = "Medium",
   High = "High",
+}
+
+export interface IChatMessage {
+  id: string;
+  userId: string;
+  eventId: string;
+  text: string;
+  createdAt: number;
 }

@@ -4,6 +4,10 @@ import { gql } from "apollo-server-express";
 // that together define the "shape" of queries that are executed against
 // your data.
 export const typeDefs = gql`
+  type Subscription {
+    messageCreated(eventId: String!): ChatMessage
+  }
+
   input LocationInput {
     latitude: Float!
     longitude: Float!
@@ -23,6 +27,13 @@ export const typeDefs = gql`
   type AuthPayload {
     accessToken: String
     refreshToken: String
+  }
+
+  type ChatMessage {
+    userId: String!
+    text: String!
+    createdAt: Int!
+    eventId: String!
   }
 
   # user model
@@ -107,6 +118,10 @@ export const typeDefs = gql`
     # tasks
     task(id: String!): Task
     tasks(ids: [String!]): [Task]
+
+    # chat
+    message(id: String!): ChatMessage
+    messages(eventId: String!): [ChatMessage]
   }
 
   type Mutation {
@@ -169,5 +184,10 @@ export const typeDefs = gql`
       done: Boolean
     ): Task
     deleteTask(id: String!): String
+
+    # chat
+    createMessage(eventId: String!, text: String!): ChatMessage
+    updateMessage(id: String!, text: String!): ChatMessage
+    deleteMessage(id: String!): String
   }
 `;
