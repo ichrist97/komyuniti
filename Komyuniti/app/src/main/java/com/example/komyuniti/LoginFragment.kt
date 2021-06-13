@@ -18,7 +18,8 @@ class LoginFragment : Fragment() {
             Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_registerFragment)
         }
         binding.btnLogin.setOnClickListener{ view : View ->
-            //TODO: navigate to first profile fragment
+            //TODO: connection to backend get user
+            Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_mobile_navigation)
         }
         return binding.root
     }

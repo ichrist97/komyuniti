@@ -15,6 +15,9 @@
             app:enterAnim="@anim/nav_default_enter_anim"
             app:exitAnim="@anim/nav_default_exit_anim"
             app:popUpTo="@id/loginFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_mobile_navigation"
+            app:destination="@id/mobile_navigation" />
     </fragment>
     <fragment
         android:id="@+id/registerFragment"
@@ -29,4 +32,5 @@
             app:popUpTo="@id/loginFragment"
             app:popUpToInclusive="true" />
     </fragment>
+    <include app:graph="@navigation/mobile_navigation" />
 </navigation>
