@@ -26,7 +26,8 @@ class MainActivity : AppCompatActivity() {
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
+        //hide top
+        supportActionBar?.hide()
         val apolloClient = ApolloClient.builder()
             .serverUrl("https://apollo-fullstack-tutorial.herokuapp.com/graphql").build()
 
