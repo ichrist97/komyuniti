@@ -11,6 +11,10 @@
     <string name="tv_already_have_account"><u>Already have an account?</u></string>
     <string name="btn_login">Login</string>
     <string name="tv_forgot_password"><u>Forgot password?</u></string>
+    <string name="tv_events">Events</string>
+    <string name="tv_history">History</string>
+    <string name="ti_upcoming">Upcoming</string>
+    <string name="ti_open">Open</string>
 
     <string name="profile">Profile</string>
     <string name="profile_name">Placeholder Name</string>
