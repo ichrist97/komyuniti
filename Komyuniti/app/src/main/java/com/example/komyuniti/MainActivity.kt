@@ -52,9 +52,16 @@ class MainActivity : AppCompatActivity() {
             Log.d("MainActivity","Launch site: ${launch.site}")
         }
 
+
+    }
+
+    fun setMainNavigationController() {
         //Controller für Bottom Navigation
         val navView: BottomNavigationView = binding.navView
-        val navController = findNavController(R.id.nav_host_fragment_activity_main2)
+        //set bottom nav visible
+        navView.setVisibility(BottomNavigationView.VISIBLE);
+
+        val navController = findNavController(R.id.NavHostFragment)
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         val appBarConfiguration = AppBarConfiguration(
@@ -64,7 +71,5 @@ class MainActivity : AppCompatActivity() {
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
-
-
     }
 }

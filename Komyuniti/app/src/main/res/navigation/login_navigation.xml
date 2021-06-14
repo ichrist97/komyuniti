@@ -32,5 +32,5 @@
             app:popUpTo="@id/loginFragment"
             app:popUpToInclusive="true" />
     </fragment>
-    <include app:graph="@navigation/mobile_navigation" />
+    <include app:graph="@navigation/main_navigation" />
 </navigation>

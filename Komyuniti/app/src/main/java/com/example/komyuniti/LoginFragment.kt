@@ -20,6 +20,8 @@ class LoginFragment : Fragment() {
         binding.btnLogin.setOnClickListener{ view : View ->
             //TODO: connection to backend get user
             Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_mobile_navigation)
+            (activity as MainActivity).setMainNavigationController()
+
         }
         return binding.root
     }
