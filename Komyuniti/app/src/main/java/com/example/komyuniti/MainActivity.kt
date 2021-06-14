@@ -59,7 +59,7 @@ class MainActivity : AppCompatActivity() {
         //Controller für Bottom Navigation
         val navView: BottomNavigationView = binding.navView
         //set bottom nav visible
-        navView.setVisibility(BottomNavigationView.VISIBLE);
+        navView.visibility = BottomNavigationView.VISIBLE;
 
         val navController = findNavController(R.id.NavHostFragment)
         // Passing each menu ID as a set of Ids because each
