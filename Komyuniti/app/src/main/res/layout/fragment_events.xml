@@ -31,7 +31,7 @@
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabs_in_events"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginEnd="32dp"
@@ -40,6 +40,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_events"
+        app:tabMaxWidth="0dp"
+        app:tabGravity="fill"
         app:layout_constraintVertical_bias="0.050000012">
 
         <com.google.android.material.tabs.TabItem
@@ -50,8 +52,8 @@
 
         <com.google.android.material.tabs.TabItem
             android:id="@+id/ti_open"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:text="@string/ti_open" />
 
     </com.google.android.material.tabs.TabLayout>
