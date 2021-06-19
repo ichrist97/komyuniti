@@ -8,6 +8,9 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.Navigation
+import com.example.komyuniti.MainActivity
+import com.example.komyuniti.R
 import com.example.komyuniti.databinding.FragmentProfileBinding
 
 class ProfileFragment : Fragment() {
@@ -30,15 +33,26 @@ class ProfileFragment : Fragment() {
         _binding = FragmentProfileBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val textView: TextView = binding.headerTitle
+        val textView: TextView = binding.profileHeaderTitle
         profileViewModel.text.observe(viewLifecycleOwner, Observer {
             textView.text = it
         })
         return root
+
+        logout(binding)
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    fun logout(binding: FragmentProfileBinding) {
+        binding.profileLogoutBtn.setOnClickListener{ view : View ->
+            //TODO: connection to backend quit user session
+            Navigation.findNavController(view).navigate(R.id.action_navigation_profile_to_loginFragment2)
+            (activity as MainActivity).setMainNavigationController()
+
+        }
     }
 }
