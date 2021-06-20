@@ -45,13 +45,11 @@
         app:layout_constraintVertical_bias="0.050000012">
 
         <com.google.android.material.tabs.TabItem
-            android:id="@+id/ti_upcoming"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:text="@string/ti_upcoming" />
 
         <com.google.android.material.tabs.TabItem
-            android:id="@+id/ti_open"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:text="@string/ti_open" />
@@ -67,5 +65,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/tabs_in_events"
         app:layout_constraintStart_toStartOf="@+id/tabs_in_events"
-        app:layout_constraintTop_toBottomOf="@+id/tabs_in_events" />
+        app:layout_constraintTop_toBottomOf="@+id/tabs_in_events" >
+
+    </androidx.recyclerview.widget.RecyclerView>
 </androidx.constraintlayout.widget.ConstraintLayout>
