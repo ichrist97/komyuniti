@@ -7,16 +7,65 @@
     tools:context=".ui.events.EventsFragment">
 
     <TextView
-        android:id="@+id/text_dashboard"
-        android:layout_width="match_parent"
+        android:id="@+id/tv_events"
+        style="@style/TitleStyle"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:textAlignment="center"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:text="@string/tv_events"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_history"
+        style="@style/TextViewStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/tv_history"
+        android:textSize="@dimen/text_size_next_to_title"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_events"
+        app:layout_constraintEnd_toStartOf="@+id/tv_events"
+        app:layout_constraintHorizontal_bias="0.2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tv_events" />
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tabs_in_events"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:backgroundTint="@color/grey1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_events"
+        app:tabMaxWidth="0dp"
+        app:tabGravity="fill"
+        app:layout_constraintVertical_bias="0.050000012">
+
+        <com.google.android.material.tabs.TabItem
+            android:id="@+id/ti_upcoming"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/ti_upcoming" />
+
+        <com.google.android.material.tabs.TabItem
+            android:id="@+id/ti_open"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/ti_open" />
+
+    </com.google.android.material.tabs.TabLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_events"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginBottom="48dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/tabs_in_events"
+        app:layout_constraintStart_toStartOf="@+id/tabs_in_events"
+        app:layout_constraintTop_toBottomOf="@+id/tabs_in_events" />
 </androidx.constraintlayout.widget.ConstraintLayout>

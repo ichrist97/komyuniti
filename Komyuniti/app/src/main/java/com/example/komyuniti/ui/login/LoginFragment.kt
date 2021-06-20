@@ -1,4 +1,4 @@
-package com.example.komyuniti
+package com.example.komyuniti.ui.login
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
+import com.example.komyuniti.R
 import com.example.komyuniti.databinding.FragmentLoginBinding
 
 class LoginFragment : Fragment() {
