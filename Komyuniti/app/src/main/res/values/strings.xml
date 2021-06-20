@@ -16,6 +16,7 @@
     <string name="tv_history">History</string>
     <string name="ti_upcoming">Upcoming</string>
     <string name="ti_open">Open</string>
+    <string name="flbtn_add">Add</string>
 
     <!--    alle Strings für Profile-->
     <string name="profile">Profile</string>
