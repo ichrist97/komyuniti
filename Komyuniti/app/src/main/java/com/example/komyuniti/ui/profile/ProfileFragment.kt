@@ -37,9 +37,9 @@ class ProfileFragment : Fragment() {
         profileViewModel.text.observe(viewLifecycleOwner, Observer {
             textView.text = it
         })
-        //logout(binding)
         return root
 
+        logout(binding)
     }
 
     override fun onDestroyView() {
@@ -47,12 +47,12 @@ class ProfileFragment : Fragment() {
         _binding = null
     }
 
-//    fun logout(binding: FragmentProfileBinding) {
-//        binding.profileLogoutBtn.setOnClickListener{ view : View ->
-//            //TODO: connection to backend quit user session
-//            Navigation.findNavController(view).navigate(R.id.action_navigation_profile_to_loginFragment2)
-//            (activity as MainActivity).setMainNavigationController()
-//
-//        }
-//    }
+    fun logout(binding: FragmentProfileBinding) {
+        binding.profileLogoutBtn.setOnClickListener{ view : View ->
+            //TODO: connection to backend quit user session
+            Navigation.findNavController(view).navigate(R.id.action_navigation_profile_to_loginFragment)
+            (activity as MainActivity).setMainNavigationController()
+
+        }
+    }
 }
