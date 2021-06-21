@@ -10,7 +10,7 @@
     <Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="160dp"
+        android:layout_height="180dp"
         android:background="@color/color_primary"
         app:layout_constraintTop_toTopOf="parent"
         tools:layout_editor_absoluteX="-3dp">
@@ -53,73 +53,56 @@
         </RelativeLayout>
     </Toolbar>
 
-
-    <!--    <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:contentDescription="@string/profile"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/header_title"
-            app:layout_constraintHorizontal_bias="0.45"
-            app:layout_constraintStart_toStartOf="@+id/header_title"
-            app:layout_constraintTop_toBottomOf="@+id/header_title"
-            app:layout_constraintVertical_bias="0.050000012"
-            tools:src="@tools:sample/avatars" />-->
-
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/imageView"
         android:layout_width="200dp"
         android:layout_height="200dp"
         android:contentDescription="@string/profile"
+        android:src="@drawable/profile"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/toolbar"
-        app:layout_constraintVertical_bias="0.13"
-        android:src="@drawable/profile" />
+        app:layout_constraintVertical_bias="0.17000002" />
 
     <TextView
         android:id="@+id/profile_name"
         style="@style/h1"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
+        android:layout_marginTop="20dp"
         android:text="@string/profile_name"
         android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/imageView"
+        app:layout_constraintHorizontal_bias="0.51"
         app:layout_constraintStart_toStartOf="@+id/imageView"
-        app:layout_constraintTop_toBottomOf="@+id/imageView"
-        app:layout_constraintVertical_bias="0.01999998" />
+        app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
     <TextView
         android:id="@+id/profile_description"
         style="@style/h3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="52dp"
+        android:layout_marginTop="8dp"
         android:text="@string/profile_description"
         android:textAlignment="center"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/profile_name"
-        app:layout_constraintHorizontal_bias="0.405"
+        app:layout_constraintHorizontal_bias="0.358"
         app:layout_constraintStart_toStartOf="@+id/profile_name"
-        app:layout_constraintTop_toBottomOf="@+id/profile_name"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toBottomOf="@+id/profile_name" />
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabLayout"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="48dp"
         android:layout_marginStart="10dp"
+        android:layout_marginTop="20dp"
         android:layout_marginEnd="10dp"
         android:backgroundTint="@color/grey1"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/profile_description"
         app:layout_constraintStart_toStartOf="@+id/profile_description"
         app:layout_constraintTop_toBottomOf="@+id/profile_description"
-        app:layout_constraintVertical_bias="0.100000024"
         app:tabGravity="fill"
         app:tabMaxWidth="0dp">
 
@@ -135,6 +118,36 @@
 
 
     </com.google.android.material.tabs.TabLayout>
+
+    <ImageView
+        android:id="@+id/qr_code"
+        android:layout_width="0dp"
+        android:layout_height="200dp"
+        android:layout_marginTop="10dp"
+        android:src="@drawable/qr_code"
+        app:layout_constraintEnd_toEndOf="@+id/tabLayout"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/tabLayout"
+        app:layout_constraintTop_toBottomOf="@+id/tabLayout" />
+
+    <TextView
+        android:id="@+id/my_komunitys_title"
+        style="@style/h2"
+        app:layout_constraintEnd_toEndOf="@+id/qr_code"
+        app:layout_constraintStart_toStartOf="@+id/qr_code"
+        app:layout_constraintTop_toBottomOf="@+id/qr_code"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="My Komyunitis" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/komyuniti_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="12dp"
+        app:layout_constraintEnd_toEndOf="@+id/my_komunitys_title"
+        app:layout_constraintStart_toStartOf="@+id/my_komunitys_title"
+        app:layout_constraintTop_toBottomOf="@+id/my_komunitys_title" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
