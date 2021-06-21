@@ -23,12 +23,12 @@
         android:label="@string/profile"
         tools:layout="@layout/fragment_profile" >
         <action
-            android:id="@+id/action_navigation_profile_to_loginFragment2"
-            app:destination="@id/loginFragment2" />
+            android:id="@+id/action_navigation_profile_to_loginFragment"
+            app:destination="@id/loginFragment" />
     </fragment>
     <fragment
-        android:id="@+id/loginFragment2"
-        android:name="com.example.komyuniti.LoginFragment"
+        android:id="@+id/loginFragment"
+        android:name="com.example.komyuniti.ui.login.LoginFragment"
         android:label="fragment_login"
         tools:layout="@layout/fragment_login" />
 </navigation>

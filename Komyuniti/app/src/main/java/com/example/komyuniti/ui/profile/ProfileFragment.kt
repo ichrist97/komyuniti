@@ -50,7 +50,7 @@ class ProfileFragment : Fragment() {
     fun logout(binding: FragmentProfileBinding) {
         binding.profileLogoutBtn.setOnClickListener{ view : View ->
             //TODO: connection to backend quit user session
-            Navigation.findNavController(view).navigate(R.id.action_navigation_profile_to_loginFragment2)
+            Navigation.findNavController(view).navigate(R.id.action_navigation_profile_to_loginFragment)
             (activity as MainActivity).setMainNavigationController()
 
         }
