@@ -6,8 +6,14 @@ import androidx.lifecycle.ViewModel
 
 class FeedViewModel : ViewModel() {
 
-    private val _text = MutableLiveData<String>().apply {
-        value = "This is the feed Fragment"
+    private val feedList = MutableLiveData<Array<FeedData>>().apply {
+        value = emptyArray()
     }
-    val text: LiveData<String> = _text
+
+    fun getFeedFromDatabase(){
+        var newFeedList = arrayOf(FeedData())
+        feedList.value =  newFeedList
+
+    }
+
 }

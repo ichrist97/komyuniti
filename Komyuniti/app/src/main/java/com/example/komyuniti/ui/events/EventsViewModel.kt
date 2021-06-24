@@ -11,7 +11,7 @@ class EventsViewModel : ViewModel() {
         value = emptyArray()
     }
 
-    public fun checkDatabase(){
+    fun checkDatabase(){
         // Baue EventListe
         var newList = arrayOf(EventData()) // aus backend
         eventList.value = newList
