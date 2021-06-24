@@ -13,11 +13,11 @@ import com.example.komyuniti.databinding.FragmentFeedBinding
 class FeedFragment : Fragment() {
 
     private lateinit var feedViewModel: FeedViewModel
-    private var _binding: FragmentFeedBinding? = null
+    private lateinit var fragmentFeedBinding : FragmentFeedBinding
 
     // This property is only valid between onCreateView and
     // onDestroyView.
-    private val binding get() = _binding!!
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -27,18 +27,18 @@ class FeedFragment : Fragment() {
         feedViewModel =
             ViewModelProvider(this).get(FeedViewModel::class.java)
 
-        _binding = FragmentFeedBinding.inflate(inflater, container, false)
-        val root: View = binding.root
+        fragmentFeedBinding = FragmentFeedBinding.inflate(inflater, container, false)
 
-        val textView: TextView = binding.textHome
+       // val adapter = FeedAdapter(feedViewModel.feedList.value)
+
+
+        /*val textView: TextView = fragmentFeedBinding.textHome
         feedViewModel.text.observe(viewLifecycleOwner, Observer {
             textView.text = it
-        })
-        return root
-    }
+        })*/
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
+        val root: View = fragmentFeedBinding.root
+
+        return root
     }
 }
