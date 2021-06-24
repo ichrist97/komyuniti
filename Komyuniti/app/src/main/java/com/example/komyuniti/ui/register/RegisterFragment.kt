@@ -12,9 +12,11 @@ import com.example.komyuniti.databinding.FragmentRegisterBinding
 
 class RegisterFragment : Fragment() {
 
+    private lateinit var registerViewModel: RegisterViewModel
     private var fragmentRegisterBinding: FragmentRegisterBinding? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        
         val binding = FragmentRegisterBinding.inflate(inflater, container,false)
 
         fragmentRegisterBinding = binding

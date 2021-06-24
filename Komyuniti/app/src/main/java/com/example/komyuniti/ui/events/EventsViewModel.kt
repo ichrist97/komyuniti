@@ -1,13 +1,17 @@
 package com.example.komyuniti.ui.events
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
 class EventsViewModel : ViewModel() {
 
-    private val _text = MutableLiveData<String>().apply {
-        value = "This is the event Fragment"
+    val eventList = MutableLiveData<Array<EventData>>().apply {
+        value = emptyArray()
     }
-    val text: LiveData<String> = _text
+
+    fun checkDatabase() {
+        // Baue EventListe
+        var newList = arrayOf(EventData()) // aus backend
+        eventList.value = newList
+    }
 }
