@@ -29,5 +29,9 @@
     <string name="title_profile">Profile</string>
     <string name="logout">Logout</string>
     <string name="settings">Settings</string>
+    <string name="komyunitis">Komyunitis</string>
+    <string name="komyuniti_image">Image</string>
+    <string name="komyuniti_name">Komyuniti Name</string>
+    <string name="komyuniti_members">X Members</string>
 
 </resources>
