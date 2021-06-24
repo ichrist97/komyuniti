@@ -4,20 +4,18 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.komyuniti.databinding.FragmentEventsBinding
 
 class EventsFragment : Fragment() {
 
     private lateinit var eventsViewModel: EventsViewModel
-    private var _binding: FragmentEventsBinding? = null
+    private lateinit var fragmentEventsBinding: FragmentEventsBinding
 
     // This property is only valid between onCreateView and
     // onDestroyView.
-    private val binding get() = _binding!!
+    //private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -27,18 +25,24 @@ class EventsFragment : Fragment() {
         eventsViewModel =
             ViewModelProvider(this).get(EventsViewModel::class.java)
 
-        _binding = FragmentEventsBinding.inflate(inflater, container, false)
-        val root: View = binding.root
+        fragmentEventsBinding = FragmentEventsBinding.inflate(inflater, container, false)
 
-//        val textView: TextView = binding.tvEvents
-//        eventsViewModel.text.observe(viewLifecycleOwner, Observer {
-//            textView.text = it
+
+        val adapter = EventAdapter(eventsViewModel.eventList.value)
+        fragmentEventsBinding.rvEvents.adapter = adapter
+
+        val root: View = fragmentEventsBinding.root
+
+
+//        val textView: TextView = _binding.tvEvents
+//        eventsViewModel.text.observe(viewLifecycleOwner, Observer { text ->
+//            textView.text = text
 //        })
         return root
     }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
 }
+
+/*override fun onDestroyView() {
+    super.onDestroyView()
+    _binding = null
+}*/
