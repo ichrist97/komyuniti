@@ -37,6 +37,10 @@ class ProfileFragment : Fragment() {
         profileViewModel.text.observe(viewLifecycleOwner, Observer {
             textView.text = it
         })
+        //display all komyunitis connecting komyuniti Adapter
+        //val adapter = KomyunitiListAdapter(ProfileViewModel.komyunitiList.value)
+        //binding.komyunitiList.adapter = adapter
+
         return root
 
         logout(binding)
