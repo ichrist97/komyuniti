@@ -32,7 +32,7 @@ class KomyunitiListAdapter(private val dataSet: MutableList<KomyunitiData>) :
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
         // Create a new view, which defines the UI of the list item
         val view = LayoutInflater.from(viewGroup.context)
-            .inflate(R.layout.profile_komyuniti_item, viewGroup, false)
+            .inflate(R.layout.komyuniti_list_item, viewGroup, false)
 
         return ViewHolder(view)
     }

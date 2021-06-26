@@ -163,7 +163,7 @@
         app:layout_constraintEnd_toEndOf="@+id/my_komunitys_title"
         app:layout_constraintStart_toStartOf="@+id/my_komunitys_title"
         app:layout_constraintTop_toBottomOf="@+id/my_komunitys_title"
-        tools:listitem="@layout/profile_komyuniti_item" />
+        tools:listitem="@layout/komyuniti_list_item" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
