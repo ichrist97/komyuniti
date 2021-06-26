@@ -87,4 +87,10 @@
         <item name="android:textColor">@color/blue3</item>
         <item name="android:textStyle">bold</item>
     </style>
+
+    <style name="itemTitle">
+        <item name="android:layout_marginStart">24dp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">20sp</item>
+    </style>
 </resources>

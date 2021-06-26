@@ -17,6 +17,11 @@
     <string name="ti_upcoming">Upcoming</string>
     <string name="ti_open">Open</string>
     <string name="flbtn_add">Add</string>
+    <string name="sv_search">Search</string>
+    <string name="tv_item_title_feed">action name</string>
+    <string name="img_item_feed_describtion">Image in the feed fragment item list</string>
+    <string name="tv_item_body_feed">action body</string>
+    <string name="tv_minutes_passed">Elapsed time</string>
 
     <!--    alle Strings für Profile-->
     <string name="profile">Profile</string>
