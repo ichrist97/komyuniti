@@ -1,14 +1,18 @@
 package com.example.komyuniti
 
-import LaunchDetailsQuery
+import LoginMutation
+import SignupMutation
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import com.apollographql.apollo.ApolloCall
 import com.apollographql.apollo.ApolloClient
+import com.apollographql.apollo.api.Response
 import com.apollographql.apollo.coroutines.await
 import com.apollographql.apollo.exception.ApolloException
 import com.example.komyuniti.databinding.ActivityMainBinding
@@ -24,35 +28,37 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        // init view model
+        val mainViewModel = ViewModelProvider(this).get(MainViewModel::class.java)
+
+
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         //hide top
         supportActionBar?.hide()
-        val apolloClient = ApolloClient.builder()
-            .serverUrl("https://apollo-fullstack-tutorial.herokuapp.com/graphql").build()
 
+        /*
         val scope: CoroutineScope = MainScope()
 
-
         scope.launch {
-            val response = try {
-                apolloClient.query(LaunchDetailsQuery(id = "83")).await()
-            } catch (e: ApolloException) {
-                // handle protocol errors
-                return@launch
-            }
+            mainViewModel.getApollo().mutate(
+                LoginMutation(
+                    email = "foo@foo.de",
+                    password = "123",
+                )
+            ).enqueue(object : ApolloCall.Callback<LoginMutation.Data>() {
+                override fun onFailure(e: ApolloException) {
+                    Log.e("GraphQL", e.toString(), e);
+                }
 
-            val launch = response.data?.launch
-            if (launch == null || response.hasErrors()) {
-                // handle application errors
-                return@launch
+                override fun onResponse(response: Response<LoginMutation.Data>) {
+                    Log.i("GraphQL", response.data.toString());
+                }
             }
-
-            // launch now contains a typesafe model of your data
-            Log.d("MainActivity","Launch site: ${launch.site}")
+            )
         }
 
-
+         */
     }
 
     fun setMainNavigationController() {
@@ -73,3 +79,6 @@ class MainActivity : AppCompatActivity() {
         navView.setupWithNavController(navController)
     }
 }
+
+
+
