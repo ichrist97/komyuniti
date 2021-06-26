@@ -8,7 +8,7 @@ import android.widget.TextView
 import android.widget.Toast
 import com.example.komyuniti.R
 
-class KomyunitiListAdapter(private val dataSet: Array<KomyunitiData>) :
+class KomyunitiListAdapter(private val dataSet: MutableList<KomyunitiData>) :
     RecyclerView.Adapter<KomyunitiListAdapter.ViewHolder>() {
 
     /**
@@ -16,16 +16,14 @@ class KomyunitiListAdapter(private val dataSet: Array<KomyunitiData>) :
      * (custom ViewHolder).
      */
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val komyunitiName: TextView
-        val komyunitiMembers: TextView
+        val komyunitiName: TextView = view.findViewById(R.id.komyuniti_name)
+        val komyunitiMembers: TextView = view.findViewById(R.id.komyuniti_members)
 
         init {
-            komyunitiName = view.findViewById(R.id.komyuniti_name)
-            komyunitiMembers = view.findViewById(R.id.komyuniti_members)
             // Define click listener for the ViewHolder's View.
             view.setOnClickListener { v:View ->
                 val position: Int = adapterPosition
-                Toast.makeText(view.context, "you clicked on the Komyuniti Item # ${position + 1}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(v.context, "you clicked on the Komyuniti Item # ${position + 1}", Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -44,7 +42,7 @@ class KomyunitiListAdapter(private val dataSet: Array<KomyunitiData>) :
 
         // Get element from your dataset at this position and replace the
         // contents of the view with that element
-        viewHolder.komyunitiName.text = dataSet[position].komyunitiName
+        viewHolder.komyunitiName.text = dataSet[position].name
         viewHolder.komyunitiMembers.text = dataSet[position].members.toString() + " Members"
 
     }

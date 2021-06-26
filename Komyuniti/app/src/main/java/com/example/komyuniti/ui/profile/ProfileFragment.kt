@@ -1,6 +1,9 @@
 package com.example.komyuniti.ui.profile
 
 import android.os.Bundle
+import android.os.Debug
+import android.util.Log
+import android.util.Log.DEBUG
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.komyuniti.MainActivity
 import com.example.komyuniti.R
 import com.example.komyuniti.databinding.FragmentProfileBinding
@@ -21,6 +25,7 @@ class ProfileFragment : Fragment() {
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
+    private var komyunitis = mutableListOf<KomyunitiData>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -38,9 +43,12 @@ class ProfileFragment : Fragment() {
             textView.text = it
         })
         //display all komyunitis connecting komyuniti Adapter
+        binding.rvKomyunitiList.layoutManager = LinearLayoutManager(activity as MainActivity)
+        binding.rvKomyunitiList.adapter = KomyunitiListAdapter(komyunitis)
+
         //val adapter = KomyunitiListAdapter(ProfileViewModel.komyunitiList.value)
         //binding.komyunitiList.adapter = adapter
-
+        postToKomyuniti()
         return root
 
         logout(binding)
@@ -59,4 +67,14 @@ class ProfileFragment : Fragment() {
 
         }
     }
+
+    private fun addKomyuniti(komyuniti: KomyunitiData) {
+        komyunitis.add(komyuniti)
+    }
+    private fun postToKomyuniti() {
+            addKomyuniti(KomyunitiData())
+            Log.d("ProfileFragment", KomyunitiData().toString())
+            Log.d("ProfileFragment", komyunitis.toString())
+    }
+
 }
