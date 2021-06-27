@@ -7,6 +7,6 @@ class EventData {
     var notificationNumber: Int = 1
     var komyunitiName : String = "Uni Leute"
     var eventName : String = "Pizza Essen"
-    var numberOfPeopleInKomyuniti : String = "4 People"
+    var numberOfPeopleInKomyuniti : Int = 4
     var date : String = "14.6.21"
 }

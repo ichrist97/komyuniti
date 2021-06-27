@@ -52,7 +52,7 @@ class EventAdapter(private val eventList: Array<EventData>?) :
             viewHolder.notificationButton.text = eventList[position].notificationNumber.toString()
             viewHolder.komyunitiName.text = eventList[position].komyunitiName
             viewHolder.eventName.text = eventList[position].eventName
-            viewHolder.numerOfPeopleInKomyuniti.text = eventList[position].numberOfPeopleInKomyuniti
+            viewHolder.numerOfPeopleInKomyuniti.text = eventList[position].numberOfPeopleInKomyuniti.toString() + " People"
             viewHolder.date.text = eventList[position].date
 
         }
