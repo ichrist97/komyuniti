@@ -22,6 +22,9 @@
     <string name="img_item_feed_describtion">Image in the feed fragment item list</string>
     <string name="tv_item_body_feed">action body</string>
     <string name="tv_minutes_passed">Elapsed time</string>
+    <string name="tv_event_name">Event name</string>
+    <string name="tv_event_item_number_of_people"> number of people in komyuniti</string>
+    <string name="tv_event_item_date">Date</string>
 
     <!--    alle Strings für Profile-->
     <string name="profile">Profile</string>
