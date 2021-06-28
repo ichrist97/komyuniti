@@ -25,14 +25,6 @@
     <string name="tv_event_name">Event name</string>
     <string name="tv_event_item_number_of_people"> number of people in komyuniti</string>
     <string name="tv_event_item_date">Date</string>
-    <string name="sv_search">Search</string>
-    <string name="tv_item_title_feed">action name</string>
-    <string name="img_item_feed_describtion">Image in the feed fragment item list</string>
-    <string name="tv_item_body_feed">action body</string>
-    <string name="tv_minutes_passed">Elapsed time</string>
-    <string name="tv_event_name">Event name</string>
-    <string name="tv_event_item_number_of_people"> number of people in komyuniti</string>
-    <string name="tv_event_item_date">Date</string>
 
     <!-- New Event -->
     <string name="new_event">New Event</string>
@@ -57,7 +49,7 @@
     <string name="komyuniti_image">Image</string>
     <string name="komyuniti_name">Komyuniti Name</string>
     <string name="komyuniti_members">X Members</string>
-    <string name="komunitys_title">My Komyunitis</string>
+    <string name="komyunitis_title">My Komyunitis</string>
     <!-- string for friends -->
     <string name="friend_image">Image of Friend</string>
 
