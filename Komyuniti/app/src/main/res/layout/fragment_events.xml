@@ -29,33 +29,40 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/tv_events" />
 
-    <com.google.android.material.tabs.TabLayout
-        android:id="@+id/tabs_in_events"
+    <androidx.cardview.widget.CardView
+        android:id="@+id/tabs_in_events_cardview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginEnd="32dp"
-        android:backgroundTint="@color/grey1"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_events"
         app:layout_constraintVertical_bias="0.05"
-        app:tabGravity="fill"
-        app:tabMaxWidth="0dp">
+        app:cardCornerRadius="50dp">
 
-        <com.google.android.material.tabs.TabItem
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tabs_in_events"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="@string/ti_upcoming" />
+            android:backgroundTint="@color/grey1"
+            app:tabGravity="fill"
+            app:tabMaxWidth="0dp">
 
-        <com.google.android.material.tabs.TabItem
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="@string/ti_open" />
+            <com.google.android.material.tabs.TabItem
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="@string/ti_upcoming" />
 
-    </com.google.android.material.tabs.TabLayout>
+            <com.google.android.material.tabs.TabItem
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="@string/ti_open" />
+
+        </com.google.android.material.tabs.TabLayout>
+    </androidx.cardview.widget.CardView>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_events"
@@ -63,11 +70,12 @@
         android:layout_height="0dp"
         android:layout_marginTop="24dp"
         android:layout_marginBottom="48dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/tabs_in_events"
-        app:layout_constraintStart_toStartOf="@+id/tabs_in_events"
-        app:layout_constraintTop_toBottomOf="@+id/tabs_in_events"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager">
+        app:layout_constraintEnd_toEndOf="@+id/tabs_in_events_cardview"
+        app:layout_constraintStart_toStartOf="@+id/tabs_in_events_cardview"
+        app:layout_constraintTop_toBottomOf="@+id/tabs_in_events_cardview"
+        tools:listitem="@layout/event_list_item">
 
     </androidx.recyclerview.widget.RecyclerView>
 
