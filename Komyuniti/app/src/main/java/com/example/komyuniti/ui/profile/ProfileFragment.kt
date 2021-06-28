@@ -124,7 +124,7 @@ class ProfileFragment : Fragment() {
         for (i in 1..8) {
             addKomyuniti(KomyunitiData())
         }
-
+    }
     private fun addFriend(friend: FriendData) {
         friends.add(friend)
     }
