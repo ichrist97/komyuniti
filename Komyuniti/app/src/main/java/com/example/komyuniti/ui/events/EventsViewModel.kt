@@ -7,7 +7,10 @@ import androidx.lifecycle.ViewModel
 class EventsViewModel : ViewModel() {
 
     val eventList = MutableLiveData<Array<EventData>>().apply {
-        value = arrayOf(EventData())
+        value = arrayOf(EventData(), EventData(), EventData())
+    }
+    val openEvents = MutableLiveData<Array<EventData>>().apply {
+        value = emptyArray()
     }
 
     fun checkDatabase() {
