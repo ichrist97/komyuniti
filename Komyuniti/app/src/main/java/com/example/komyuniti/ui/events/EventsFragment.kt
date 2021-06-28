@@ -1,6 +1,7 @@
 package com.example.komyuniti.ui.events
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -33,7 +34,6 @@ class EventsFragment : Fragment() {
 
         val root: View = fragmentEventsBinding.root
 
-
 //        val textView: TextView = _binding.tvEvents
 //        eventsViewModel.text.observe(viewLifecycleOwner, Observer { text ->
 //            textView.text = text
@@ -42,7 +42,3 @@ class EventsFragment : Fragment() {
     }
 }
 
-/*override fun onDestroyView() {
-    super.onDestroyView()
-    _binding = null
-}*/
