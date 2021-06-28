@@ -1,11 +1,15 @@
 package com.example.komyuniti.ui.events
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
 class EventsViewModel : ViewModel() {
 
     val eventList = MutableLiveData<Array<EventData>>().apply {
+        value = arrayOf(EventData(), EventData(), EventData())
+    }
+    val openEvents = MutableLiveData<Array<EventData>>().apply {
         value = emptyArray()
     }
 
@@ -13,5 +17,6 @@ class EventsViewModel : ViewModel() {
         // Baue EventListe
         var newList = arrayOf(EventData()) // aus backend
         eventList.value = newList
+        Log.d("EventsVM", newList.toString())
     }
 }

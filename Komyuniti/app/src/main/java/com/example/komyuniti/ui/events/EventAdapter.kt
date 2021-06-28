@@ -3,9 +3,11 @@ package com.example.komyuniti.ui.events
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.komyuniti.R
+import kotlin.math.absoluteValue
 
 
 class EventAdapter(private val eventList: Array<EventData>?) :
@@ -16,11 +18,19 @@ class EventAdapter(private val eventList: Array<EventData>?) :
      * Provide a reference to the type of views that you are using
      */
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val textView: TextView
+        val notificationButton: Button
+        val komyunitiName : TextView
+        val eventName : TextView
+        val numerOfPeopleInKomyuniti : TextView
+        val date : TextView
 
         init {
             // Define click listener for the ViewHolder's View.
-            textView = view.findViewById(R.id.textView)
+            notificationButton = view.findViewById(R.id.btn_notification)
+            komyunitiName = view.findViewById(R.id.tv_event_item_title)
+            eventName = view.findViewById(R.id.tv_event_name)
+            numerOfPeopleInKomyuniti = view.findViewById(R.id.tv_event_item_number_of_people)
+            date = view.findViewById(R.id.tv_event_item_date)
         }
     }
 
@@ -39,7 +49,11 @@ class EventAdapter(private val eventList: Array<EventData>?) :
         // Get element from your dataset at this position and replace the
         // contents of the view with that element
         if (eventList != null) {
-            viewHolder.textView.text = eventList[position].title
+            viewHolder.notificationButton.text = eventList[position].notificationNumber.toString()
+            viewHolder.komyunitiName.text = eventList[position].komyunitiName
+            viewHolder.eventName.text = eventList[position].eventName
+            viewHolder.numerOfPeopleInKomyuniti.text = eventList[position].numberOfPeopleInKomyuniti.toString() + " People"
+            viewHolder.date.text = eventList[position].date
 
         }
 

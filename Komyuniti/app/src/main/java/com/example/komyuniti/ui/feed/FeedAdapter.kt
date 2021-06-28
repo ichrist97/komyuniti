@@ -20,7 +20,7 @@ class FeedAdapter(private val feedList: Array<FeedData>) :
 
         init {
             // Define click listener for the ViewHolder's View.
-            textView = view.findViewById(R.id.textView)
+            textView = view.findViewById(R.id.tv_feed)
         }
     }
 
