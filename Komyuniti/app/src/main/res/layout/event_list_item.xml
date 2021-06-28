@@ -2,16 +2,74 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="TextView"
+    <Button
+        android:id="@+id/btn_notification"
+        style="@style/ButtonStyle"
+        android:layout_width="60dp"
+        android:layout_height="70dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_event_item_title"
+        style="@style/itemTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="@string/komyuniti_name"
+        android:textColor="@color/color_primary"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@+id/btn_notification"
+        app:layout_constraintStart_toEndOf="@+id/btn_notification"
+        app:layout_constraintTop_toTopOf="@+id/btn_notification"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/tv_event_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/tv_event_name"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/tv_event_item_title"
+        app:layout_constraintTop_toBottomOf="@+id/tv_event_item_title"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/tv_event_item_number_of_people"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:text="@string/tv_event_item_number_of_people"
+        android:textColor="@color/grey3"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_event_item_title"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/tv_event_item_title"
+        app:layout_constraintTop_toTopOf="@+id/tv_event_item_title" />
+
+    <TextView
+        android:id="@+id/tv_event_item_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/tv_event_item_date"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_event_name"
+        app:layout_constraintEnd_toEndOf="@+id/tv_event_item_number_of_people"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/tv_event_name"
+        app:layout_constraintTop_toTopOf="@+id/tv_event_name" />
 </androidx.constraintlayout.widget.ConstraintLayout>
