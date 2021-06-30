@@ -164,7 +164,52 @@
         app:layout_constraintEnd_toEndOf="@+id/tv_komyunitis_title"
         app:layout_constraintStart_toStartOf="@+id/tv_komyunitis_title"
         app:layout_constraintTop_toBottomOf="@+id/tv_komyunitis_title"
-        tools:listitem="@layout/komyuniti_list_item" />
+        tools:listitem="@layout/komyuniti_list_item" >
+
+    </androidx.recyclerview.widget.RecyclerView>
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/flbtn_add"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="62dp"
+        android:clickable="true"
+        android:focusable="true"
+        app:backgroundTint="@color/color_primary"
+        app:tint="@android:color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:src="@drawable/ic_add" />
+
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/fltb_add_friend"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/flbtn_add"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:backgroundTint="@color/color_primary"
+        app:iconTint="@color/white"
+        android:textColor="@color/white"
+        android:text="@string/add_friend"
+        app:icon="@drawable/ic_qrcode"
+        />
+
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/fltb_create_komyuniti"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="16dp"
+        android:text="@string/create_komyuniti"
+        app:backgroundTint="@color/color_primary"
+        app:iconTint="@color/white"
+        android:textColor="@color/white"
+        app:icon="@drawable/ic_group_add"
+        app:layout_constraintBottom_toTopOf="@+id/fltb_add_friend"
+        app:layout_constraintEnd_toEndOf="parent"
+        />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

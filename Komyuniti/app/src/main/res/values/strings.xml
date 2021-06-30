@@ -50,6 +50,8 @@
     <string name="komyuniti_name">Komyuniti Name</string>
     <string name="komyuniti_members">X Members</string>
     <string name="komunitys_title">My Komyunitis</string>
+    <string name="add_friend">Add Friend</string>
+    <string name="create_komyuniti">Create Komyuniti</string>
     <!-- string for friends -->
     <string name="friend_image">Image of Friend</string>
 

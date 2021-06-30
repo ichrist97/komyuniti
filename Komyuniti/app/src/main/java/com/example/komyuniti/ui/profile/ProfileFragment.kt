@@ -5,16 +5,17 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.komyuniti.MainActivity
 import com.example.komyuniti.R
 import com.example.komyuniti.databinding.FragmentProfileBinding
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayout.*
 
@@ -78,6 +79,7 @@ class ProfileFragment : Fragment() {
             override fun onTabUnselected(tab: TabLayout.Tab) {}
             override fun onTabReselected(tab: TabLayout.Tab) {}
         })
+        animationFloatingButton(binding.flbtnAdd)
 
         return root
 
@@ -116,5 +118,34 @@ class ProfileFragment : Fragment() {
             addFriend(FriendData())
         }
         Log.d("ProfileFragment", komyunitis.toString())
+    }
+
+    private fun animationFloatingButton(addBtn: FloatingActionButton) {
+        //sets on click listener on floating button and displays expanded floating btns with animation
+        var clicked = false
+        binding.fltbAddFriend.hide()
+        binding.fltbCreateKomyuniti.hide()
+        val showAnim = AnimationUtils.loadAnimation(activity, R.anim.scale_up);
+        val hideAnim = AnimationUtils.loadAnimation(activity, R.anim.scale_down);
+        val rotateOpenAnim = AnimationUtils.loadAnimation(activity, R.anim.rotate_open);
+        val rotateCloseAnim = AnimationUtils.loadAnimation(activity, R.anim.rotate_close);
+
+        addBtn.setOnClickListener { view : View ->
+            clicked = if (!clicked) {
+                binding.fltbAddFriend.show()
+                binding.fltbCreateKomyuniti.show()
+                binding.fltbAddFriend.startAnimation(showAnim)
+                binding.fltbCreateKomyuniti.startAnimation(showAnim)
+                addBtn.startAnimation(rotateOpenAnim)
+                true
+            } else {
+                binding.fltbAddFriend.startAnimation(hideAnim)
+                binding.fltbCreateKomyuniti.startAnimation(hideAnim)
+                binding.fltbAddFriend.hide()
+                binding.fltbCreateKomyuniti.hide()
+                addBtn.startAnimation(rotateCloseAnim)
+                false
+            }
+        }
     }
 }
