@@ -1,5 +1,7 @@
 package com.example.komyuniti.ui.events
 
+import java.util.*
+
 class EventData {
     // Dummy data
     var notificationNumber: Int = 1

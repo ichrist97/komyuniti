@@ -7,6 +7,7 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.komyuniti.R
+import kotlin.math.absoluteValue
 
 
 class EventAdapter(private val eventList: Array<EventData>?) :

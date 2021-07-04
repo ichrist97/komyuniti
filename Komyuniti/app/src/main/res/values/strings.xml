@@ -26,6 +26,14 @@
     <string name="tv_event_item_number_of_people"> number of people in komyuniti</string>
     <string name="tv_event_item_date">Date</string>
 
+    <!-- New Event -->
+    <string name="new_event">New Event</string>
+    <string name="back">Back</string>
+    <string name="save">Save</string>
+    <string name="location">Location</string>
+    <string name="name_your_event">Name your event...</string>
+    <string name="add_people">Add Komyunitis or People</string>
+
     <!--    alle Strings für Profile-->
     <string name="profile">Profile</string>
     <string name="profile_name">Placeholder Name</string>
@@ -41,6 +49,12 @@
     <string name="komyuniti_image">Image</string>
     <string name="komyuniti_name">Komyuniti Name</string>
     <string name="komyuniti_members">X Members</string>
+    <string name="komunitys_title">My Komyunitis</string>
+    <string name="add_friend">Add Friend</string>
+    <string name="create_komyuniti">Create Komyuniti</string>
+    <string name="friend_image">Image of Friend</string>
+    <!-- string for friends -->
+    <string name="delete_account">Delete Account</string>
 
     <!-- scan result -->
     <string name="newFriendHeaderTitle">New friend</string>
