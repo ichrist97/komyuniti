@@ -42,4 +42,9 @@
     <string name="komyuniti_name">Komyuniti Name</string>
     <string name="komyuniti_members">X Members</string>
 
+    <!-- scan result -->
+    <string name="newFriendHeaderTitle">New friend</string>
+    <string name="btnAddFriend">Add new friend</string>
+    <string name="tvCommonKomyunitis">Common Komuntities</string>
+
 </resources>

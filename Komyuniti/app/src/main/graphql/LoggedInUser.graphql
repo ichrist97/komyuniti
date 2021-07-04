@@ -1,7 +1,5 @@
 query LoggedInUser {
-    loggedInUser {
-        id
-        name
-        email
+    currentUser {
+        _id
     }
 }
