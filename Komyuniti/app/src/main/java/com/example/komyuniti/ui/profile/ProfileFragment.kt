@@ -60,6 +60,9 @@ class ProfileFragment : Fragment() {
         profileViewModel =
             ViewModelProvider(this).get(ProfileViewModel::class.java)
 
+        //navigation
+        (activity as MainActivity).setMainNavigationController()
+
         // init shared preferences
         preferences = activity?.getSharedPreferences("Auth", Context.MODE_PRIVATE)!!
 
