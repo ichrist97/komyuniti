@@ -52,8 +52,11 @@
     <string name="komunitys_title">My Komyunitis</string>
     <string name="add_friend">Add Friend</string>
     <string name="create_komyuniti">Create Komyuniti</string>
-    <!-- string for friends -->
     <string name="friend_image">Image of Friend</string>
+    <!-- string for friends -->
+    <!-- string for settings -->
+    <string name="delete_account">Delete Account</string>
+
 
 
 
