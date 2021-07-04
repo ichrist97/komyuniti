@@ -1,0 +1,5 @@
+mutation AddFriend($input: AddFriendInput!) {
+    addFriend(input: $input) {
+        _id
+    }
+}

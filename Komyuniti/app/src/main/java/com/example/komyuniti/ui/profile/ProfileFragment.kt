@@ -1,6 +1,11 @@
 package com.example.komyuniti.ui.profile
 
+import android.graphics.Bitmap
+import android.graphics.Color
 import android.os.Bundle
+
+import android.content.Context
+import android.content.SharedPreferences
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -12,7 +17,11 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.lifecycle.ViewModelStoreOwner
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.Navigation
 import com.example.komyuniti.MainActivity
+import com.example.komyuniti.MainViewModel
 import com.example.komyuniti.R
 import com.example.komyuniti.databinding.FragmentProfileBinding
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -20,9 +29,16 @@ import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayout.*
 
 
+import java.security.*
+import com.budiyev.android.codescanner.*
+import kotlinx.coroutines.launch
+
+
 class ProfileFragment : Fragment() {
 
     private lateinit var profileViewModel: ProfileViewModel
+    private lateinit var activityViewModel: MainViewModel
+
     private var _binding: FragmentProfileBinding? = null
 
     // This property is only valid between onCreateView and
@@ -31,13 +47,21 @@ class ProfileFragment : Fragment() {
     private var komyunitis = mutableListOf<KomyunitiData>()
     private var friends = mutableListOf<FriendData>()
 
+    private lateinit var preferences: SharedPreferences
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        activityViewModel = ViewModelProvider(
+            activity as ViewModelStoreOwner
+        ).get(MainViewModel::class.java)
         profileViewModel =
             ViewModelProvider(this).get(ProfileViewModel::class.java)
+
+        // init shared preferences
+        preferences = activity?.getSharedPreferences("Auth", Context.MODE_PRIVATE)!!
 
         _binding = FragmentProfileBinding.inflate(inflater, container, false)
         val root: View = binding.root
@@ -46,7 +70,6 @@ class ProfileFragment : Fragment() {
         profileViewModel.text.observe(viewLifecycleOwner, Observer {
             textView.text = it
         })
-
 
         //display all komyunitis connecting komyuniti Adapter
         binding.qrCode.visibility = VISIBLE
@@ -73,7 +96,7 @@ class ProfileFragment : Fragment() {
                 } else {
                     Toast.makeText(activity, "Something went wrong", Toast.LENGTH_SHORT).show()
                 }
-                Log.d("Profile Tabs",tab.position.toString())
+                Log.d("Profile Tabs", tab.position.toString())
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab) {}
@@ -81,9 +104,12 @@ class ProfileFragment : Fragment() {
         })
         animationFloatingButton(binding.flbtnAdd)
 
-        return root
+        generateQRCode(binding)
+        addFriend(binding)
 
-//        logout(binding)
+        initLogout(binding)
+
+        return root
     }
 
     override fun onDestroyView() {
@@ -91,22 +117,16 @@ class ProfileFragment : Fragment() {
         _binding = null
     }
 
-/*    fun logout(binding: FragmentProfileBinding) {
-        binding.profileLogoutBtn.setOnClickListener{ view : View ->
-            //TODO: connection to backend quit user session
-            Navigation.findNavController(view).navigate(R.id.action_navigation_profile_to_loginFragment)
-        }
-    }*/
-
     private fun addKomyuniti(komyuniti: KomyunitiData) {
         komyunitis.add(komyuniti)
     }
+
     private fun postToKomyuniti() {
         for (i in 1..8) {
             addKomyuniti(KomyunitiData())
         }
-            Log.d("ProfileFragment", KomyunitiData().toString())
-            Log.d("ProfileFragment", komyunitis.toString())
+        Log.d("ProfileFragment", KomyunitiData().toString())
+        Log.d("ProfileFragment", komyunitis.toString())
     }
 
     private fun addFriend(friend: FriendData) {
@@ -123,29 +143,88 @@ class ProfileFragment : Fragment() {
     private fun animationFloatingButton(addBtn: FloatingActionButton) {
         //sets on click listener on floating button and displays expanded floating btns with animation
         var clicked = false
-        binding.fltbAddFriend.hide()
+        binding.addFriendBtn.hide()
         binding.fltbCreateKomyuniti.hide()
         val showAnim = AnimationUtils.loadAnimation(activity, R.anim.scale_up);
         val hideAnim = AnimationUtils.loadAnimation(activity, R.anim.scale_down);
         val rotateOpenAnim = AnimationUtils.loadAnimation(activity, R.anim.rotate_open);
         val rotateCloseAnim = AnimationUtils.loadAnimation(activity, R.anim.rotate_close);
 
-        addBtn.setOnClickListener { view : View ->
+        addBtn.setOnClickListener { view: View ->
             clicked = if (!clicked) {
-                binding.fltbAddFriend.show()
+                binding.addFriendBtn.show()
                 binding.fltbCreateKomyuniti.show()
-                binding.fltbAddFriend.startAnimation(showAnim)
+                binding.addFriendBtn.startAnimation(showAnim)
                 binding.fltbCreateKomyuniti.startAnimation(showAnim)
                 addBtn.startAnimation(rotateOpenAnim)
                 true
             } else {
-                binding.fltbAddFriend.startAnimation(hideAnim)
+                binding.addFriendBtn.startAnimation(hideAnim)
                 binding.fltbCreateKomyuniti.startAnimation(hideAnim)
-                binding.fltbAddFriend.hide()
+                binding.addFriendBtn.hide()
                 binding.fltbCreateKomyuniti.hide()
                 addBtn.startAnimation(rotateCloseAnim)
                 false
             }
         }
+    }
+
+    private fun initLogout(binding: FragmentProfileBinding) {
+        binding.profileLogoutBtn.setOnClickListener { view: View ->
+            //TODO: connection to backend quit user session
+            Navigation.findNavController(view)
+                .navigate(R.id.action_navigation_profile_to_loginFragment)
+            (activity as MainActivity).setMainNavigationController()
+        }
+    }
+
+    private fun addFriend(binding: FragmentProfileBinding) {
+        binding.addFriendBtn.setOnClickListener { view: View ->
+            // TODO route to actual scan fragment
+            Navigation.findNavController(view)
+                .navigate(R.id.action_navigation_profile_to_scanFragment)
+        }
+
+    }
+
+    private fun generateQRCode(binding: FragmentProfileBinding) {
+        // load content
+        val keyPair = loadKeyPair()
+        if (keyPair != null) {
+            lifecycleScope.launch {
+                val bitmap = profileViewModel.generateQRBitmap(
+                    activityViewModel.getApollo(requireContext()),
+                    keyPair
+                )
+
+                if (bitmap != null) {
+                    // display qr code
+                    binding.qrCode.setImageBitmap(bitmap)
+                } else {
+                    // error handling
+                    Toast.makeText(activity, "QR Code could not be loaded.", Toast.LENGTH_LONG)
+                        .show()
+                }
+            }
+        } else {
+            // error handling
+            Toast.makeText(activity, "QR Code could not be loaded.", Toast.LENGTH_LONG).show()
+        }
+
+    }
+
+    private fun loadKeyPair(): KeyPair? {
+        val keyAlias = "UserKey"
+        val keyStore: KeyStore = KeyStore.getInstance("AndroidKeyStore").apply {
+            load(null)
+        }
+        val entry: KeyStore.Entry = keyStore.getEntry(keyAlias, null)
+        if (entry !is KeyStore.PrivateKeyEntry) {
+            Log.w("PROFILE", "Not an instance of a PrivateKeyEntry")
+            return null
+        }
+        val privateKey: PrivateKey = entry.privateKey
+        val publicKey: PublicKey = keyStore.getCertificate(keyAlias).publicKey
+        return KeyPair(publicKey, privateKey)
     }
 }

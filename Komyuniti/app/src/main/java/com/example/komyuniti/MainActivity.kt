@@ -1,20 +1,17 @@
 package com.example.komyuniti
 
-import LaunchDetailsQuery
 import android.os.Bundle
-import android.util.Log
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.Navigation
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-import com.apollographql.apollo.ApolloClient
-import com.apollographql.apollo.coroutines.await
-import com.apollographql.apollo.exception.ApolloException
 import com.example.komyuniti.databinding.ActivityMainBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
@@ -24,34 +21,32 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        // init view model
+        val viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
+
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        //hide top
-        supportActionBar?.hide()
-        val apolloClient = ApolloClient.builder()
-            .serverUrl("https://apollo-fullstack-tutorial.herokuapp.com/graphql").build()
+        //setMainNavigationController()
 
-        val scope: CoroutineScope = MainScope()
+        // check login state
+        /*
+        lifecycleScope.launch {
+            val loggedIn = viewModel.checkLoginState(this@MainActivity)
 
-
-        scope.launch {
-            val response = try {
-                apolloClient.query(LaunchDetailsQuery(id = "83")).await()
-            } catch (e: ApolloException) {
-                // handle protocol errors
-                return@launch
+            // route to profile
+            if (loggedIn) {
+                Navigation.findNavController(this@MainActivity, R.id.NavHostFragment)
+                    .navigate(R.id.action_loginFragment_to_mobile_navigation)
+            } else {
+                Toast.makeText(this@MainActivity, "Not logged in", Toast.LENGTH_LONG).show()
             }
-
-            val launch = response.data?.launch
-            if (launch == null || response.hasErrors()) {
-                // handle application errors
-                return@launch
-            }
-
-            // launch now contains a typesafe model of your data
-            Log.d("MainActivity","Launch site: ${launch.site}")
         }
 
+         */
+
+
+        //hide top
+        supportActionBar?.hide()
 
     }
 
@@ -61,7 +56,7 @@ class MainActivity : AppCompatActivity() {
         //set bottom nav visible
         navView.visibility = BottomNavigationView.VISIBLE;
 
-        val navController = findNavController(R.id.NavHostFragment)
+        val navController = Navigation.findNavController(this, R.id.NavHostFragment)
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         val appBarConfiguration = AppBarConfiguration(
@@ -73,3 +68,6 @@ class MainActivity : AppCompatActivity() {
         navView.setupWithNavController(navController)
     }
 }
+
+
+

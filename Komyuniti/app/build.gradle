@@ -4,6 +4,14 @@ plugins {
     id("com.apollographql.apollo").version("2.5.5")
 }
 
+apollo {
+    // instruct the compiler to generate Kotlin models
+    generateKotlinModels.set(true)
+}
+
+def localProperties = new Properties()
+localProperties.load(new FileInputStream(project.rootProject.file("local.properties")))
+
 android {
     compileSdkVersion 30
     buildToolsVersion "30.0.3"
@@ -19,7 +27,14 @@ android {
     }
 
     buildTypes {
+        debug {
+            //resValue("string", "server_url", localProperties['SERVER_URL'])
+            buildConfigField "String", "server_url", localProperties['SERVER_URL']
+            //resValue "string", "server_url", localProperties['SERVER_URL']
+            debuggable true
+        }
         release {
+            buildConfigField "String", "server_url", localProperties['SERVER_URL']
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
@@ -53,9 +68,13 @@ dependencies {
     implementation 'androidx.navigation:navigation-ui-ktx:2.3.5'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'com.google.android.material:material:1.4.0-rc01'
-    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.2.0'
-    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0'
+    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.3.1'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.1'
     implementation 'de.hdodenhof:circleimageview:3.1.0'
+    implementation 'com.google.zxing:core:3.4.1'
+    implementation 'com.google.zxing:javase:3.4.1'
+    implementation 'com.budiyev.android:code-scanner:2.1.0'
+    implementation 'com.google.code.gson:gson:2.8.7'
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
