@@ -25,10 +25,36 @@
         <action
             android:id="@+id/action_navigation_profile_to_loginFragment"
             app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_navigation_profile_to_scanFragment"
+            app:destination="@id/scanFragment" />
+        <action
+            android:id="@+id/action_navigation_profile_to_scanResultFragment"
+            app:destination="@id/scanResultFragment" />
     </fragment>
     <fragment
         android:id="@+id/loginFragment"
         android:name="com.example.komyuniti.ui.login.LoginFragment"
         android:label="fragment_login"
         tools:layout="@layout/fragment_login" />
+    <fragment
+        android:id="@+id/scanFragment"
+        android:name="com.example.komyuniti.ui.scan.ScanFragment"
+        android:label="fragment_scan"
+        tools:layout="@layout/fragment_scan" >
+        <action
+            android:id="@+id/action_scanFragment_to_navigation_profile"
+            app:destination="@id/navigation_profile" />
+        <action
+            android:id="@+id/action_scanFragment_to_scanResultFragment"
+            app:destination="@id/scanResultFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/scanResultFragment"
+        android:name="com.example.komyuniti.ui.scan.ScanResultFragment"
+        android:label="ScanResultFragment" >
+        <action
+            android:id="@+id/action_scanResultFragment_to_navigation_profile"
+            app:destination="@id/navigation_profile" />
+    </fragment>
 </navigation>

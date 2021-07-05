@@ -49,11 +49,16 @@
     <string name="komyuniti_image">Image</string>
     <string name="komyuniti_name">Komyuniti Name</string>
     <string name="komyuniti_members">X Members</string>
-    <string name="komyunitis_title">My Komyunitis</string>
-    <!-- string for friends -->
+    <string name="komunitys_title">My Komyunitis</string>
+    <string name="add_friend">Add Friend</string>
+    <string name="create_komyuniti">Create Komyuniti</string>
     <string name="friend_image">Image of Friend</string>
+    <!-- string for friends -->
+    <string name="delete_account">Delete Account</string>
 
-
-
+    <!-- scan result -->
+    <string name="newFriendHeaderTitle">New friend</string>
+    <string name="btnAddFriend">Add new friend</string>
+    <string name="tvCommonKomyunitis">Common Komuntities</string>
 
 </resources>

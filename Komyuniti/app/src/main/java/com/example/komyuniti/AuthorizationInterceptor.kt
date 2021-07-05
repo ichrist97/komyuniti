@@ -13,7 +13,7 @@ class AuthorizationInterceptor(val context: Context) : Interceptor {
 
         if (accessToken != null) {
             val request = chain.request().newBuilder()
-                .addHeader("Authorization", "Bearer $accessToken")
+                .addHeader("Authorization", accessToken)
                 .build()
             return chain.proceed(request)
         }

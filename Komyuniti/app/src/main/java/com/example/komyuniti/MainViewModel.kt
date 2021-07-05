@@ -1,8 +1,10 @@
 package com.example.komyuniti
 
+import LoggedInUserQuery
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import com.apollographql.apollo.ApolloClient
+import com.apollographql.apollo.coroutines.await
 import okhttp3.OkHttpClient
 
 class MainViewModel : ViewModel() {
@@ -16,4 +18,9 @@ class MainViewModel : ViewModel() {
                 .build()
         ).build()
     }
+
+
 }
+
+
+

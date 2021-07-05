@@ -14,18 +14,21 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStoreOwner
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
+import androidx.viewpager2.adapter.FragmentViewHolder
 import com.apollographql.apollo.ApolloMutationCall
 import com.apollographql.apollo.api.Response
 import com.example.komyuniti.MainViewModel
 import com.example.komyuniti.R
 import com.example.komyuniti.databinding.FragmentLoginBinding
+import com.example.komyuniti.models.AuthUser
+import com.example.komyuniti.ui.scan.ScanResultViewModel
 import kotlinx.coroutines.*
 
 class LoginFragment : Fragment() {
 
     private var fragmentLoginBinding: FragmentLoginBinding? = null
     private lateinit var preferences: SharedPreferences
-
+    private lateinit var viewModel: LoginViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -35,10 +38,10 @@ class LoginFragment : Fragment() {
         val activityModel = ViewModelProvider(
             activity as ViewModelStoreOwner
         ).get(MainViewModel::class.java)
-        val model: LoginViewModel by viewModels()
+        viewModel = ViewModelProvider(this).get(LoginViewModel::class.java)
 
         // init shared preferences
-        preferences = this.activity?.getSharedPreferences("Auth", Context.MODE_PRIVATE)!!
+        preferences = requireActivity().getSharedPreferences("Auth", Context.MODE_PRIVATE)
 
         val binding = FragmentLoginBinding.inflate(inflater, container, false)
         fragmentLoginBinding = binding
@@ -47,7 +50,18 @@ class LoginFragment : Fragment() {
                 .navigate(R.id.action_loginFragment_to_registerFragment)
         }
 
-        initLogin(activityModel, model, binding)
+        initLogin(activityModel, viewModel, binding)
+
+        lifecycleScope.launch {
+            val loggedIn =
+                viewModel.checkLoginState(activityModel.getApollo(requireContext()), preferences)
+
+            // route to profile
+            if (loggedIn) {
+                Navigation.findNavController(requireView())
+                    .navigate(R.id.action_loginFragment_to_mobile_navigation)
+            }
+        }
 
         return binding.root
     }
@@ -64,19 +78,19 @@ class LoginFragment : Fragment() {
 
             // request to backend
             val apollo = activityModel.getApollo(activity as Context)
-            var res: Response<LoginMutation.Data>
+            var authUser: AuthUser?
             lifecycleScope.launch {
                 withContext(Dispatchers.IO) {
-                    res = loginViewModel.login(apollo, email, password)
+                    authUser = loginViewModel.login(apollo, email, password)
                 }
 
                 // on success
-                if (res.data != null && res.errors == null) {
+                if (authUser != null) {
                     // save jwt tokens in shared preferences
                     val editor = preferences.edit()
-                    editor.putString("accessToken", res.data?.login?.accessToken)
-                    editor.putString("refreshToken", res.data?.login?.refreshToken)
-                    editor.commit()
+                    editor.putString("accessToken", authUser?.token)
+                    editor.putString("curUserId", authUser?.user?.id)
+                    editor.apply()
 
                     // navigation
                     Navigation.findNavController(view)
