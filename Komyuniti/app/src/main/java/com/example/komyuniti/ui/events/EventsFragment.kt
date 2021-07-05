@@ -8,6 +8,8 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.Navigation
+import com.example.komyuniti.R
 import com.example.komyuniti.databinding.FragmentEventsBinding
 import com.google.android.material.tabs.TabLayout
 
@@ -42,9 +44,19 @@ class EventsFragment : Fragment() {
 //        eventsViewModel.text.observe(viewLifecycleOwner, Observer { text ->
 //            textView.text = text
 //        })
+
+        navigation(fragmentEventsBinding)
         manageTabs()
 
         return root
+    }
+
+    private fun navigation(binding: FragmentEventsBinding) {
+        //navigate to new event via floating btn
+        binding.flbtnAdd.setOnClickListener { view: View ->
+            Navigation.findNavController(view)
+                .navigate(R.id.action_navigation_events_to_newEvent)
+        }
     }
 
     private fun manageTabs() {

@@ -5,6 +5,7 @@
     <string name="et_name">Name</string>
     <string name="et_email_address">Email</string>
     <string name="et_password">Password</string>
+    <string name="new_password">New Password</string>
     <string name="btn_sign_up">Sign Up</string>
     <string name="tv_login">LOGIN</string>
     <string name="btn_google_login">Sign in with Google</string>
