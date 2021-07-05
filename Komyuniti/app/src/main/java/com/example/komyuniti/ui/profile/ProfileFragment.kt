@@ -3,7 +3,6 @@ package com.example.komyuniti.ui.profile
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.os.Bundle
-
 import android.content.Context
 import android.content.SharedPreferences
 import android.util.Log
@@ -20,6 +19,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.lifecycle.ViewModelStoreOwner
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
+import com.apollographql.apollo.ApolloClient
+import com.apollographql.apollo.api.Response
+import com.apollographql.apollo.coroutines.await
 import com.example.komyuniti.MainActivity
 import com.example.komyuniti.MainViewModel
 import com.example.komyuniti.R
@@ -31,7 +33,11 @@ import com.google.android.material.tabs.TabLayout.*
 
 import java.security.*
 import com.budiyev.android.codescanner.*
+import com.example.komyuniti.models.User
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import type.LoginInput
 
 
 class ProfileFragment : Fragment() {
@@ -111,6 +117,7 @@ class ProfileFragment : Fragment() {
         addFriend(binding)
 
         initLogout(binding)
+        setCurrentUserName()
 
         return root
     }
@@ -177,7 +184,6 @@ class ProfileFragment : Fragment() {
             //TODO: connection to backend quit user session
             Navigation.findNavController(view)
                 .navigate(R.id.action_navigation_profile_to_loginFragment)
-            (activity as MainActivity).setMainNavigationController()
         }
     }
 
@@ -229,5 +235,17 @@ class ProfileFragment : Fragment() {
         val privateKey: PrivateKey = entry.privateKey
         val publicKey: PublicKey = keyStore.getCertificate(keyAlias).publicKey
         return KeyPair(publicKey, privateKey)
+    }
+
+    private fun setCurrentUserName() {
+        lifecycleScope.launch {
+            //authUser = loginViewModel.login(apollo, email, password)
+            var user: User? = profileViewModel.getCurrentUserName(activityViewModel.getApollo(requireContext()))
+            if (user == null) {
+                Toast.makeText(activity, "No Username available", Toast.LENGTH_SHORT).show()
+            } else {
+                binding.profileName.text = user.name
+            }
+        }
     }
 }

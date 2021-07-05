@@ -1,6 +1,7 @@
 package com.example.komyuniti.ui.profile
 
 import LoggedInUserQuery
+import CurrentUserNameQuery
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.util.Base64
@@ -14,13 +15,10 @@ import com.example.komyuniti.models.QRPayload
 import com.example.komyuniti.models.User
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import com.example.komyuniti.ui.profile.KomyunitiData
 import com.google.gson.Gson
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.qrcode.QRCodeWriter
-import java.security.KeyFactory
 import java.security.KeyPair
-import java.security.spec.X509EncodedKeySpec
 
 
 class ProfileViewModel : ViewModel() {
@@ -81,5 +79,20 @@ class ProfileViewModel : ViewModel() {
     }
 
     val text: LiveData<String> = _text
+
+    suspend fun getCurrentUserName(
+        apollo: ApolloClient
+    ): User? {
+        //res is
+        var res: Response<CurrentUserNameQuery.Data>
+        withContext(Dispatchers.IO) {
+            res = apollo.query(CurrentUserNameQuery()).await()
+        }
+        if (res.data == null || res.data?.currentUser == null) {
+            return null
+        }
+        return User(res.data?.currentUser?._id!!, name = res.data?.currentUser?.name)
+
+    }
 
 }
