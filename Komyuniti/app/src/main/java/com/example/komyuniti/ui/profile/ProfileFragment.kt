@@ -117,6 +117,8 @@ class ProfileFragment : Fragment() {
         addFriend(binding)
 
         initLogout(binding)
+        initSettings(binding)
+
         setCurrentUserName()
 
         return root
@@ -184,6 +186,12 @@ class ProfileFragment : Fragment() {
             //TODO: connection to backend quit user session
             Navigation.findNavController(view)
                 .navigate(R.id.action_navigation_profile_to_loginFragment)
+        }
+    }
+    private fun initSettings(binding: FragmentProfileBinding) {
+        binding.profileSettingsBtn.setOnClickListener { view: View ->
+            Navigation.findNavController(view)
+                .navigate(R.id.action_navigation_profile_to_settingsFragment)
         }
     }
 

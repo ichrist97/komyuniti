@@ -15,7 +15,11 @@
         android:id="@+id/navigation_events"
         android:name="com.example.komyuniti.ui.events.EventsFragment"
         android:label="@string/title_events"
-        tools:layout="@layout/fragment_events" />
+        tools:layout="@layout/fragment_events" >
+        <action
+            android:id="@+id/action_navigation_events_to_newEvent"
+            app:destination="@id/newEvent" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_profile"
@@ -31,6 +35,9 @@
         <action
             android:id="@+id/action_navigation_profile_to_scanResultFragment"
             app:destination="@id/scanResultFragment" />
+        <action
+            android:id="@+id/action_navigation_profile_to_settingsFragment"
+            app:destination="@id/settingsFragment" />
     </fragment>
     <fragment
         android:id="@+id/loginFragment"
@@ -56,5 +63,21 @@
         <action
             android:id="@+id/action_scanResultFragment_to_navigation_profile"
             app:destination="@id/navigation_profile" />
+    </fragment>
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.example.komyuniti.ui.settings.SettingsFragment"
+        android:label="SettingsFragment" >
+        <action
+            android:id="@+id/action_settingsFragment_to_navigation_profile2"
+            app:destination="@id/navigation_profile" />
+    </fragment>
+    <fragment
+        android:id="@+id/newEvent"
+        android:name="com.example.komyuniti.ui.newEvent.NewEvent"
+        android:label="NewEvent" >
+        <action
+            android:id="@+id/action_newEvent_to_navigation_events"
+            app:destination="@id/navigation_events" />
     </fragment>
 </navigation>

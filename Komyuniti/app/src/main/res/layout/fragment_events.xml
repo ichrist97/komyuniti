@@ -78,18 +78,18 @@
         tools:listitem="@layout/event_list_item">
 
     </androidx.recyclerview.widget.RecyclerView>
-
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/flbtn_add"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="62dp"
         android:clickable="true"
-        android:contentDescription="@string/flbtn_add"
-        android:src="@drawable/ic_add"
-        app:layout_constraintBottom_toBottomOf="@+id/rv_events"
-        app:layout_constraintEnd_toEndOf="@+id/rv_events"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="@+id/rv_events"
-        app:layout_constraintTop_toTopOf="@+id/rv_events"
-        app:layout_constraintVertical_bias="0.87" />
+        android:focusable="true"
+        app:backgroundTint="@color/color_primary"
+        app:tint="@android:color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:src="@drawable/ic_add" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
