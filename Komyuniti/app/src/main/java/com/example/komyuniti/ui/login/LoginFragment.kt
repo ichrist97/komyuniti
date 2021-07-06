@@ -59,7 +59,7 @@ class LoginFragment : Fragment() {
             // route to profile
             if (loggedIn) {
                 Navigation.findNavController(requireView())
-                    .navigate(R.id.action_loginFragment_to_mobile_navigation)
+                    .navigate(R.id.action_loginFragment_to_main_navigation)
             }
         }
 
@@ -94,7 +94,7 @@ class LoginFragment : Fragment() {
 
                     // navigation
                     Navigation.findNavController(view)
-                        .navigate(R.id.action_loginFragment_to_mobile_navigation)
+                        .navigate(R.id.action_loginFragment_to_main_navigation)
                 } else {
                     Toast.makeText(activity, "Invalid email or password!", Toast.LENGTH_LONG).show()
                 }

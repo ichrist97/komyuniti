@@ -15,17 +15,20 @@
         android:id="@+id/navigation_events"
         android:name="com.example.komyuniti.ui.events.EventsFragment"
         android:label="@string/title_events"
-        tools:layout="@layout/fragment_events" >
+        tools:layout="@layout/fragment_events">
         <action
             android:id="@+id/action_navigation_events_to_newEvent"
             app:destination="@id/newEvent" />
+        <action
+            android:id="@+id/action_navigation_events_to_doneEventViewFragment"
+            app:destination="@id/doneEventViewFragment" />
     </fragment>
 
     <fragment
         android:id="@+id/navigation_profile"
         android:name="com.example.komyuniti.ui.profile.ProfileFragment"
         android:label="@string/profile"
-        tools:layout="@layout/fragment_profile" >
+        tools:layout="@layout/fragment_profile">
         <action
             android:id="@+id/action_navigation_profile_to_loginFragment"
             app:destination="@id/loginFragment" />
@@ -48,7 +51,7 @@
         android:id="@+id/scanFragment"
         android:name="com.example.komyuniti.ui.scan.ScanFragment"
         android:label="fragment_scan"
-        tools:layout="@layout/fragment_scan" >
+        tools:layout="@layout/fragment_scan">
         <action
             android:id="@+id/action_scanFragment_to_navigation_profile"
             app:destination="@id/navigation_profile" />
@@ -59,7 +62,8 @@
     <fragment
         android:id="@+id/scanResultFragment"
         android:name="com.example.komyuniti.ui.scan.ScanResultFragment"
-        android:label="ScanResultFragment" >
+        android:label="ScanResultFragment"
+        tools:layout="@layout/fragment_scan_result">
         <action
             android:id="@+id/action_scanResultFragment_to_navigation_profile"
             app:destination="@id/navigation_profile" />
@@ -67,7 +71,8 @@
     <fragment
         android:id="@+id/settingsFragment"
         android:name="com.example.komyuniti.ui.settings.SettingsFragment"
-        android:label="SettingsFragment" >
+        android:label="SettingsFragment"
+        tools:layout="@layout/fragment_settings">
         <action
             android:id="@+id/action_settingsFragment_to_navigation_profile2"
             app:destination="@id/navigation_profile" />
@@ -75,9 +80,22 @@
     <fragment
         android:id="@+id/newEvent"
         android:name="com.example.komyuniti.ui.newEvent.NewEvent"
-        android:label="NewEvent" >
+        android:label="NewEvent"
+        tools:layout="@layout/fragment_new_event">
         <action
             android:id="@+id/action_newEvent_to_navigation_events"
+            app:destination="@id/navigation_events" />
+    </fragment>
+    <fragment
+        android:id="@+id/doneEventViewFragment"
+        android:name="com.example.komyuniti.ui.events.DoneEventViewFragment"
+        android:label="done_event_view_fragment"
+        tools:layout="@layout/done_event_view_fragment">
+        <action
+            android:id="@+id/action_doneEventViewFragment_to_newEvent"
+            app:destination="@id/newEvent" />
+        <action
+            android:id="@+id/action_doneEventViewFragment_to_navigation_events"
             app:destination="@id/navigation_events" />
     </fragment>
 </navigation>

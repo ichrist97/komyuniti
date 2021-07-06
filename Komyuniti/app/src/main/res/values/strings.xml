@@ -26,6 +26,15 @@
     <string name="tv_event_name">Event name</string>
     <string name="tv_event_item_number_of_people"> number of people in komyuniti</string>
     <string name="tv_event_item_date">Date</string>
+    <string name="tv_done_event_back_btn">Back</string>
+    <string name="tv_done_event_name">Event name</string>
+    <string name="tv_location">Location</string>
+    <string name="chip_groups">Groups</string>
+    <string name="tv_notes">Notes</string>
+    <string name="tv_notes_text">Your notes goes here</string>
+    <string name="tv_checklist">Checklists</string>
+    <string name="tv_expenses">Expenses</string>
+    <string name="tv_checklist_item">Shoping list</string>
 
     <!-- New Event -->
     <string name="new_event">New Event</string>
@@ -61,5 +70,8 @@
     <string name="newFriendHeaderTitle">New friend</string>
     <string name="btnAddFriend">Add new friend</string>
     <string name="tvCommonKomyunitis">Common Komuntities</string>
+    <string name="tv_price">Price</string>
+    <string name="tv_price_purpose">Price purpose</string>
+
 
 </resources>
