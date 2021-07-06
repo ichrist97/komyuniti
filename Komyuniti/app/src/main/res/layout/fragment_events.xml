@@ -21,6 +21,7 @@
         style="@style/TextViewStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:clickable="true"
         android:text="@string/tv_history"
         android:textSize="@dimen/text_size_next_to_title"
         app:layout_constraintBottom_toBottomOf="@+id/tv_events"

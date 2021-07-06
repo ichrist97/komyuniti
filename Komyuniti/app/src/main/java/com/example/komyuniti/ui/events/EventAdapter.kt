@@ -3,8 +3,10 @@ package com.example.komyuniti.ui.events
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import android.widget.Button
 import android.widget.TextView
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.example.komyuniti.R
 import kotlin.math.absoluteValue
@@ -19,10 +21,10 @@ class EventAdapter(private val eventList: Array<EventData>?) :
      */
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val notificationButton: Button
-        val komyunitiName : TextView
-        val eventName : TextView
-        val numerOfPeopleInKomyuniti : TextView
-        val date : TextView
+        val komyunitiName: TextView
+        val eventName: TextView
+        val numerOfPeopleInKomyuniti: TextView
+        val date: TextView
 
         init {
             // Define click listener for the ViewHolder's View.
@@ -32,6 +34,22 @@ class EventAdapter(private val eventList: Array<EventData>?) :
             numerOfPeopleInKomyuniti = view.findViewById(R.id.tv_event_item_number_of_people)
             date = view.findViewById(R.id.tv_event_item_date)
         }
+
+        fun bind(eventItem: EventData) {
+            // bind data
+            notificationButton.text = eventItem.notificationNumber.toString()
+            komyunitiName.text = eventItem.komyunitiName
+            eventName.text = eventItem.eventName
+            numerOfPeopleInKomyuniti.text =
+                eventItem.numberOfPeopleInKomyuniti.toString() + " People"
+            date.text = eventItem.date
+
+            // bind click listener
+            itemView.setOnClickListener {
+                val navController = Navigation.findNavController(it)
+                navController.navigate(R.id.action_navigation_events_to_doneEventViewFragment)
+            }
+        }
     }
 
     // Create new views (invoked by the layout manager)
@@ -39,6 +57,7 @@ class EventAdapter(private val eventList: Array<EventData>?) :
         // Create a new view, which defines the UI of the list item
         val view = LayoutInflater.from(viewGroup.context)
             .inflate(R.layout.event_list_item, viewGroup, false)
+
 
         return ViewHolder(view)
     }
@@ -49,14 +68,8 @@ class EventAdapter(private val eventList: Array<EventData>?) :
         // Get element from your dataset at this position and replace the
         // contents of the view with that element
         if (eventList != null) {
-            viewHolder.notificationButton.text = eventList[position].notificationNumber.toString()
-            viewHolder.komyunitiName.text = eventList[position].komyunitiName
-            viewHolder.eventName.text = eventList[position].eventName
-            viewHolder.numerOfPeopleInKomyuniti.text = eventList[position].numberOfPeopleInKomyuniti.toString() + " People"
-            viewHolder.date.text = eventList[position].date
-
+            viewHolder.bind(eventList[position])
         }
-
     }
 
     // Return the size of your dataset (invoked by the layout manager)

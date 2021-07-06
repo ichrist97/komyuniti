@@ -4,5 +4,6 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="or_size">20sp</dimen>
     <dimen name="text_size_next_to_title">16sp</dimen>
+    <dimen name="done_event_txt_size">20sp</dimen>
 
 </resources>

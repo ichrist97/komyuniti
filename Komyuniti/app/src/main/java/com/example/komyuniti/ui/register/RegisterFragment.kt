@@ -95,7 +95,7 @@ class RegisterFragment : Fragment() {
 
                     // navigation
                     Navigation.findNavController(view)
-                        .navigate(R.id.action_registerFragment_to_mobile_navigation)
+                        .navigate(R.id.action_registerFragment_to_main_navigation)
                 } else {
                     Toast.makeText(activity, "Invalid email or already taken!", Toast.LENGTH_LONG)
                         .show()
