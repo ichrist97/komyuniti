@@ -9,6 +9,8 @@ import android.view.ViewGroup
 import androidx.navigation.Navigation
 import com.example.komyuniti.R
 import com.example.komyuniti.databinding.DoneEventViewFragmentBinding
+import com.example.komyuniti.models.Event
+import com.example.komyuniti.ui.events.chat.ChatViewModel
 
 class DoneEventViewFragment : Fragment() {
 
@@ -32,8 +34,22 @@ class DoneEventViewFragment : Fragment() {
     }
 
     private fun initNavigation() {
+        // route to event overview
         doneEventBinding.tvDoneEventBackBtn.setOnClickListener {
-            Navigation.findNavController(it).navigate(R.id.action_doneEventViewFragment_to_navigation_events)
+            Navigation.findNavController(it)
+                .navigate(R.id.action_doneEventViewFragment_to_navigation_events)
+        }
+
+        // route to chat
+        doneEventBinding.flbtnChat.setOnClickListener {
+            // set eventId in chatViewModel
+            val chatViewModel = ViewModelProvider(requireActivity()).get(ChatViewModel::class.java)
+            // TODO replace with dynamic eventId
+            chatViewModel.event.value = Event("60e577eb88a1e4483c46232c", "Balkonwiesn")
+
+            // navigation
+            Navigation.findNavController(it)
+                .navigate(R.id.action_doneEventViewFragment_to_chatFragment)
         }
     }
 

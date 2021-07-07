@@ -61,7 +61,7 @@ class ProfileViewModel : ViewModel() {
         return bitmap
     }
 
-    suspend fun getLoggedInUser(
+    private suspend fun getLoggedInUser(
         apollo: ApolloClient
     ): User? {
         var res: Response<LoggedInUserQuery.Data>

@@ -15,7 +15,7 @@
         android:id="@+id/navigation_events"
         android:name="com.example.komyuniti.ui.events.EventsFragment"
         android:label="@string/title_events"
-        tools:layout="@layout/fragment_events">
+        tools:layout="@layout/fragment_events" >
         <action
             android:id="@+id/action_navigation_events_to_newEvent"
             app:destination="@id/newEvent" />
@@ -68,6 +68,8 @@
             android:id="@+id/action_scanResultFragment_to_navigation_profile"
             app:destination="@id/navigation_profile" />
     </fragment>
+
+
     <fragment
         android:id="@+id/settingsFragment"
         android:name="com.example.komyuniti.ui.settings.SettingsFragment"
@@ -97,5 +99,17 @@
         <action
             android:id="@+id/action_doneEventViewFragment_to_navigation_events"
             app:destination="@id/navigation_events" />
+        <action
+            android:id="@+id/action_doneEventViewFragment_to_chatFragment"
+            app:destination="@id/chatFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/chatFragment"
+        android:name="com.example.komyuniti.ui.events.chat.ChatFragment"
+        android:label="ChatFragment"
+        tools:layout="@layout/fragment_chat">
+        <action
+            android:id="@+id/action_chatFragment_to_doneEventViewFragment"
+            app:destination="@id/doneEventViewFragment" />
     </fragment>
 </navigation>

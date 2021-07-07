@@ -1,0 +1,10 @@
+subscription ListenChat($eventId: String!) {
+    msgCreated(eventId: $eventId) {
+        user {
+            _id
+            name
+        }
+        text
+        createdAt
+    }
+}

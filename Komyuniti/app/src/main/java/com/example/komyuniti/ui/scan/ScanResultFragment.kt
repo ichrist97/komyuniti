@@ -58,12 +58,6 @@ class ScanResultFragment : Fragment() {
     }
 
     private fun initUserInfo() {
-        // DEV WORKAROUND
-        /*
-        viewModel.setQR(
-            "eyJpZCI6IjYwZTFkNjk3ZDYzOGQ1MTc3YzE2YzUwMiIsInB1YmxpY0tleSI6Ik1Ga3dFd1lIS29aSXpqMENBUVlJS29aSXpqMERBUWNEUWdBRWxRTFF1aVQ0dUdxcXBRczM0M3FLbllCeC9pck8vOFordGQyMkQrenVcbmNXYXljQWJuTWJmeXgzOXpuVVM4RW80RXd6TWYyNmxsblNQc3JsZmtDSlRub3dcdTAwM2RcdTAwM2RcbiJ9"
-        )
-        */
         viewModel.getQR().observe(viewLifecycleOwner, Observer {
             lifecycleScope.launch {
                 val user = viewModel.fetchUser(activityViewModel.getApollo(requireContext()))

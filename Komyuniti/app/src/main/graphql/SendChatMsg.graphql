@@ -1,0 +1,10 @@
+mutation SendChatMsg($input: CreateMsgInput!) {
+    createChatMsg(input: $input) {
+        user {
+            _id
+            name
+        }
+        text
+        createdAt
+    }
+}

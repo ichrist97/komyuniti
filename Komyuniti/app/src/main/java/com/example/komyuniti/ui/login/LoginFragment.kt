@@ -45,6 +45,8 @@ class LoginFragment : Fragment() {
 
         val binding = FragmentLoginBinding.inflate(inflater, container, false)
         fragmentLoginBinding = binding
+
+        // route to signup fragment
         binding.btnSignUpLogin.setOnClickListener { view: View ->
             Navigation.findNavController(view)
                 .navigate(R.id.action_loginFragment_to_registerFragment)
@@ -52,6 +54,7 @@ class LoginFragment : Fragment() {
 
         initLogin(activityModel, viewModel, binding)
 
+        // check if already logged in
         lifecycleScope.launch {
             val loggedIn =
                 viewModel.checkLoginState(activityModel.getApollo(requireContext()), preferences)
