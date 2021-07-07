@@ -32,11 +32,10 @@ class MainViewModel : ViewModel() {
         // see: https://github.com/apollographql/apollo-android/issues/1864#issuecomment-744722211
         val preferences: SharedPreferences =
             context.getSharedPreferences("Auth", Context.MODE_PRIVATE)
-        val accessToken = preferences.getString("accessToken", null)
-            ?: throw Exception("No access token set")
+        val accessToken = preferences.getString("accessToken", "")
 
         val connectionParams: MutableMap<String, String> = HashMap()
-        connectionParams["Authorization"] = accessToken
+        connectionParams["Authorization"] = accessToken as String
 
         return ApolloClient.builder()
             .serverUrl(serverUrl)
