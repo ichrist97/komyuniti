@@ -38,6 +38,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import type.LoginInput
+import kotlin.system.exitProcess
 
 
 class ProfileFragment : Fragment() {
@@ -183,11 +184,20 @@ class ProfileFragment : Fragment() {
 
     private fun initLogout(binding: FragmentProfileBinding) {
         binding.profileLogoutBtn.setOnClickListener { view: View ->
-            //TODO: connection to backend quit user session
-            Navigation.findNavController(view)
-                .navigate(R.id.action_navigation_profile_to_loginFragment)
+            // remove token and curUser from preferences
+            val preferences: SharedPreferences =
+                context?.getSharedPreferences("Auth", Context.MODE_PRIVATE)!!
+            preferences.edit().remove("accessToken").commit()
+            preferences.edit().remove("curUser").commit()
+
+            /*
+            Exit the whole app as workaround to route back to login because introducing
+            the login navigation graph in the main navigation leads to an endless loop
+             */
+            exitProcess(-1)
         }
     }
+
     private fun initSettings(binding: FragmentProfileBinding) {
         binding.profileSettingsBtn.setOnClickListener { view: View ->
             Navigation.findNavController(view)
@@ -248,7 +258,8 @@ class ProfileFragment : Fragment() {
     private fun setCurrentUserName() {
         lifecycleScope.launch {
             //authUser = loginViewModel.login(apollo, email, password)
-            var user: User? = profileViewModel.getCurrentUserName(activityViewModel.getApollo(requireContext()))
+            var user: User? =
+                profileViewModel.getCurrentUserName(activityViewModel.getApollo(requireContext()))
             if (user == null) {
                 Toast.makeText(activity, "No Username available", Toast.LENGTH_SHORT).show()
             } else {
