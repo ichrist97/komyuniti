@@ -19,10 +19,6 @@ class EventsFragment : Fragment() {
     private lateinit var eventsViewModel: EventsViewModel
     private lateinit var fragmentEventsBinding: FragmentEventsBinding
 
-    // This property is only valid between onCreateView and
-    // onDestroyView.
-    //private val binding get() = _binding!!
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,

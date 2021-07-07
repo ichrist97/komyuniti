@@ -1,0 +1,10 @@
+query GetChatMessages($eventId: String!) {
+    chatMsgs(eventId: $eventId) {
+        text
+        createdAt
+        user {
+            _id
+            name
+        }
+    }
+}
