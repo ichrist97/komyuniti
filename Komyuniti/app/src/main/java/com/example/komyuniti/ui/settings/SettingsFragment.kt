@@ -9,8 +9,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.Navigation
 import com.example.komyuniti.R
-import com.example.komyuniti.databinding.FragmentProfileBinding
-import com.example.komyuniti.databinding.FragmentRegisterBinding
 import com.example.komyuniti.databinding.FragmentSettingsBinding
 //import com.example.komyuniti.ui.feed.SettingsViewModel
 

@@ -43,6 +43,16 @@
     <string name="location">Location</string>
     <string name="name_your_event">Name your event...</string>
     <string name="add_people">Add Komyunitis or People</string>
+    <string name="add_component">Add Components</string>
+    <string name="date">Date</string>
+    <!-- Event -->
+    <string name="event">Event</string>
+    <string name="notes">Notes</string>
+    <string name="checklist">Checklists</string>
+    <string name="expenses">Expenses</string>
+    <string name="count_entrys">Count entrys</string>
+
+
 
     <!--    alle Strings für Profile-->
     <string name="profile">Profile</string>
