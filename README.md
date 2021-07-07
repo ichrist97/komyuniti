@@ -19,3 +19,12 @@ SERVER_URL="http://10.0.2.2:3000/"
 ```
 
 `http://10.0.2.2` refers to your own local machine relative to the android virtual device. Therefore keep that IP address when testing locally. Finally adjust to the port on which your backend is running on.
+
+### Download apollo schema
+
+In order to define apollo requests, first you must download the defined schema from the backend. Run this in an Android Studio terminal:
+
+```
+gradlew :app:downloadApolloSchema --endpoint="http://localhost:3000/graphql" --schema="app/src/main/graphql/schema.json"
+```
+ 

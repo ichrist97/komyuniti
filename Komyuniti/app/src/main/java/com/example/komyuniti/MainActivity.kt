@@ -28,23 +28,6 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         //setMainNavigationController()
 
-        // check login state
-        /*
-        lifecycleScope.launch {
-            val loggedIn = viewModel.checkLoginState(this@MainActivity)
-
-            // route to profile
-            if (loggedIn) {
-                Navigation.findNavController(this@MainActivity, R.id.NavHostFragment)
-                    .navigate(R.id.action_loginFragment_to_mobile_navigation)
-            } else {
-                Toast.makeText(this@MainActivity, "Not logged in", Toast.LENGTH_LONG).show()
-            }
-        }
-
-         */
-
-
         //hide top
         supportActionBar?.hide()
 

@@ -90,32 +90,16 @@
         app:layout_constraintStart_toStartOf="@+id/imageView"
         app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
-    <TextView
-        android:id="@+id/profile_description"
-        style="@style/h3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="@string/profile_description"
-        android:textAlignment="center"
-        app:layout_constraintEnd_toEndOf="@+id/profile_name"
-        app:layout_constraintHorizontal_bias="0.358"
-        app:layout_constraintStart_toStartOf="@+id/profile_name"
-        app:layout_constraintTop_toBottomOf="@+id/profile_name" />
-
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabLayout"
         android:layout_width="fill_parent"
         android:layout_height="48dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="10dp"
+        android:layout_marginTop="12dp"
         android:backgroundTint="@color/grey1"
-        app:layout_constraintEnd_toEndOf="@+id/profile_description"
-        app:layout_constraintStart_toStartOf="@+id/profile_description"
-        app:layout_constraintTop_toBottomOf="@+id/profile_description"
+        app:layout_constraintTop_toBottomOf="@+id/profile_name"
         app:tabGravity="fill"
-        app:tabMaxWidth="0dp">
+        app:tabMaxWidth="0dp"
+        tools:layout_editor_absoluteX="10dp">
 
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"

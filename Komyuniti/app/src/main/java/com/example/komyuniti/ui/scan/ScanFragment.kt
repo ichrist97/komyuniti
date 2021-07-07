@@ -2,8 +2,12 @@ package com.example.komyuniti.ui.scan
 
 import android.Manifest
 import android.app.Activity
+import android.content.Context.VIBRATOR_SERVICE
 import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
+import android.os.VibrationEffect
+import android.os.Vibrator
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -59,6 +63,11 @@ class ScanFragment : Fragment() {
         }
 
         return root
+    }
+
+    private fun vibrate() {
+        val vibrator = context?.getSystemService(VIBRATOR_SERVICE) as Vibrator
+        vibrator.vibrate(VibrationEffect.createOneShot(200, VibrationEffect.DEFAULT_AMPLITUDE))
     }
 
     // This function is called when user accept or decline the permission.
@@ -122,6 +131,7 @@ class ScanFragment : Fragment() {
         // Callbacks
         codeScanner.decodeCallback = DecodeCallback {
             activity.runOnUiThread {
+                vibrate()
                 // write scanning result to shared view model and navigate to result view
                 resultViewModel.setQR(it.text)
                 Navigation.findNavController(binding.root)
