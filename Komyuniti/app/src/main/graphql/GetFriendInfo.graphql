@@ -1,0 +1,7 @@
+query GetFriendInfo($input: GetUserInput!) {
+    user(input: $input) {
+        _id
+        name
+        createdAt
+    }
+}
