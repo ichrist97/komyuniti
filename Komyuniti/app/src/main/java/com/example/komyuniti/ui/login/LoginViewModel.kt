@@ -1,5 +1,6 @@
 package com.example.komyuniti.ui.login
 
+import AddPublicKeyMutation
 import LoggedInUserQuery
 import LoginMutation
 import android.content.Context
@@ -77,5 +78,14 @@ class LoginViewModel : ViewModel() {
             return false
         }
         return true
+    }
+
+    fun addPublicKey(apollo: ApolloClient, pubKey: String){
+        viewModelScope.launch {
+            val res = apollo.mutate(AddPublicKeyMutation(key=pubKey)).await()
+            if (res.data == null || res.data?.addPublicKey == null) {
+                Log.d("LoginViewModel", "Failed to add new public key")
+            }
+        }
     }
 }

@@ -1,0 +1,5 @@
+mutation AddPublicKey($key: String!) {
+    addPublicKey(key: $key) {
+        _id
+    }
+}
