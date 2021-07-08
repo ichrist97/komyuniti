@@ -73,6 +73,7 @@
     <string name="add_friend">Add Friend</string>
     <string name="create_komyuniti">Create Komyuniti</string>
     <string name="friend_image">Image of Friend</string>
+    <string name="scanHint">Let other people scan this to add you as a friend</string>
     <!-- string for friends -->
     <string name="delete_account">Delete Account</string>
 
@@ -82,6 +83,10 @@
     <string name="tvCommonKomyunitis">Common Komuntities</string>
     <string name="tv_price">Price</string>
     <string name="tv_price_purpose">Price purpose</string>
+
+    <!-- Friend profile -->
+    <string name="friendHeader">Friend</string>
+    <string name="friendCreatedAt">Member since:</string>
 
 
 </resources>

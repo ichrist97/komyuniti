@@ -1,7 +1,5 @@
 package com.example.komyuniti.ui.profile
 
-import android.graphics.Bitmap
-import android.graphics.Color
 import android.os.Bundle
 import android.content.Context
 import android.content.SharedPreferences
@@ -10,18 +8,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
-import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.lifecycle.ViewModelStoreOwner
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
-import com.apollographql.apollo.ApolloClient
-import com.apollographql.apollo.api.Response
-import com.apollographql.apollo.coroutines.await
 import com.example.komyuniti.MainActivity
 import com.example.komyuniti.MainViewModel
 import com.example.komyuniti.R
@@ -29,15 +22,10 @@ import com.example.komyuniti.databinding.FragmentProfileBinding
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayout.*
-
-
 import java.security.*
-import com.budiyev.android.codescanner.*
 import com.example.komyuniti.models.User
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import type.LoginInput
 import kotlin.system.exitProcess
 
 
@@ -52,7 +40,6 @@ class ProfileFragment : Fragment() {
     // onDestroyView.
     private val binding get() = _binding!!
     private var komyunitis = mutableListOf<KomyunitiData>()
-    private var friends = mutableListOf<FriendData>()
 
     private lateinit var preferences: SharedPreferences
 
@@ -76,33 +63,108 @@ class ProfileFragment : Fragment() {
         _binding = FragmentProfileBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val textView: TextView = binding.profileHeaderTitle
-        profileViewModel.text.observe(viewLifecycleOwner, Observer {
-            textView.text = it
-        })
-
         //display all komyunitis connecting komyuniti Adapter
         binding.qrCode.visibility = VISIBLE
         binding.rvKomyunitiList.layoutManager = LinearLayoutManager(activity as MainActivity)
-        binding.rvKomyunitiList.adapter = KomyunitiListAdapter(komyunitis)
-        postToKomyuniti()
-        postToFriends()
+        //binding.rvKomyunitiList.adapter = KomyunitiListAdapter(komyunitis)
 
+        // fetch data
+        loadKomyunitis()
+        loadFriends()
+
+        initTabNavigation()
+
+        animationFloatingButton(binding.flbtnAdd)
+
+        generateQRCode(binding)
+        startScan(binding)
+
+        initLogout(binding)
+        initSettings(binding)
+
+        setCurrentUserName()
+
+        return root
+    }
+
+    private fun initTabNavigation() {
         //behaviour when tabs are clicked
         val tabLayout = binding.tabLayout
         tabLayout.addOnTabSelectedListener(object : OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab) {
-                //do stuff here
+                // qr code
                 if (tab.position == 0) {
                     binding.qrCode.visibility = VISIBLE
-                    binding.rvKomyunitiList.adapter = KomyunitiListAdapter(komyunitis)
-                    binding.tvKomyunitisTitle.text = "My Komyunitis"
-
+                    binding.tvScanHint.visibility = VISIBLE
+                    binding.recyclerViewStatus.visibility = GONE
+                    binding.rvKomyunitiList.visibility = GONE
                 } else if (tab.position == 1) {
+                    // display komyunitis
+                    binding.qrCode.visibility = GONE
+                    binding.recyclerViewStatus.visibility = GONE
+                    binding.tvScanHint.visibility = GONE
+
+                    val data = profileViewModel.getKomyunitis().value
+                    // display friends
+                    if (data != null && data.isNotEmpty()) {
+                        val adapter = KomyunitiAdapter(data, requireActivity())
+                        binding.rvKomyunitiList.adapter = adapter
+                        binding.recyclerViewStatus.visibility = GONE
+                        binding.rvKomyunitiList.visibility = VISIBLE
+
+                        // observe friends for updates
+                        profileViewModel.getKomyunitis().observe(viewLifecycleOwner, {
+                            if (it != null) {
+                                // update komyunitis data
+                                adapter.setData(it)
+                            } else {
+                                Toast.makeText(
+                                    activity,
+                                    "Could not load komyunitis",
+                                    Toast.LENGTH_LONG
+                                ).show()
+                            }
+                        })
+                    } else {
+                        // show status for no friends
+                        binding.recyclerViewStatus.visibility = VISIBLE
+                        binding.rvKomyunitiList.visibility = GONE
+                        binding.recyclerViewStatus.text =
+                            "You are not part of any komyunitis yet :-("
+                    }
+
+                } else if (tab.position == 2) {
                     //display friends list after tab changed
                     binding.qrCode.visibility = GONE
-                    binding.rvKomyunitiList.adapter = FriendAdapter(friends)
-                    binding.tvKomyunitisTitle.text = "My Friends"
+                    binding.tvScanHint.visibility = GONE
+
+                    val data = profileViewModel.getFriends().value
+                    // display friends
+                    if (data != null && data.isNotEmpty()) {
+                        val adapter = FriendAdapter(data, requireActivity())
+                        binding.rvKomyunitiList.adapter = adapter
+                        binding.recyclerViewStatus.visibility = GONE
+                        binding.rvKomyunitiList.visibility = VISIBLE
+
+                        // observe friends for updates
+                        profileViewModel.getFriends().observe(viewLifecycleOwner, {
+                            if (it != null) {
+                                // update friends data
+                                adapter.setData(it)
+                            } else {
+                                Toast.makeText(
+                                    activity,
+                                    "Could not load friends",
+                                    Toast.LENGTH_LONG
+                                ).show()
+                            }
+                        })
+                    } else {
+                        // show status for no friends
+                        binding.recyclerViewStatus.visibility = VISIBLE
+                        binding.rvKomyunitiList.visibility = GONE
+                        binding.recyclerViewStatus.text = "You have no friends yet :-("
+                    }
                 } else {
                     Toast.makeText(activity, "Something went wrong", Toast.LENGTH_SHORT).show()
                 }
@@ -112,17 +174,26 @@ class ProfileFragment : Fragment() {
             override fun onTabUnselected(tab: TabLayout.Tab) {}
             override fun onTabReselected(tab: TabLayout.Tab) {}
         })
-        animationFloatingButton(binding.flbtnAdd)
+    }
 
-        generateQRCode(binding)
-        addFriend(binding)
+    private fun loadFriends() {
+        val curUserId = preferences.getString("curUserId", null)
+        if (curUserId == null) {
+            Toast.makeText(activity, "Could not load friends", Toast.LENGTH_LONG).show()
+            return
+        }
 
-        initLogout(binding)
-        initSettings(binding)
+        profileViewModel.getFriends(activityViewModel.getApollo(requireContext()), curUserId)
+    }
 
-        setCurrentUserName()
+    private fun loadKomyunitis() {
+        val curUserId = preferences.getString("curUserId", null)
+        if (curUserId == null) {
+            Toast.makeText(activity, "Could not load komyunitis", Toast.LENGTH_LONG).show()
+            return
+        }
 
-        return root
+        profileViewModel.getKomyunitis(activityViewModel.getApollo(requireContext()), curUserId)
     }
 
     override fun onDestroyView() {
@@ -134,32 +205,13 @@ class ProfileFragment : Fragment() {
         komyunitis.add(komyuniti)
     }
 
-    private fun postToKomyuniti() {
-        for (i in 1..8) {
-            addKomyuniti(KomyunitiData())
-        }
-        Log.d("ProfileFragment", KomyunitiData().toString())
-        Log.d("ProfileFragment", komyunitis.toString())
-    }
-
-    private fun addFriend(friend: FriendData) {
-        friends.add(friend)
-    }
-
-    private fun postToFriends() {
-        for (i in 1..10) {
-            addFriend(FriendData())
-        }
-        Log.d("ProfileFragment", komyunitis.toString())
-    }
-
     private fun animationFloatingButton(addBtn: FloatingActionButton) {
         //sets on click listener on floating button and displays expanded floating btns with animation
         var clicked = false
         binding.addFriendBtn.hide()
         binding.fltbCreateKomyuniti.hide()
         val showAnim = AnimationUtils.loadAnimation(activity, R.anim.scale_up);
-        val hideAnim = AnimationUtils.loadAnimation(activity, R.anim.scale_down);
+        val hideAnim = AnimationUtils.loadAnimation(activity, R.anim.scale_down)
         val rotateOpenAnim = AnimationUtils.loadAnimation(activity, R.anim.rotate_open);
         val rotateCloseAnim = AnimationUtils.loadAnimation(activity, R.anim.rotate_close);
 
@@ -187,8 +239,9 @@ class ProfileFragment : Fragment() {
             // remove token and curUser from preferences
             val preferences: SharedPreferences =
                 context?.getSharedPreferences("Auth", Context.MODE_PRIVATE)!!
+            // use commit as apply doesnt work in this case because the app will be shutdown
             preferences.edit().remove("accessToken").commit()
-            preferences.edit().remove("curUser").commit()
+            preferences.edit().remove("curUserId").commit()
 
             /*
             Exit the whole app as workaround to route back to login because introducing
@@ -205,9 +258,8 @@ class ProfileFragment : Fragment() {
         }
     }
 
-    private fun addFriend(binding: FragmentProfileBinding) {
+    private fun startScan(binding: FragmentProfileBinding) {
         binding.addFriendBtn.setOnClickListener { view: View ->
-            // TODO route to actual scan fragment
             Navigation.findNavController(view)
                 .navigate(R.id.action_navigation_profile_to_scanFragment)
         }
@@ -258,7 +310,7 @@ class ProfileFragment : Fragment() {
     private fun setCurrentUserName() {
         lifecycleScope.launch {
             //authUser = loginViewModel.login(apollo, email, password)
-            var user: User? =
+            val user: User? =
                 profileViewModel.getCurrentUserName(activityViewModel.getApollo(requireContext()))
             if (user == null) {
                 Toast.makeText(activity, "No Username available", Toast.LENGTH_SHORT).show()

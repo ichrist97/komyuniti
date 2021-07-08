@@ -1,0 +1,10 @@
+query GetKomunitiesOverview($userId: String) {
+    komyunities(userId: $userId) {
+        _id
+        name
+        members {
+            _id
+            name
+        }
+    }
+}
