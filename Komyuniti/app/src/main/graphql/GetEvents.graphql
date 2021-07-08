@@ -1,0 +1,12 @@
+query GetEvents($userId: String) {
+    events(userId: $userId) {
+        _id
+        name
+        createdAt
+        date
+        komyuniti {
+            _id
+            name
+        }
+    }
+}

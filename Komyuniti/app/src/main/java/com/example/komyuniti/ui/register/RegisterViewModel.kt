@@ -19,7 +19,6 @@ import java.security.KeyPairGenerator
 
 class RegisterViewModel : ViewModel() {
 
-
     suspend fun register(
         apollo: ApolloClient,
         email: String,

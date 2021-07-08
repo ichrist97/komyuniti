@@ -1,0 +1,16 @@
+query GetEvent($input: GetEventInput!) {
+    event(input: $input) {
+        _id
+        name
+        date
+        members {
+            _id
+            name
+        }
+        address
+        komyuniti {
+            _id
+            name
+        }
+    }
+}

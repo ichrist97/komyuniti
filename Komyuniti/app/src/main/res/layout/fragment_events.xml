@@ -36,13 +36,13 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginEnd="32dp"
+        app:cardCornerRadius="50dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_events"
-        app:layout_constraintVertical_bias="0.05"
-        app:cardCornerRadius="50dp">
+        app:layout_constraintVertical_bias="0.05">
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tabs_in_events"
@@ -77,8 +77,18 @@
         app:layout_constraintStart_toStartOf="@+id/tabs_in_events_cardview"
         app:layout_constraintTop_toBottomOf="@+id/tabs_in_events_cardview"
         tools:listitem="@layout/event_list_item">
-
     </androidx.recyclerview.widget.RecyclerView>
+
+    <TextView
+        android:id="@+id/tvEventsEmpty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="There are no upcoming events"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tabs_in_events_cardview" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/flbtn_add"

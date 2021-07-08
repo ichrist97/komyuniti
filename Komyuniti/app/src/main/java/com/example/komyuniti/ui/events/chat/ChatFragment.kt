@@ -40,7 +40,7 @@ class ChatFragment : Fragment() {
         val apollo = activityViewModel.getApollo(requireContext())
 
         // show event name
-        binding.chatEventName.text = viewModel.event.value?.name
+        binding.chatEventName.text = viewModel.getEvent().value?.name
 
         // show chat messages
         lifecycleScope.launch {
@@ -51,7 +51,7 @@ class ChatFragment : Fragment() {
             }
 
             // get current event
-            val eventId = viewModel.event.value?.id
+            val eventId = viewModel.getEvent().value?.id
             if (eventId == null) {
                 Toast.makeText(activity, "Chat cannot be displayed", Toast.LENGTH_SHORT).show()
                 this.cancel()
@@ -95,7 +95,7 @@ class ChatFragment : Fragment() {
             // only continue of text not empty or null
             if (text != "") {
                 // current event
-                val eventId = viewModel.event.value?.id
+                val eventId = viewModel.getEvent().value?.id
 
                 val apollo = activityViewModel.getApollo(requireContext())
 

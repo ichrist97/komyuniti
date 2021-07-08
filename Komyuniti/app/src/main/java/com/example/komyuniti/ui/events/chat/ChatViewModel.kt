@@ -6,6 +6,7 @@ import LoggedInUserQuery
 import SendChatMsgMutation
 import android.util.Log
 import android.widget.Toast
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.apollographql.apollo.ApolloClient
@@ -28,7 +29,15 @@ class ChatViewModel : ViewModel() {
     // init as empty list
     val data = MutableLiveData(listOf<ChatMessage>())
 
-    val event = MutableLiveData<Event>()
+    private val event = MutableLiveData<Event>()
+
+    fun getEvent(): LiveData<Event> {
+        return event
+    }
+
+    fun setEvent(e: Event) {
+        event.postValue(e)
+    }
 
     suspend fun getCurrentUser(apollo: ApolloClient): User? {
         var res: Response<LoggedInUserQuery.Data>
@@ -58,7 +67,11 @@ class ChatViewModel : ViewModel() {
 
         val user =
             User(res.data?.createChatMsg?.user?._id!!, name = res.data?.createChatMsg?.user?.name)
-        return ChatMessage(user, res.data?.createChatMsg?.createdAt!!, res.data?.createChatMsg?.text!!)
+        return ChatMessage(
+            user,
+            res.data?.createChatMsg?.createdAt!!,
+            res.data?.createChatMsg?.text!!
+        )
     }
 
     suspend fun getChatMsgs(apollo: ApolloClient, eventId: String): List<ChatMessage>? {

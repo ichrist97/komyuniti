@@ -5,10 +5,10 @@ data class Event(
     val name: String? = null,
     val date: String? = null,
     val admin: User? = null,
-    val members: Array<User>? = null,
+    val members: List<User>? = null,
     val createdAt: String? = null,
     val komyuniti: Komyuniti? = null,
-    val adress: String? = null
+    val address: String? = null
 ) {
 
 }
