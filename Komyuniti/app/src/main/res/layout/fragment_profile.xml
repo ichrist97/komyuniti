@@ -135,7 +135,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_komyunitiList"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="320dp"
         android:nestedScrollingEnabled="false"
         android:paddingHorizontal="12dp"
         android:visibility="gone"
