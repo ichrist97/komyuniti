@@ -67,7 +67,6 @@ class ProfileFragment : Fragment() {
         //display all komyunitis connecting komyuniti Adapter
         binding.qrCode.visibility = VISIBLE
         binding.rvKomyunitiList.layoutManager = LinearLayoutManager(activity as MainActivity)
-        //binding.rvKomyunitiList.adapter = KomyunitiListAdapter(komyunitis)
 
         // fetch data
         loadKomyunitis()

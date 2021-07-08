@@ -3,27 +3,29 @@ package com.example.komyuniti.ui.events
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
 import android.widget.Button
 import android.widget.TextView
+import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.example.komyuniti.R
-import kotlin.math.absoluteValue
+import com.example.komyuniti.models.Event
+import com.example.komyuniti.models.User
 
 
-class EventAdapter(private val eventList: Array<EventData>?) :
+class EventAdapter(private var eventList: List<Event>, private val activity: FragmentActivity) :
     RecyclerView.Adapter<EventAdapter.ViewHolder>() {
-
 
     /**
      * Provide a reference to the type of views that you are using
      */
-    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    class ViewHolder(view: View, data: List<Event>, activity: FragmentActivity) :
+        RecyclerView.ViewHolder(view) {
         val notificationButton: Button
         val komyunitiName: TextView
         val eventName: TextView
-        val numerOfPeopleInKomyuniti: TextView
+        val cntPeople: TextView
         val date: TextView
 
         init {
@@ -31,24 +33,31 @@ class EventAdapter(private val eventList: Array<EventData>?) :
             notificationButton = view.findViewById(R.id.btn_notification)
             komyunitiName = view.findViewById(R.id.tv_event_item_title)
             eventName = view.findViewById(R.id.tv_event_name)
-            numerOfPeopleInKomyuniti = view.findViewById(R.id.tv_event_item_number_of_people)
+            cntPeople = view.findViewById(R.id.tv_event_item_number_of_people)
             date = view.findViewById(R.id.tv_event_item_date)
-        }
 
-        fun bind(eventItem: EventData) {
-            // bind data
-            notificationButton.text = eventItem.notificationNumber.toString()
-            komyunitiName.text = eventItem.komyunitiName
-            eventName.text = eventItem.eventName
-            numerOfPeopleInKomyuniti.text =
-                eventItem.numberOfPeopleInKomyuniti.toString() + " People"
-            date.text = eventItem.date
-
-            // bind click listener
+            // route to event details view
             itemView.setOnClickListener {
+                // set eventId in event detail viewModel
+                val position: Int = adapterPosition
+                val viewModel = ViewModelProvider(activity).get(DoneEventViewModel::class.java)
+                viewModel.setEventId(data[position].id)
+
+                // route to details view
                 val navController = Navigation.findNavController(it)
                 navController.navigate(R.id.action_navigation_events_to_doneEventViewFragment)
             }
+        }
+
+        fun bind(eventItem: Event) {
+            // bind data
+            // TODO actual notification num
+            notificationButton.text = "1"
+            komyunitiName.text = eventItem.komyuniti?.name
+            eventName.text = eventItem.name
+            // TODO actual count of people in event
+            cntPeople.text = ""
+            date.text = eventItem.date
         }
     }
 
@@ -58,8 +67,7 @@ class EventAdapter(private val eventList: Array<EventData>?) :
         val view = LayoutInflater.from(viewGroup.context)
             .inflate(R.layout.event_list_item, viewGroup, false)
 
-
-        return ViewHolder(view)
+        return ViewHolder(view, eventList, activity)
     }
 
     // Replace the contents of a view (invoked by the layout manager)
@@ -67,17 +75,17 @@ class EventAdapter(private val eventList: Array<EventData>?) :
 
         // Get element from your dataset at this position and replace the
         // contents of the view with that element
-        if (eventList != null) {
-            viewHolder.bind(eventList[position])
-        }
+        viewHolder.bind(eventList[position])
     }
 
     // Return the size of your dataset (invoked by the layout manager)
     override fun getItemCount(): Int {
-        if (eventList != null) {
-            return eventList.size
-        }
-        return 0
+        return eventList.size
+    }
+
+    fun setData(data: List<Event>) {
+        this.eventList = data
+        notifyDataSetChanged()
     }
 
 }
