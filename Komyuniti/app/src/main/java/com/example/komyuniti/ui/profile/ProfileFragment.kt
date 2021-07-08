@@ -24,6 +24,7 @@ import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayout.*
 import java.security.*
 import com.example.komyuniti.models.User
+import com.example.komyuniti.util.loadKeyPair
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import kotlin.system.exitProcess
@@ -268,7 +269,7 @@ class ProfileFragment : Fragment() {
 
     private fun generateQRCode(binding: FragmentProfileBinding) {
         // load content
-        val keyPair = loadKeyPair()
+        val keyPair = getKeyPair()
         if (keyPair != null) {
             lifecycleScope.launch {
                 val bitmap = profileViewModel.generateQRBitmap(
@@ -292,19 +293,14 @@ class ProfileFragment : Fragment() {
 
     }
 
-    private fun loadKeyPair(): KeyPair? {
-        val keyAlias = "UserKey"
-        val keyStore: KeyStore = KeyStore.getInstance("AndroidKeyStore").apply {
-            load(null)
-        }
-        val entry: KeyStore.Entry = keyStore.getEntry(keyAlias, null)
-        if (entry !is KeyStore.PrivateKeyEntry) {
-            Log.w("PROFILE", "Not an instance of a PrivateKeyEntry")
+    private fun getKeyPair(): KeyPair? {
+        // get current user id
+        val curUserId = preferences.getString("curUserId", null)
+        if (curUserId == null) {
+            Toast.makeText(activity, "Error while retrieving keypair", Toast.LENGTH_LONG).show()
             return null
         }
-        val privateKey: PrivateKey = entry.privateKey
-        val publicKey: PublicKey = keyStore.getCertificate(keyAlias).publicKey
-        return KeyPair(publicKey, privateKey)
+        return loadKeyPair(curUserId)
     }
 
     private fun setCurrentUserName() {

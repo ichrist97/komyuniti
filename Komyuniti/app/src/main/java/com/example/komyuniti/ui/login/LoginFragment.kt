@@ -3,6 +3,7 @@ package com.example.komyuniti.ui.login
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Base64
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -22,20 +23,26 @@ import com.example.komyuniti.R
 import com.example.komyuniti.databinding.FragmentLoginBinding
 import com.example.komyuniti.models.AuthUser
 import com.example.komyuniti.ui.scan.ScanResultViewModel
+import com.example.komyuniti.util.generateKeyPair
 import kotlinx.coroutines.*
+import java.security.KeyPair
+import java.security.KeyStore
+import java.security.PrivateKey
+import java.security.PublicKey
 
 class LoginFragment : Fragment() {
 
     private var fragmentLoginBinding: FragmentLoginBinding? = null
     private lateinit var preferences: SharedPreferences
     private lateinit var viewModel: LoginViewModel
+    private lateinit var activityModel: MainViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val activityModel = ViewModelProvider(
+        activityModel = ViewModelProvider(
             activity as ViewModelStoreOwner
         ).get(MainViewModel::class.java)
         viewModel = ViewModelProvider(this).get(LoginViewModel::class.java)
@@ -54,8 +61,9 @@ class LoginFragment : Fragment() {
 
         initLogin(activityModel, viewModel, binding)
 
-        // check if already logged in
+
         lifecycleScope.launch {
+            // check if already logged in
             val loggedIn =
                 viewModel.checkLoginState(activityModel.getApollo(requireContext()), preferences)
 
@@ -95,6 +103,8 @@ class LoginFragment : Fragment() {
                     editor.putString("curUserId", authUser?.user?.id)
                     editor.apply()
 
+                    checkKeypair(authUser?.user?.id as String)
+
                     // navigation
                     Navigation.findNavController(view)
                         .navigate(R.id.action_loginFragment_to_main_navigation)
@@ -105,6 +115,24 @@ class LoginFragment : Fragment() {
         }
     }
 
+    private fun checkKeypair(userId: String) {
+        // create a new keypair for this device of no exists yet
+        if(!keypairExists(userId)) {
+            val keyPair = generateKeyPair(userId)
+            // encode public key in base64
+            val pubKeyBytes = Base64.encode(keyPair.public.encoded, Base64.DEFAULT)
+            val pubKeyStr = String(pubKeyBytes)
+            viewModel.addPublicKey(activityModel.getApollo(activity as Context), pubKeyStr)
+        }
+    }
+
+    private fun keypairExists(userId: String): Boolean {
+        val keyAlias = "keypair-$userId"
+        val keyStore: KeyStore = KeyStore.getInstance("AndroidKeyStore").apply {
+            load(null)
+        }
+        return keyStore.containsAlias(keyAlias)
+    }
 
     override fun onDestroy() {
         super.onDestroy()

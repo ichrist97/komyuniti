@@ -23,6 +23,7 @@ import com.example.komyuniti.databinding.FragmentLoginBinding
 import com.example.komyuniti.databinding.FragmentRegisterBinding
 import com.example.komyuniti.models.AuthUser
 import com.example.komyuniti.ui.login.LoginViewModel
+import com.example.komyuniti.util.generateKeyPair
 import java.security.KeyPair
 import java.security.KeyPairGenerator
 import java.util.*
@@ -60,9 +61,6 @@ class RegisterFragment : Fragment() {
                 .navigate(R.id.action_registerFragment_to_loginFragment)
         }
 
-        val keypair: KeyPair = viewModel.generateKeyPair()
-        // TODO access mutation in backend to upload credentials and signup
-
         return binding.root
     }
 
@@ -92,6 +90,9 @@ class RegisterFragment : Fragment() {
                     editor.putString("accessToken", authUser?.token)
                     editor.putString("curUserId", authUser?.user?.id)
                     editor.apply()
+
+                    // generate local keypair for device
+                    generateKeyPair(authUser?.user?.id as String)
 
                     // navigation
                     Navigation.findNavController(view)
