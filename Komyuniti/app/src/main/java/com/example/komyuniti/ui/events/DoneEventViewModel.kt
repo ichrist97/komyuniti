@@ -12,6 +12,8 @@ import com.example.komyuniti.models.Komyuniti
 import com.example.komyuniti.models.User
 import kotlinx.coroutines.launch
 import type.GetEventInput
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 class DoneEventViewModel : ViewModel() {
 
@@ -40,10 +42,13 @@ class DoneEventViewModel : ViewModel() {
             }
 
             // wrap into data class
-            val komyuniti = Komyuniti(
-                res.data?.event?.komyuniti?._id!!,
-                name = res.data?.event?.komyuniti?.name
-            )
+            var komyuniti: Komyuniti? = null
+            if (res.data?.event?.komyuniti?._id != null) {
+                komyuniti = Komyuniti(
+                    res.data?.event?.komyuniti?._id!!,
+                    name = res.data?.event?.komyuniti?.name
+                )
+            }
 
             // members
             val members = mutableListOf<User>()
@@ -52,10 +57,14 @@ class DoneEventViewModel : ViewModel() {
                 members.add(user)
             }
 
+            // parse date
+            val dateStr = res.data?.event?.date?.split(" ")!![0]
+            val date = LocalDate.parse(dateStr, DateTimeFormatter.ISO_DATE)
+
             val _event = Event(
                 res.data?.event?._id!!,
                 name = res.data?.event?.name,
-                date = res.data?.event?.date,
+                date = date,
                 komyuniti = komyuniti,
                 members = members,
                 address = res.data?.event?.address

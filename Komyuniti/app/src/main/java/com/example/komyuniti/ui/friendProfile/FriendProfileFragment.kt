@@ -12,6 +12,7 @@ import androidx.navigation.Navigation
 import com.example.komyuniti.MainViewModel
 import com.example.komyuniti.R
 import com.example.komyuniti.databinding.FragmentFriendProfileBinding
+import java.time.format.DateTimeFormatter
 
 class FriendProfileFragment : Fragment() {
 
@@ -48,7 +49,12 @@ class FriendProfileFragment : Fragment() {
         viewModel.getUser().observe(viewLifecycleOwner, {
             if (it != null) {
                 binding!!.friendProfileName.text = it.name
-                binding!!.tvMemberSince.text = it.createdAt
+
+                // parse date to time
+                val dateStr = it.createdAt?.format(
+                    DateTimeFormatter.ofPattern("dd.mm.yyyy")
+                )
+                binding!!.tvMemberSince.text = dateStr
             } else {
                 Toast.makeText(activity, "Cannot display this friend", Toast.LENGTH_LONG).show()
             }

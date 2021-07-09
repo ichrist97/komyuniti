@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.komyuniti.R
 import com.example.komyuniti.models.ChatMessage
 import com.example.komyuniti.models.User
+import java.time.format.DateTimeFormatter
 
 class ChatAdapter(private var chatMessages: List<ChatMessage>?, private val currentUser: User) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -42,8 +43,12 @@ class ChatAdapter(private var chatMessages: List<ChatMessage>?, private val curr
             // bind values to views
             user.text = item.sender.name
             text.text = item.text
-            time.text = item.createdAt
-            date.text = item.createdAt
+            val dateStr = item.createdAt.format(DateTimeFormatter.ofPattern("dd.mm.yyyy"))
+            date.text = dateStr
+            val timeStr = item.createdAt.format(
+                DateTimeFormatter.ofPattern("hh:mm")
+            )
+            time.text = timeStr
         }
     }
 
@@ -62,8 +67,9 @@ class ChatAdapter(private var chatMessages: List<ChatMessage>?, private val curr
         override fun bindViews(item: ChatMessage) {
             // bind values to views
             text.text = item.text
-            time.text = item.createdAt
-            date.text = item.createdAt
+            val dateStr = item.createdAt.format(DateTimeFormatter.ofPattern("dd.MM.yyyy"))
+            date.text = dateStr
+            time.text = item.time
         }
     }
 

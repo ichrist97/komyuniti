@@ -23,6 +23,8 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.withContext
 import type.CreateMsgInput
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 class ChatViewModel : ViewModel() {
 
@@ -67,10 +69,19 @@ class ChatViewModel : ViewModel() {
 
         val user =
             User(res.data?.createChatMsg?.user?._id!!, name = res.data?.createChatMsg?.user?.name)
+
+        // parse date
+        val dateParts = res.data?.createChatMsg?.createdAt?.split(" ")
+        val dateStr = dateParts!![0]
+        val timeStr = dateParts[1]
+        val date =
+            LocalDate.parse(dateStr, DateTimeFormatter.ISO_DATE)
+
         return ChatMessage(
             user,
-            res.data?.createChatMsg?.createdAt!!,
-            res.data?.createChatMsg?.text!!
+            date,
+            res.data?.createChatMsg?.text!!,
+            timeStr
         )
     }
 
@@ -88,7 +99,15 @@ class ChatViewModel : ViewModel() {
         val msgs = mutableListOf<ChatMessage>()
         for (msg in res.data?.chatMsgs!!) {
             val user = User(msg?.user?._id!!, name = msg.user.name)
-            val msgObj = ChatMessage(user, msg.createdAt!!, msg.text)
+
+            // parse date
+            val dateParts = msg.createdAt?.split(" ")
+            val dateStr = dateParts!![0]
+            val timeStr = dateParts[1]
+            val date =
+                LocalDate.parse(dateStr, DateTimeFormatter.ISO_DATE)
+
+            val msgObj = ChatMessage(user, date, msg.text, timeStr)
             msgs.add(msgObj)
         }
 
@@ -111,10 +130,19 @@ class ChatViewModel : ViewModel() {
                     res.data?.msgCreated?.user?._id!!,
                     name = res.data?.msgCreated?.user?.name!!
                 )
+
+                // parse date
+                val dateParts = res.data?.msgCreated?.createdAt?.split(" ")
+                val dateStr = dateParts!![0]
+                val timeStr = dateParts[1]
+                val date =
+                    LocalDate.parse(dateStr, DateTimeFormatter.ISO_DATE)
+
                 val msg = ChatMessage(
                     user,
-                    res.data?.msgCreated?.createdAt!!,
-                    res.data?.msgCreated?.text!!
+                    date,
+                    res.data?.msgCreated?.text!!,
+                    timeStr
                 )
                 data.postValue(data.value?.plus(msg))   // post value because of background thread
             }

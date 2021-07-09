@@ -11,6 +11,8 @@ import com.apollographql.apollo.coroutines.await
 import com.example.komyuniti.models.User
 import kotlinx.coroutines.launch
 import type.GetUserInput
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 class FriendProfileViewModel : ViewModel() {
 
@@ -36,10 +38,14 @@ class FriendProfileViewModel : ViewModel() {
             if (res.data == null || res.data?.user == null) {
                 user.postValue(null)
             }
+
+            // parse date
+            val dateStr =
+                LocalDate.parse(res.data?.user?.createdAt!!, DateTimeFormatter.ISO_DATE)
             val _user = User(
                 res.data?.user?._id!!,
                 name = res.data?.user?.name!!,
-                createdAt = res.data?.user?.createdAt!!
+                createdAt = dateStr
             )
             user.postValue(_user)
         }

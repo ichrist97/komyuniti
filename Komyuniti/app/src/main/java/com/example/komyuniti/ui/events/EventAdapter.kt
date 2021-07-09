@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.komyuniti.R
 import com.example.komyuniti.models.Event
 import com.example.komyuniti.models.User
+import java.time.format.DateTimeFormatter
 
 
 class EventAdapter(private var eventList: List<Event>, private val activity: FragmentActivity) :
@@ -57,7 +58,12 @@ class EventAdapter(private var eventList: List<Event>, private val activity: Fra
             eventName.text = eventItem.name
             // TODO actual count of people in event
             cntPeople.text = ""
-            date.text = eventItem.date
+
+            // parse date to time
+            val dateStr = eventItem.date?.format(
+                DateTimeFormatter.ofPattern("dd.MM.yyyy")
+            )
+            date.text = dateStr
         }
     }
 

@@ -53,17 +53,19 @@ class EventsViewModel : ViewModel() {
         }
 
         val upcoming = mutableListOf<Event>()
-        val now = LocalDateTime.now()
+        val now = LocalDate.now()
 
         for (event in events) {
             // parse date from unix timestamp
-            val eventDate: LocalDateTime = LocalDateTime.ofInstant(
-                Instant.ofEpochSecond(event.date?.toLong() as Long),
-                ZoneId.systemDefault()
-            )
+            /*
+        val eventDate: LocalDateTime = LocalDateTime.ofInstant(
+            Instant.ofEpochSecond(event.date?.toLong() as Long),
+            ZoneId.systemDefault()
+        )
+        */
 
             // compare now and eventDate
-            if (eventDate > now) {
+            if (event.date!! > now) {
                 upcoming.add(event)
             }
         }
@@ -81,12 +83,25 @@ class EventsViewModel : ViewModel() {
             // wrap into data class
             val _events = mutableListOf<Event>()
             for (obj in res.data?.events!!) {
-                val komyuniti = Komyuniti(obj?.komyuniti?._id!!, name = obj.komyuniti.name)
+
+                var komyuniti: Komyuniti? = null
+                if (obj?.komyuniti?._id != null) {
+                    komyuniti = Komyuniti(obj.komyuniti._id, name = obj.komyuniti.name)
+                }
+
+                // parse date
+                val dateStr =
+                    obj!!.date.split(" ")[0] // split at whitespace for deleting the minutes and take only the date part
+                val date =
+                    LocalDate.parse(dateStr, DateTimeFormatter.ISO_DATE)
+                val createdStr =
+                    obj.createdAt?.split(" ")!![0]
+                val createdAt = LocalDate.parse(createdStr, DateTimeFormatter.ISO_DATE)
                 val event = Event(
                     obj._id,
                     name = obj.name,
-                    createdAt = obj.createdAt,
-                    date = obj.date,
+                    createdAt = createdAt,
+                    date = date,
                     komyuniti = komyuniti
                 )
                 _events.add(event)
