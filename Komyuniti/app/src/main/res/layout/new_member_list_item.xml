@@ -30,7 +30,7 @@
         app:layout_constraintTop_toBottomOf="@+id/new_member_image" />
 
     <ImageButton
-        android:id="@+id/btnShowRemove"
+        android:id="@+id/checkedMemberStatus"
         android:layout_width="20dp"
         android:layout_height="20dp"
         android:layout_marginStart="30dp"

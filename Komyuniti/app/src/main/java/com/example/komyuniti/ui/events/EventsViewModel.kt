@@ -1,23 +1,16 @@
 package com.example.komyuniti.ui.events
 
 import GetEventsQuery
-import android.annotation.SuppressLint
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.apollographql.apollo.ApolloClient
 import com.apollographql.apollo.api.Input
 import com.apollographql.apollo.coroutines.await
 import com.example.komyuniti.models.Event
 import com.example.komyuniti.models.Komyuniti
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.text.DateFormat
-import java.text.SimpleDateFormat
 import java.time.*
 import java.time.format.DateTimeFormatter
 
@@ -25,7 +18,7 @@ class EventsViewModel : ViewModel() {
 
     private val events = MutableLiveData<List<Event>?>(null)
     private val upcomingEvents = MutableLiveData<List<Event>?>(null)
-    private val openEvents = MutableLiveData<List<Event>?>(null)
+    private val doneEvents = MutableLiveData<List<Event>?>(null)
 
     fun getEvents(): LiveData<List<Event>?> {
         return events
@@ -35,15 +28,16 @@ class EventsViewModel : ViewModel() {
         return upcomingEvents
     }
 
-    fun getOpenEvents(): LiveData<List<Event>?> {
-        return openEvents
+    fun getDoneEvents(): LiveData<List<Event>?> {
+        return doneEvents
     }
 
     private fun filterEvents(events: List<Event>?) {
         val upcoming = filterUpcomingEvents(events)
         upcomingEvents.postValue(upcoming)
 
-        //TODO filter open events
+        val done = filterDoneEvents(events)
+        doneEvents.postValue(done)
     }
 
     private fun filterUpcomingEvents(events: List<Event>?): List<Event> {
@@ -57,11 +51,29 @@ class EventsViewModel : ViewModel() {
 
         for (event in events) {
             // compare now and eventDate
-            if (event.date!! > now) {
+            if (event.date!! >= now) {
                 upcoming.add(event)
             }
         }
         return upcoming
+    }
+
+    private fun filterDoneEvents(events: List<Event>?): List<Event> {
+        // return empty list
+        if (events == null) {
+            return listOf()
+        }
+
+        val done = mutableListOf<Event>()
+        val now = LocalDate.now()
+
+        for (event in events) {
+            // compare now and eventDate
+            if (event.date!! < now) {
+                done.add(event)
+            }
+        }
+        return done
     }
 
     suspend fun fetchEvents(apollo: ApolloClient, userId: String) {

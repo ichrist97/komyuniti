@@ -119,7 +119,7 @@ class KomyunitiFragment : Fragment() {
             val adapter = EventAdapter(
                 data,
                 requireActivity(),
-                R.id.action_komyunitiFragment_to_doneEventViewFragment
+                R.id.action_komyunitiFragment_to_eventFragment
             )
             binding.eventRecyclerView.adapter = adapter
             binding.memberRecyclerView.visibility = GONE
@@ -152,7 +152,7 @@ class KomyunitiFragment : Fragment() {
             val adapter = EventAdapter(
                 data,
                 requireActivity(),
-                R.id.action_komyunitiFragment_to_doneEventViewFragment
+                R.id.action_komyunitiFragment_to_eventFragment
             )
             binding.eventRecyclerView.adapter = adapter
             binding.memberRecyclerView.visibility = GONE
@@ -230,6 +230,8 @@ class KomyunitiFragment : Fragment() {
                 false
             }
         }
+
+
     }
 
     private fun initNavigation() {
@@ -251,7 +253,13 @@ class KomyunitiFragment : Fragment() {
                 .navigate(R.id.action_komyunitiFragment_to_fragmentAddMember)
         }
 
-        // TODO create event
+        // create event from komyuniti
+        binding.btnKomyunitiCreateEvent.setOnClickListener {
+            // TODO set komyuniti in new event view
+            // route to new event view
+            Navigation.findNavController(it)
+                .navigate(R.id.action_komyunitiFragment_to_newEvent)
+        }
     }
 
     private fun setUIData() {
@@ -284,13 +292,21 @@ class KomyunitiFragment : Fragment() {
                                 val komyunitiId = viewModel.getKomyunitiId().value as String
                                 lifecycleScope.launch {
                                     val result = viewModel.deleteKomyuniti(apollo, komyunitiId)
-                                    if(result) {
-                                        Toast.makeText(activity, "Komyuniti deleted!", Toast.LENGTH_LONG).show()
+                                    if (result) {
+                                        Toast.makeText(
+                                            activity,
+                                            "Komyuniti deleted!",
+                                            Toast.LENGTH_LONG
+                                        ).show()
                                         // navigate back to profile
                                         Navigation.findNavController(it)
                                             .navigate(R.id.action_komyunitiFragment_to_navigation_profile)
                                     } else {
-                                        Toast.makeText(activity, "Could not delete this komyuniti", Toast.LENGTH_LONG).show()
+                                        Toast.makeText(
+                                            activity,
+                                            "Could not delete this komyuniti",
+                                            Toast.LENGTH_LONG
+                                        ).show()
                                     }
                                 }
                             }.setNegativeButton("Cancel", { dialog, id ->

@@ -152,7 +152,7 @@ class SettingsFragment : Fragment() {
     }
 
     private fun initProfile(binding: FragmentSettingsBinding) {
-        binding.tvBack.setOnClickListener { view: View ->
+        binding.settingsGoBack.setOnClickListener { view: View ->
             Navigation.findNavController(view)
                 .navigate(R.id.action_settingsFragment_to_navigation_profile2)
         }
