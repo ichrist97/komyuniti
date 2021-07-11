@@ -4,6 +4,7 @@ import CurrentUserDetailsQuery
 import UpdateUserDetailsMutation
 import androidx.lifecycle.ViewModel
 import com.apollographql.apollo.ApolloClient
+import com.apollographql.apollo.api.Input
 import com.apollographql.apollo.api.Response
 import com.apollographql.apollo.coroutines.await
 import com.example.komyuniti.models.User
@@ -26,6 +27,19 @@ class SettingsViewModel : ViewModel() {
             return null
         }
         return User(res.data?.currentUser?._id!!, name = res.data?.currentUser?.name, email = res.data?.currentUser?.email)
+    }
+     suspend fun updateCurrentUserDetails(
+         apollo: ApolloClient,
+         email: Input<String>,
+         name: Input<String>
+    ): Response<UpdateUserDetailsMutation.Data> {
+         val input =
+             UpdateUserDetailsInput(email, name)
+         return apollo.mutate(
+             UpdateUserDetailsMutation(
+                 input = input
+             )
+         ).await()
     }
 
 }

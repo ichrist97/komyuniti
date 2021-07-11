@@ -25,11 +25,16 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelStoreOwner
 import androidx.lifecycle.lifecycleScope
+import com.apollographql.apollo.api.Input
+import com.apollographql.apollo.api.Response
+import com.apollographql.apollo.api.toInput
 import com.example.komyuniti.MainActivity
 import com.example.komyuniti.MainViewModel
 import com.example.komyuniti.models.User
 import com.example.komyuniti.ui.profile.ProfileViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import type.UserImageUploadInput
 import java.io.File
 import java.io.FileOutputStream
@@ -94,7 +99,29 @@ class SettingsFragment : Fragment() {
         }
     }
     private fun updateInfo(binding: FragmentSettingsBinding) {
+        // get user input
+        val email: Input<String> = binding.etEmailAddress.editText?.text.toString().toInput()
+        val name: Input<String> = binding.etName.editText?.text.toString().toInput()
+        //request to backend
 
+        val apollo = activityViewModel.getApollo(activity as Context)
+        var res: Response<UpdateUserDetailsMutation.Data>
+        lifecycleScope.launch {
+            withContext(Dispatchers.IO) {
+                res = settingsViewModel.updateCurrentUserDetails(apollo, email, name)
+            }
+            // on success
+            if (res != null) {
+                Toast.makeText(
+                    activity,
+                    "Succesfully updated username and email!",
+                    Toast.LENGTH_LONG
+                ).show()
+            } else {
+                Toast.makeText(activity, "Coudn't update username or email!", Toast.LENGTH_LONG)
+                    .show()
+            }
+        }
     }
 
     private fun initSave(binding: FragmentSettingsBinding) {
