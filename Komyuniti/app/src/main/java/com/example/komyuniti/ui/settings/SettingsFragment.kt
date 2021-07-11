@@ -13,23 +13,43 @@ import com.example.komyuniti.R
 import com.example.komyuniti.databinding.FragmentSettingsBinding
 import android.Manifest
 import android.app.Activity
+import android.content.Context
+import android.content.ContextWrapper
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.drawable.BitmapDrawable
+import android.net.Uri
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.ViewModelStoreOwner
+import androidx.lifecycle.lifecycleScope
 import com.example.komyuniti.MainActivity
+import com.example.komyuniti.MainViewModel
+import com.example.komyuniti.models.User
+import com.example.komyuniti.ui.profile.ProfileViewModel
+import kotlinx.coroutines.launch
+import type.UserImageUploadInput
+import java.io.File
+import java.io.FileOutputStream
+import java.io.IOException
+import java.io.OutputStream
+import java.util.*
 
 //import com.example.komyuniti.ui.feed.SettingsViewModel
 
 class SettingsFragment : Fragment() {
 
     private lateinit var settingsViewModel: SettingsViewModel
+    private lateinit var activityViewModel: MainViewModel
+
     private lateinit var fragmentSettingsBinding: FragmentSettingsBinding
+    private lateinit var profilePic: Uri
 
     companion object {
         //image pick code
         private val IMAGE_PICK_CODE = 1000;
-
         //Permission code
         private val PERMISSION_CODE = 1001;
     }
@@ -40,8 +60,10 @@ class SettingsFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        settingsViewModel =
-            ViewModelProvider(this).get(SettingsViewModel::class.java)
+
+        settingsViewModel = ViewModelProvider(this).get(SettingsViewModel::class.java)
+        activityViewModel = ViewModelProvider(activity as ViewModelStoreOwner).get(MainViewModel::class.java)
+
 
         fragmentSettingsBinding = FragmentSettingsBinding.inflate(inflater, container, false)
 
@@ -49,10 +71,87 @@ class SettingsFragment : Fragment() {
 
         initProfile(fragmentSettingsBinding)
         editProfilePic(fragmentSettingsBinding)
+        initSave(fragmentSettingsBinding)
+        displayInfo(fragmentSettingsBinding)
 
 
         return root
     }
+
+
+
+    private fun displayInfo(binding: FragmentSettingsBinding) {
+        lifecycleScope.launch {
+            //authUser = loginViewModel.login(apollo, email, password)
+            val user: User? =
+                settingsViewModel.getCurrentUserDetails(activityViewModel.getApollo(requireContext()))
+            if (user == null) {
+                Toast.makeText(activity, "No user details available", Toast.LENGTH_SHORT).show()
+            } else {
+                binding.etName.editText?.setText(user.name)
+                binding.etEmailAddress.editText?.setText(user.email)
+            }
+        }
+    }
+    private fun updateInfo(binding: FragmentSettingsBinding) {
+
+    }
+
+    private fun initSave(binding: FragmentSettingsBinding) {
+        binding.saveSettings.setOnClickListener{
+            updateInfo(binding)
+
+/*            if(profilePic!=null) {
+                val uri:Uri = saveImageToInternalStorage(R.drawable.flower8)
+                val profilePicImageView: ImageView = findViewById(R.id.galleryButton)
+
+                // Display the internal storage saved image in image view
+                image_view_saved.setImageURI(uri)
+            }*/
+            //upload image if set
+
+        }
+
+    }
+    // Method to save an image to internal storage
+/*    private fun saveImageToInternalStorage(drawableId:Int):Uri{
+        // Get the image from drawable resource as drawable object
+        val drawable = ContextCompat.getDrawable(requireContext(),drawableId)
+
+        // Get the bitmap from drawable object
+        val bitmap = (drawable as BitmapDrawable).bitmap
+
+        // Get the context wrapper instance
+        val wrapper = ContextWrapper(requireContext())
+
+        // Initializing a new file
+        // The bellow line return a directory in internal storage
+        var file = wrapper.getDir("images", Context.MODE_PRIVATE)
+
+
+        // Create a file to save the image
+        file = File(file, "${UUID.randomUUID()}.jpg")
+
+        try {
+            // Get the file output stream
+            val stream: OutputStream = FileOutputStream(file)
+
+            // Compress bitmap
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream)
+
+            // Flush the stream
+            stream.flush()
+
+            // Close stream
+            stream.close()
+        } catch (e: IOException){ // Catch the exception
+            e.printStackTrace()
+        }
+
+        // Return the saved image uri
+        return Uri.parse(file.absolutePath)
+    }*/
+
 
     private fun editProfilePic(binding: FragmentSettingsBinding) {
         // handle the permissions response
@@ -145,9 +244,11 @@ class SettingsFragment : Fragment() {
     }
 
     //handle result of picked image
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+    override fun onActivityResult(requestCode: Int, resultCode: Int, imageData: Intent?) {
         if (resultCode == Activity.RESULT_OK && requestCode == IMAGE_PICK_CODE){
-            fragmentSettingsBinding.imageView.setImageURI(data?.data)
+            fragmentSettingsBinding.imageView.setImageURI(imageData?.data)
+            profilePic = imageData?.data!!
+//            val input = UserImageUploadInput(imageData?.data)
         }
     }
 

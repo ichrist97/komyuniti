@@ -49,7 +49,8 @@ class LoginViewModel : ViewModel() {
         email: String,
         password: String
     ): Response<LoginMutation.Data> {
-        val input = LoginInput(email, password)
+        val input =
+            LoginInput(email, password)
         return apollo.mutate(
             LoginMutation(
                 input = input

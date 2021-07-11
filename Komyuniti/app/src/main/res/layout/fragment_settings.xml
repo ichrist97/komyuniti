@@ -101,7 +101,7 @@
             android:layout_width="match_parent" />
 
     </com.google.android.material.textfield.TextInputLayout>
-    <com.google.android.material.textfield.TextInputLayout
+<!--    <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/et_description"
         android:hint="@string/profile_description"
         android:inputType="textPersonName"
@@ -120,7 +120,7 @@
             android:drawablePadding="10dp"
             android:layout_height="wrap_content"
             android:layout_width="match_parent" />
-    </com.google.android.material.textfield.TextInputLayout>
+    </com.google.android.material.textfield.TextInputLayout>-->
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/et_email_address"
@@ -132,9 +132,9 @@
         android:layout_marginStart="32dp"
         android:layout_marginEnd="32dp"
         android:layout_marginTop="16dp"
-        app:layout_constraintEnd_toEndOf="@+id/et_description"
-        app:layout_constraintStart_toStartOf="@+id/et_description"
-        app:layout_constraintTop_toBottomOf="@+id/et_description" >
+        app:layout_constraintEnd_toEndOf="@+id/et_name"
+        app:layout_constraintStart_toStartOf="@+id/et_name"
+        app:layout_constraintTop_toBottomOf="@+id/et_name" >
 
         <com.google.android.material.textfield.TextInputEditText
             android:drawableStart="@drawable/icon_email"
@@ -146,8 +146,8 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/et_new_password"
-        android:hint="@string/new_password"
+        android:id="@+id/et_current_password"
+        android:hint="@string/current_password"
         android:inputType="textEmailAddress"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
@@ -164,6 +164,27 @@
         android:drawablePadding="10dp"
         android:layout_height="wrap_content"
         android:layout_width="match_parent" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/et_new_password"
+        android:hint="@string/new_password"
+        android:inputType="textEmailAddress"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toEndOf="@+id/et_current_password"
+        app:layout_constraintStart_toStartOf="@+id/et_current_password"
+        app:layout_constraintTop_toBottomOf="@+id/et_current_password" >
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:drawableStart="@drawable/icon_password"
+            android:drawableTint="@color/color_primary"
+            android:drawablePadding="10dp"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent" />
     </com.google.android.material.textfield.TextInputLayout>
 
 
