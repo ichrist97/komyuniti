@@ -1,6 +1,7 @@
 package com.example.komyuniti.ui.settings
 
 import CurrentUserDetailsQuery
+import UpdatePasswordMutation
 import UpdateUserDetailsMutation
 import androidx.lifecycle.ViewModel
 import com.apollographql.apollo.ApolloClient
@@ -11,6 +12,7 @@ import com.example.komyuniti.models.User
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import type.LoginInput
+import type.UpdatePasswordInput
 import type.UpdateUserDetailsInput
 
 class SettingsViewModel : ViewModel() {
@@ -40,6 +42,19 @@ class SettingsViewModel : ViewModel() {
                  input = input
              )
          ).await()
+    }
+    suspend fun updatePassword(
+        apollo: ApolloClient,
+        old_pw: String,
+        new_pw: String
+    ): Response<UpdatePasswordMutation.Data> {
+        val input =
+            UpdatePasswordInput(old_pw, new_pw)
+        return apollo.mutate(
+            UpdatePasswordMutation(
+                input = input
+            )
+        ).await()
     }
 
 }

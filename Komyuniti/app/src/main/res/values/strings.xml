@@ -13,6 +13,7 @@
     <string name="tv_already_have_account"><u>Already have an account?</u></string>
     <string name="btn_login">Login</string>
     <string name="tv_forgot_password"><u>Forgot password?</u></string>
+    <string name="change_password"><u>Update password</u></string>
 
     <string name="tv_events">Events</string>
     <string name="tv_history">History</string>

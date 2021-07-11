@@ -148,7 +148,7 @@
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/et_current_password"
         android:hint="@string/current_password"
-        android:inputType="textEmailAddress"
+        android:inputType="textPassword"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
         android:layout_marginStart="32dp"
@@ -159,6 +159,7 @@
         app:layout_constraintTop_toBottomOf="@+id/et_email_address" >
 
     <com.google.android.material.textfield.TextInputEditText
+        android:inputType="textPassword"
         android:drawableStart="@drawable/icon_password"
         android:drawableTint="@color/color_primary"
         android:drawablePadding="10dp"
@@ -169,17 +170,19 @@
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/et_new_password"
         android:hint="@string/new_password"
-        android:inputType="textEmailAddress"
+        android:inputType="textPassword"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
         android:layout_marginStart="32dp"
         android:layout_marginEnd="32dp"
         android:layout_marginTop="16dp"
+
         app:layout_constraintEnd_toEndOf="@+id/et_current_password"
         app:layout_constraintStart_toStartOf="@+id/et_current_password"
         app:layout_constraintTop_toBottomOf="@+id/et_current_password" >
 
         <com.google.android.material.textfield.TextInputEditText
+            android:inputType="textPassword"
             android:drawableStart="@drawable/icon_password"
             android:drawableTint="@color/color_primary"
             android:drawablePadding="10dp"
@@ -195,7 +198,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:clickable="true"
-        android:text="@string/tv_forgot_password"
+        android:text="@string/change_password"
         app:layout_constraintEnd_toEndOf="@+id/et_new_password"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="@+id/et_new_password"

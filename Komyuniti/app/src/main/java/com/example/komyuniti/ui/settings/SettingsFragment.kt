@@ -1,46 +1,39 @@
 
 package com.example.komyuniti.ui.settings
 
-import android.content.pm.PackageManager
-import androidx.lifecycle.ViewModelProvider
-import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import androidx.navigation.Navigation
-import com.example.komyuniti.R
-import com.example.komyuniti.databinding.FragmentSettingsBinding
+import UpdatePasswordMutation
+import UpdateUserDetailsMutation
 import android.Manifest
 import android.app.Activity
 import android.content.Context
-import android.content.ContextWrapper
 import android.content.Intent
-import android.graphics.Bitmap
-import android.graphics.drawable.BitmapDrawable
+import android.content.pm.PackageManager
 import android.net.Uri
-import android.widget.ImageView
+import android.os.Bundle
+import android.view.Gravity
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStoreOwner
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.Navigation
 import com.apollographql.apollo.api.Input
 import com.apollographql.apollo.api.Response
 import com.apollographql.apollo.api.toInput
-import com.example.komyuniti.MainActivity
 import com.example.komyuniti.MainViewModel
+import com.example.komyuniti.R
+import com.example.komyuniti.databinding.FragmentSettingsBinding
 import com.example.komyuniti.models.User
-import com.example.komyuniti.ui.profile.ProfileViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import type.UserImageUploadInput
-import java.io.File
-import java.io.FileOutputStream
-import java.io.IOException
-import java.io.OutputStream
 import java.util.*
+
 
 //import com.example.komyuniti.ui.feed.SettingsViewModel
 
@@ -79,7 +72,6 @@ class SettingsFragment : Fragment() {
         initSave(fragmentSettingsBinding)
         displayInfo(fragmentSettingsBinding)
 
-
         return root
     }
 
@@ -103,7 +95,6 @@ class SettingsFragment : Fragment() {
         val email: Input<String> = binding.etEmailAddress.editText?.text.toString().toInput()
         val name: Input<String> = binding.etName.editText?.text.toString().toInput()
         //request to backend
-
         val apollo = activityViewModel.getApollo(activity as Context)
         var res: Response<UpdateUserDetailsMutation.Data>
         lifecycleScope.launch {
@@ -111,15 +102,48 @@ class SettingsFragment : Fragment() {
                 res = settingsViewModel.updateCurrentUserDetails(apollo, email, name)
             }
             // on success
-            if (res != null) {
+            if (res.data != null) {
                 Toast.makeText(
                     activity,
                     "Succesfully updated username and email!",
                     Toast.LENGTH_LONG
                 ).show()
             } else {
-                Toast.makeText(activity, "Coudn't update username or email!", Toast.LENGTH_LONG)
-                    .show()
+                Toast.makeText(activity, "Couldn't update details", Toast.LENGTH_LONG).show()
+            }
+        }
+    }
+    private fun updatePassword(binding: FragmentSettingsBinding) {
+        // get user input
+        val old_pw: String = binding.etCurrentPassword.editText?.text.toString()
+        val new_pw: String = binding.etNewPassword.editText?.text.toString()
+        //request to backend
+        val apollo = activityViewModel.getApollo(activity as Context)
+        var res: Response<UpdatePasswordMutation.Data>
+        //launch coroutine to request password change in backend
+        lifecycleScope.launch {
+            withContext(Dispatchers.IO) {
+                res = settingsViewModel.updatePassword(apollo, old_pw, new_pw)
+            }
+            // on success
+            if (res.data != null) {
+                withContext(Dispatchers.Main) {
+                    val toast = Toast.makeText(
+                        requireContext(),
+                        "Succesfully updated password", Toast.LENGTH_SHORT
+                    )
+                    toast.setGravity(Gravity.TOP or Gravity.CENTER_HORIZONTAL, 0, 0)
+                    toast.show()
+                }
+                binding.etCurrentPassword.editText?.setText("")
+                binding.etNewPassword.editText?.setText("")
+            } else {
+                withContext(Dispatchers.Main) {
+                    val toast =
+                        Toast.makeText(activity, "Current password is incorrect", Toast.LENGTH_LONG)
+                    toast.setGravity(Gravity.TOP or Gravity.CENTER_HORIZONTAL, 0, 0)
+                    toast.show()
+                }
             }
         }
     }
@@ -127,7 +151,7 @@ class SettingsFragment : Fragment() {
     private fun initSave(binding: FragmentSettingsBinding) {
         binding.saveSettings.setOnClickListener{
             updateInfo(binding)
-
+            updatePassword(binding)
 /*            if(profilePic!=null) {
                 val uri:Uri = saveImageToInternalStorage(R.drawable.flower8)
                 val profilePicImageView: ImageView = findViewById(R.id.galleryButton)
