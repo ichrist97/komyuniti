@@ -27,4 +27,8 @@ In order to define apollo requests, first you must download the defined schema f
 ```
 gradlew :app:downloadApolloSchema --endpoint="http://localhost:3000/graphql" --schema="app/src/main/graphql/schema.json"
 ```
+
+## Backend
+
+The backend was implemented in another repository: [Look here!](https://gitlab.lrz.de/00000000014A650B/msp_backend)
  
