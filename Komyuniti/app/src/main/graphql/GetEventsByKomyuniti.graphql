@@ -1,0 +1,7 @@
+query GetEventsByKomyuniti($komyunitiId: String) {
+    events(komyunitiId: $komyunitiId) {
+        _id
+        name
+        date
+    }
+}

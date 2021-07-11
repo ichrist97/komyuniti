@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/frameLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.events.DoneEventViewFragment">
+
+    <Toolbar
+        android:id="@+id/createKomyunitiToolbar"
+        android:layout_width="0dp"
+        android:layout_height="80dp"
+        android:background="@color/color_primary"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:layout_editor_absoluteX="16dp"
+            tools:layout_editor_absoluteY="27dp">
+
+            <Button
+                android:id="@+id/btnCreateKomyunitiGoBack"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                android:background="@android:color/transparent"
+                android:clickable="true"
+                android:focusable="true"
+                app:icon="@drawable/ic_baseline_arrow_back_24_white"
+                app:layout_constraintBottom_toBottomOf="@+id/createMemberHeaderName"
+                app:layout_constraintEnd_toStartOf="@+id/createMemberHeaderName"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/createMemberHeaderName" />
+
+            <TextView
+                android:id="@+id/createMemberHeaderName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Create Komyuniti"
+                android:textColor="@color/white"
+                android:textSize="34sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </Toolbar>
+
+    <Toolbar
+        android:id="@+id/createKomyunitiNameToolbar"
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:background="#F6F6F6"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/createKomyunitiToolbar">
+
+        <ImageView
+            android:id="@+id/komyunitiProfilePic"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:contentDescription="@string/friend_image"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/createKomyunitiToolbar"
+            tools:srcCompat="@tools:sample/avatars[9]" />
+
+        <EditText
+            android:id="@+id/editKomyunitiName"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="20dp"
+            android:autofillHints="Type the Komyuniti name here..."
+            android:ems="10"
+            android:hint="Type the Komyuniti name here..."
+            android:inputType="textPersonName"
+            app:layout_constraintStart_toEndOf="@+id/komyunitiProfilePic"
+            app:layout_constraintTop_toBottomOf="@+id/createKomyunitiToolbar" />
+
+    </Toolbar>
+
+    <ImageButton
+        android:id="@+id/btnCreateKomyuniti"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="90dp"
+        android:layout_marginEnd="20dp"
+        android:background="@drawable/roundbutton_purple"
+        android:color="#666666"
+        android:contentDescription="Create"
+        android:focusable="true"
+        android:shape="ring"
+        android:src="@drawable/ic_baseline_check_24"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/createKomyunitiNameToolbar" />
+
+    <TextView
+        android:id="@+id/showParticipantsCnt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="30dp"
+        android:text="Participants: X"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/createKomyunitiNameToolbar" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/createKomyunitiShowMembers"
+        android:layout_width="match_parent"
+        android:layout_height="460dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="20dp"
+        android:orientation="horizontal"
+        android:scrollbars="horizontal"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/showParticipantsCnt" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

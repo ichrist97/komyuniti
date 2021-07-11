@@ -1,0 +1,14 @@
+query GetKomyuniti($input: GetKomyunitiInput!) {
+    komyuniti(input: $input) {
+        _id
+        name
+        members {
+            _id
+            name
+        }
+        createdAt
+        admin {
+            _id
+        }
+    }
+}

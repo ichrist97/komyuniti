@@ -9,9 +9,13 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.Navigation
 import com.example.komyuniti.R
 import com.example.komyuniti.models.Komyuniti
 import com.example.komyuniti.models.User
+import com.example.komyuniti.ui.komyuniti.KomyunitiViewModel
 
 class KomyunitiAdapter(
     private var dataSet: List<Komyuniti>,
@@ -23,21 +27,22 @@ class KomyunitiAdapter(
      * Provide a reference to the type of views that you are using
      * (custom ViewHolder).
      */
-    class ViewHolder(view: View, activity: FragmentActivity) : RecyclerView.ViewHolder(view) {
+    class ViewHolder(view: View, data: List<Komyuniti>, activity: FragmentActivity) : RecyclerView.ViewHolder(view) {
         val komyunitiName: TextView = view.findViewById(R.id.komyuniti_name)
         val cntMembers: TextView = view.findViewById(R.id.komyuniti_members)
         val image: ImageView = view.findViewById(R.id.komyuniti_image)
 
         init {
             // Define click listener for the ViewHolder's View.
-            view.setOnClickListener { v: View ->
+            view.setOnClickListener {
                 val position: Int = adapterPosition
-                // TODO route to komyuniti detail view and set value in shared view model
-                Toast.makeText(
-                    v.context,
-                    "you clicked on the Komyuniti Item # ${position + 1}",
-                    Toast.LENGTH_SHORT
-                ).show()
+                // set komyuniti id in view model
+                val komyunitiViewModel =
+                    ViewModelProvider(activity).get(KomyunitiViewModel::class.java)
+                komyunitiViewModel.setKomyuniti(data[position].id)
+                // route to fragment
+                Navigation.findNavController(it)
+                    .navigate(R.id.action_navigation_profile_to_komyunitiFragment)
             }
         }
     }
@@ -48,7 +53,7 @@ class KomyunitiAdapter(
         val view = LayoutInflater.from(viewGroup.context)
             .inflate(R.layout.komyuniti_list_item, viewGroup, false)
 
-        return ViewHolder(view, activity)
+        return ViewHolder(view, dataSet, activity)
     }
 
     // Replace the contents of a view (invoked by the layout manager)

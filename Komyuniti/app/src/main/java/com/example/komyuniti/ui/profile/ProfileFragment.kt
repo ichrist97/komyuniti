@@ -24,6 +24,7 @@ import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayout.*
 import java.security.*
 import com.example.komyuniti.models.User
+import com.example.komyuniti.ui.komyuniti.KomyunitiViewModel
 import com.example.komyuniti.util.loadKeyPair
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
@@ -81,6 +82,7 @@ class ProfileFragment : Fragment() {
 
         initLogout(binding)
         initSettings(binding)
+        initCreateKomyuniti()
 
         setCurrentUserName()
 
@@ -105,7 +107,7 @@ class ProfileFragment : Fragment() {
                     binding.tvScanHint.visibility = GONE
 
                     val data = profileViewModel.getKomyunitis().value
-                    // display friends
+                    // display komyunitis
                     if (data != null && data.isNotEmpty()) {
                         val adapter = KomyunitiAdapter(data, requireActivity())
                         binding.rvKomyunitiList.adapter = adapter
@@ -312,6 +314,13 @@ class ProfileFragment : Fragment() {
             } else {
                 binding.profileName.text = user.name
             }
+        }
+    }
+
+    private fun initCreateKomyuniti() {
+        binding.fltbCreateKomyuniti.setOnClickListener {
+            Navigation.findNavController(it)
+                .navigate(R.id.action_navigation_profile_to_fragmentCreateKomyunitiChooseMembers)
         }
     }
 }

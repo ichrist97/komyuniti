@@ -1,0 +1,5 @@
+mutation AddKomyunitiMembers($input: AddKomyunitiMemberInput!) {
+    addKomyunitiMember(input: $input) {
+        _id
+    }
+}

@@ -1,0 +1,5 @@
+mutation CreateKomyuniti($input: CreateKomyunitiInput!) {
+    createKomyuniti(input: $input) {
+        _id
+    }
+}
