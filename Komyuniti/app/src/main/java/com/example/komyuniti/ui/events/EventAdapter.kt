@@ -11,17 +11,25 @@ import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.example.komyuniti.R
 import com.example.komyuniti.models.Event
-import com.example.komyuniti.models.User
 import java.time.format.DateTimeFormatter
 
 
-class EventAdapter(private var eventList: List<Event>, private val activity: FragmentActivity) :
+class EventAdapter(
+    private var eventList: List<Event>,
+    private val activity: FragmentActivity,
+    private val navigationDest: Int
+) :
     RecyclerView.Adapter<EventAdapter.ViewHolder>() {
 
     /**
      * Provide a reference to the type of views that you are using
      */
-    class ViewHolder(view: View, data: List<Event>, activity: FragmentActivity) :
+    class ViewHolder(
+        view: View,
+        data: List<Event>,
+        activity: FragmentActivity,
+        navigationDest: Int
+    ) :
         RecyclerView.ViewHolder(view) {
         val notificationButton: Button
         val komyunitiName: TextView
@@ -46,7 +54,7 @@ class EventAdapter(private var eventList: List<Event>, private val activity: Fra
 
                 // route to details view
                 val navController = Navigation.findNavController(it)
-                navController.navigate(R.id.action_navigation_events_to_doneEventViewFragment)
+                navController.navigate(navigationDest)
             }
         }
 
@@ -73,7 +81,7 @@ class EventAdapter(private var eventList: List<Event>, private val activity: Fra
         val view = LayoutInflater.from(viewGroup.context)
             .inflate(R.layout.event_list_item, viewGroup, false)
 
-        return ViewHolder(view, eventList, activity)
+        return ViewHolder(view, eventList, activity, navigationDest)
     }
 
     // Replace the contents of a view (invoked by the layout manager)

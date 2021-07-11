@@ -56,14 +56,6 @@ class EventsViewModel : ViewModel() {
         val now = LocalDate.now()
 
         for (event in events) {
-            // parse date from unix timestamp
-            /*
-        val eventDate: LocalDateTime = LocalDateTime.ofInstant(
-            Instant.ofEpochSecond(event.date?.toLong() as Long),
-            ZoneId.systemDefault()
-        )
-        */
-
             // compare now and eventDate
             if (event.date!! > now) {
                 upcoming.add(event)
@@ -91,7 +83,7 @@ class EventsViewModel : ViewModel() {
 
                 // parse date
                 val dateStr =
-                    obj!!.date.split(" ")[0] // split at whitespace for deleting the minutes and take only the date part
+                    obj!!.date?.split(" ")!![0] // split at whitespace for deleting the minutes and take only the date part
                 val date =
                     LocalDate.parse(dateStr, DateTimeFormatter.ISO_DATE)
                 val createdStr =

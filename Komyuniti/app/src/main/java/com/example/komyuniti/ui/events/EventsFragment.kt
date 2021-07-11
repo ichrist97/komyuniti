@@ -86,7 +86,11 @@ class EventsFragment : Fragment() {
             fragmentEventsBinding.rvEvents.visibility = VISIBLE
 
             // set data
-            val adapter = EventAdapter(data, requireActivity())
+            val adapter = EventAdapter(
+                data,
+                requireActivity(),
+                R.id.action_navigation_events_to_doneEventViewFragment
+            )
             fragmentEventsBinding.rvEvents.adapter = adapter
             eventsViewModel.getUpcomingEvents().observe(viewLifecycleOwner, {
                 if (it != null) {
@@ -117,7 +121,11 @@ class EventsFragment : Fragment() {
             fragmentEventsBinding.rvEvents.visibility = VISIBLE
 
             // set data
-            val adapter = EventAdapter(data, requireActivity())
+            val adapter = EventAdapter(
+                data,
+                requireActivity(),
+                R.id.action_navigation_events_to_doneEventViewFragment
+            )
             fragmentEventsBinding.rvEvents.adapter = adapter
             eventsViewModel.getOpenEvents().observe(viewLifecycleOwner, {
                 if (it != null) {

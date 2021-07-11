@@ -44,6 +44,12 @@
         <action
             android:id="@+id/action_navigation_profile_to_friendProfileFragment"
             app:destination="@id/friendProfileFragment" />
+        <action
+            android:id="@+id/action_navigation_profile_to_komyunitiFragment"
+            app:destination="@id/komyunitiFragment" />
+        <action
+            android:id="@+id/action_navigation_profile_to_fragmentCreateKomyunitiChooseMembers"
+            app:destination="@id/fragmentCreateKomyunitiChooseMembers" />
     </fragment>
     <fragment
         android:id="@+id/loginFragment"
@@ -123,5 +129,52 @@
         <action
             android:id="@+id/action_friendProfileFragment_to_navigation_profile"
             app:destination="@id/navigation_profile" />
+    </fragment>
+    <fragment
+        android:id="@+id/komyunitiFragment"
+        android:name="com.example.komyuniti.ui.komyuniti.KomyunitiFragment"
+        android:label="KomyunitiFragment" >
+        <action
+            android:id="@+id/action_komyunitiFragment_to_navigation_profile"
+            app:destination="@id/navigation_profile" />
+        <action
+            android:id="@+id/action_komyunitiFragment_to_doneEventViewFragment"
+            app:destination="@id/doneEventViewFragment" />
+        <action
+            android:id="@+id/action_komyunitiFragment_to_friendProfileFragment"
+            app:destination="@id/friendProfileFragment" />
+        <action
+            android:id="@+id/action_komyunitiFragment_to_fragmentAddMember"
+            app:destination="@id/fragmentAddMember" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragmentAddMember"
+        android:name="com.example.komyuniti.ui.komyuniti.addMember.FragmentAddMember"
+        android:label="FragmentAddMember" >
+        <action
+            android:id="@+id/action_fragmentAddMember_to_komyunitiFragment"
+            app:destination="@id/komyunitiFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragmentCreateKomyuniti"
+        android:name="com.example.komyuniti.ui.komyuniti.createKomyuniti.FragmentCreateKomyuniti"
+        android:label="FragmentCreateKomyuniti" >
+        <action
+            android:id="@+id/action_fragmentCreateKomyuniti_to_navigation_profile"
+            app:destination="@id/navigation_profile" />
+        <action
+            android:id="@+id/action_fragmentCreateKomyuniti_to_fragmentCreateKomyunitiChooseMembers"
+            app:destination="@id/fragmentCreateKomyunitiChooseMembers" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragmentCreateKomyunitiChooseMembers"
+        android:name="com.example.komyuniti.ui.komyuniti.createKomyuniti.FragmentCreateKomyunitiChooseMembers"
+        android:label="FragmentCreateKomyunitiChooseMembers" >
+        <action
+            android:id="@+id/action_fragmentCreateKomyunitiChooseMembers_to_navigation_profile"
+            app:destination="@id/navigation_profile" />
+        <action
+            android:id="@+id/action_fragmentCreateKomyunitiChooseMembers_to_fragmentCreateKomyuniti"
+            app:destination="@id/fragmentCreateKomyuniti" />
     </fragment>
 </navigation>

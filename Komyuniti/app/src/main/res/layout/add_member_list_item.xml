@@ -8,39 +8,43 @@
     android:padding="10dp">
 
     <ImageView
-        android:id="@+id/komyuniti_image"
+        android:id="@+id/new_member_image"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
-        android:contentDescription="@string/komyuniti_image"
+        android:contentDescription="@string/friend_image"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:srcCompat="@tools:sample/avatars[9]" />
 
     <TextView
-        android:id="@+id/komyuniti_name"
+        android:id="@+id/new_member_name"
         style="@style/p"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:text="@string/komyuniti_name"
+        android:text="@string/profile_name"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/komyuniti_image"
+        app:layout_constraintStart_toEndOf="@+id/new_member_image"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/komyuniti_members"
-        style="@style/p_grey"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:text="@string/komyuniti_members"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
+    <ImageButton
+        android:id="@+id/btnShowAdded"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="30dp"
+        android:background="@drawable/roundbutton_purple"
+        android:color="#666666"
+        android:contentDescription="Added"
+        android:focusable="true"
+        android:shape="ring"
+        android:src="@drawable/ic_baseline_check_24"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="@+id/new_member_image"
+        app:layout_constraintTop_toTopOf="@+id/new_member_image" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

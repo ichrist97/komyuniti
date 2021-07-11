@@ -40,12 +40,13 @@ class FriendProfileViewModel : ViewModel() {
             }
 
             // parse date
-            val dateStr =
-                LocalDate.parse(res.data?.user?.createdAt!!, DateTimeFormatter.ISO_DATE)
+            val dateStr = res.data?.user?.createdAt!!.split(" ")[0]
+            val date =
+                LocalDate.parse(dateStr, DateTimeFormatter.ISO_DATE)
             val _user = User(
                 res.data?.user?._id!!,
                 name = res.data?.user?.name!!,
-                createdAt = dateStr
+                createdAt = date
             )
             user.postValue(_user)
         }

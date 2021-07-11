@@ -52,7 +52,7 @@ class FriendProfileFragment : Fragment() {
 
                 // parse date to time
                 val dateStr = it.createdAt?.format(
-                    DateTimeFormatter.ofPattern("dd.mm.yyyy")
+                    DateTimeFormatter.ofPattern("dd.MM.yyyy")
                 )
                 binding!!.tvMemberSince.text = dateStr
             } else {

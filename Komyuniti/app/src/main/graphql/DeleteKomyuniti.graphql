@@ -1,0 +1,5 @@
+mutation DeleteKomyuniti($input: DeleteKomyunitiInput!) {
+    deleteKomyuniti(input: $input) {
+        _id
+    }
+}
