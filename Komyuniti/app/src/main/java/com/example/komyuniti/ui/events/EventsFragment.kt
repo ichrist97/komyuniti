@@ -9,7 +9,6 @@ import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
-import android.widget.AdapterView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -89,7 +88,7 @@ class EventsFragment : Fragment() {
             val adapter = EventAdapter(
                 data,
                 requireActivity(),
-                R.id.action_navigation_events_to_doneEventViewFragment
+                R.id.action_navigation_events_to_eventFragment
             )
             fragmentEventsBinding.rvEvents.adapter = adapter
             eventsViewModel.getUpcomingEvents().observe(viewLifecycleOwner, {
@@ -112,9 +111,9 @@ class EventsFragment : Fragment() {
         }
     }
 
-    private fun displayOpenEvents() {
+    private fun displayDoneEvents() {
         // change adapter and observer
-        val data = eventsViewModel.getOpenEvents().value
+        val data = eventsViewModel.getDoneEvents().value
         if (data != null && data.isNotEmpty()) {
             // set ui
             fragmentEventsBinding.tvEventsEmpty.visibility = GONE
@@ -124,10 +123,10 @@ class EventsFragment : Fragment() {
             val adapter = EventAdapter(
                 data,
                 requireActivity(),
-                R.id.action_navigation_events_to_doneEventViewFragment
+                R.id.action_navigation_events_to_eventFragment
             )
             fragmentEventsBinding.rvEvents.adapter = adapter
-            eventsViewModel.getOpenEvents().observe(viewLifecycleOwner, {
+            eventsViewModel.getDoneEvents().observe(viewLifecycleOwner, {
                 if (it != null) {
                     // update upcoming events data
                     adapter.setData(it)
@@ -156,7 +155,7 @@ class EventsFragment : Fragment() {
                 if (tab.position == 0) {
                     displayUpcomingEvents()
                 } else if (tab.position == 1) {
-                    displayOpenEvents()
+                    displayDoneEvents()
                 } else {
                     Toast.makeText(
                         activity,

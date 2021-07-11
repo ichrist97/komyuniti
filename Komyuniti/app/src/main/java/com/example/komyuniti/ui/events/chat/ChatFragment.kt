@@ -115,9 +115,10 @@ class ChatFragment : Fragment() {
     }
 
     private fun initNavigation() {
+        // leave chat and go back to event
         binding.btnLeaveChat.setOnClickListener {
             Navigation.findNavController(it)
-                .navigate(R.id.action_chatFragment_to_doneEventViewFragment)
+                .navigate(R.id.action_chatFragment_to_eventFragment)
         }
     }
 

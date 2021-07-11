@@ -43,7 +43,7 @@ class ChatAdapter(private var chatMessages: List<ChatMessage>?, private val curr
             // bind values to views
             user.text = item.sender.name
             text.text = item.text
-            val dateStr = item.createdAt.format(DateTimeFormatter.ofPattern("dd.mm.yyyy"))
+            val dateStr = item.createdAt.format(DateTimeFormatter.ofPattern("dd.MM.yyyy"))
             date.text = dateStr
             val timeStr = item.createdAt.format(
                 DateTimeFormatter.ofPattern("hh:mm")

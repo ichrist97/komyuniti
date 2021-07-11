@@ -12,15 +12,15 @@
         android:layout_width="match_parent"
         android:layout_height="80dp"
         android:background="@color/white"
-        app:layout_constraintTop_toTopOf="parent"
-        android:contentInsetLeft="0dp"
         android:contentInsetStart="0dp"
-        app:contentInsetLeft="0dp"
-        app:contentInsetStart="0dp"
-        android:contentInsetRight="0dp"
+        android:contentInsetLeft="0dp"
         android:contentInsetEnd="0dp"
+        android:contentInsetRight="0dp"
+        app:contentInsetEnd="0dp"
+        app:contentInsetLeft="0dp"
         app:contentInsetRight="0dp"
-        app:contentInsetEnd="0dp">
+        app:contentInsetStart="0dp"
+        app:layout_constraintTop_toTopOf="parent">
 
         <RelativeLayout
             android:layout_width="fill_parent"
@@ -30,13 +30,13 @@
             tools:layout_editor_absoluteY="18dp">
 
             <TextView
-                android:id="@+id/tv_back"
+                android:id="@+id/newEventGoBack"
                 style="@style/h3_primary"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
-                android:layout_toStartOf="@+id/tv_title_new_event"
                 android:layout_marginStart="@dimen/activity_vertical_margin"
+                android:layout_toStartOf="@+id/tv_title_new_event"
                 android:text="@string/back"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -50,15 +50,15 @@
                 android:text="@string/new_event" />
 
             <TextView
-                android:id="@+id/tv_save"
+                android:id="@+id/createEvent"
                 style="@style/h3_primary"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
-                android:layout_toEndOf="@+id/tv_title_new_event"
                 android:layout_marginEnd="@dimen/activity_vertical_margin"
-                android:text="@string/save"
+                android:layout_toEndOf="@+id/tv_title_new_event"
                 android:gravity="right"
+                android:text="@string/save"
                 app:layout_constraintTop_toTopOf="parent" />
         </RelativeLayout>
     </Toolbar>
@@ -68,24 +68,24 @@
         android:id="@+id/ti_name_event"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/name_your_event"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:hint="@string/name_your_event"
+        android:textColorHint="@color/grey3"
         app:boxBackgroundColor="@color/white"
         app:layout_constraintEnd_toEndOf="@+id/toolbar"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toEndOf="@+id/toolbar"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar"
-        android:layout_marginEnd="16dp"
-        android:layout_marginStart="16dp"
-        android:textColorHint="@color/grey3"
-        >
+        app:layout_constraintTop_toBottomOf="@+id/toolbar">
+
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/eventNameInput"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="@+id/toolbar"
-            app:layout_constraintStart_toEndOf="@+id/toolbar"
-            />
+            app:layout_constraintStart_toEndOf="@+id/toolbar" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -93,26 +93,27 @@
         android:id="@+id/ti_date_event"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
         android:hint="@string/date"
+        android:textColorHint="@color/grey3"
         app:boxBackgroundColor="@color/white"
-        app:startIconDrawable="@drawable/ic_calendar"
-        app:startIconTint="@color/color_primary"
         app:layout_constraintEnd_toEndOf="@+id/ti_name_event"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toEndOf="@+id/ti_name_event"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ti_name_event"
-        android:layout_marginEnd="16dp"
-        android:layout_marginStart="16dp"
-        android:textColorHint="@color/grey3"
-        >
+        app:startIconDrawable="@drawable/ic_calendar"
+        app:startIconTint="@color/color_primary">
+
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/eventDateInput"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:hint="2020-01-01"
             app:layout_constraintEnd_toEndOf="@+id/ti_name_event"
-            app:layout_constraintStart_toEndOf="@+id/ti_name_event"
-            />
+            app:layout_constraintStart_toEndOf="@+id/ti_name_event" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -120,95 +121,154 @@
         android:id="@+id/ti_location"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/location"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:hint="@string/location"
+        android:textColorHint="@color/grey3"
         app:boxBackgroundColor="@color/white"
-        app:startIconDrawable="@drawable/icon_location"
-        app:startIconTint="@color/color_primary"
         app:layout_constraintEnd_toEndOf="@+id/ti_date_event"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toEndOf="@+id/ti_date_event"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ti_date_event"
-        android:layout_marginEnd="16dp"
-        android:layout_marginStart="16dp"
-        android:textColorHint="@color/grey3"
-        >
+        app:startIconDrawable="@drawable/icon_location"
+        app:startIconTint="@color/color_primary">
+
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/eventAddressInput"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="@+id/ti_date_event"
-            app:layout_constraintStart_toEndOf="@+id/ti_date_event"
-            />
+            app:layout_constraintStart_toEndOf="@+id/ti_date_event" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
-
+    <!--
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/ti_people"
+        android:id="@+id/komyunitiInputLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/add_people"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:hint="Add Komyuniti"
+        android:textColorHint="@color/grey3"
         app:boxBackgroundColor="@color/white"
-        app:startIconDrawable="@drawable/icon_people"
-        app:startIconTint="@color/color_primary"
         app:layout_constraintEnd_toEndOf="@+id/ti_location"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toEndOf="@+id/ti_location"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ti_location"
-        android:layout_marginEnd="16dp"
-        android:layout_marginStart="16dp"
-        android:textColorHint="@color/grey3"
+        app:startIconDrawable="@drawable/icon_people"
+        app:startIconTint="@color/color_primary">
 
-        >
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/komyunitiInput"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="@+id/ti_name_event"
-            app:layout_constraintStart_toEndOf="@+id/ti_name_event"
-            />
-
-<!--        <com.google.android.material.chip.Chip
-            android:id="@+id/chip"
-            style="@style/Widget.MaterialComponents.Chip.Entry"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Uni Leute" />-->
+            app:layout_constraintStart_toEndOf="@+id/ti_name_event" />
 
     </com.google.android.material.textfield.TextInputLayout>
+    -->
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/komyunitiInputCard"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        app:cardBackgroundColor="@color/grey1"
+        app:layout_constraintTop_toBottomOf="@+id/ti_location"
+        tools:layout_editor_absoluteX="16dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <!-- Title, secondary and supporting text -->
+            <TextView
+                android:id="@+id/newEventAddKomyunitiText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableStart="@drawable/icon_people"
+                android:drawablePadding="16dp"
+                android:drawableTint="@color/color_primary"
+                android:text="Add Komyuniti"
+                android:textAppearance="?attr/textAppearanceHeadline6" />
+        </LinearLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/membersInputCard"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        app:cardBackgroundColor="@color/grey1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/komyunitiInputCard">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <!-- Title, secondary and supporting text -->
+            <TextView
+                android:id="@+id/newEventAddMembersText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableStart="@drawable/icon_people"
+                android:drawablePadding="16dp"
+                android:drawableTint="@color/color_primary"
+                android:text="Add members"
+                android:textAppearance="?attr/textAppearanceHeadline6" />
+        </LinearLayout>
+
+    </com.google.android.material.card.MaterialCardView>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
         android:orientation="vertical"
         android:padding="16dp"
-        app:layout_constraintTop_toBottomOf="@id/ti_people"
-        >
+        app:layout_constraintTop_toBottomOf="@+id/membersInputCard">
+
         <TextView
-            android:id="@+id/tv_location"
+            android:id="@+id/eventLocationName"
             style="@style/h3"
-            android:text="@string/add_component"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:drawablePadding="16dp"
 
+            android:text="@string/add_component"
             app:drawableEndCompat="@drawable/ic_add"
-            app:drawableTint="@color/color_primary"
-            android:drawablePadding="16dp"/>
-    <CheckBox
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:checked="true"
-        android:text="@string/notes"/>
-    <CheckBox
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/checklist"/>
-    <CheckBox
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/expenses" />
+            app:drawableTint="@color/color_primary" />
+
+        <CheckBox
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:checked="true"
+            android:text="@string/notes" />
+
+        <CheckBox
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/checklist" />
+
+        <CheckBox
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/expenses" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

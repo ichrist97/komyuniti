@@ -30,18 +30,18 @@
             tools:layout_editor_absoluteY="18dp">
 
             <TextView
-                android:id="@+id/tv_back"
+                android:id="@+id/eventGoBack"
                 style="@style/h3_white"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
-                android:layout_toStartOf="@+id/tv_event"
                 android:layout_marginStart="@dimen/activity_vertical_margin"
+                android:layout_toStartOf="@+id/eventHeaderName"
                 android:text="@string/back"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/tv_event"
+                android:id="@+id/eventHeaderName"
                 style="@style/TitleStyle_white"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -50,97 +50,90 @@
                 android:text="@string/event" />
 
             <TextView
-                android:id="@+id/tv_edit"
+                android:id="@+id/btnEventSettings"
                 style="@style/h3_white"
-                app:drawableEndCompat="@drawable/ic_outline_edit_24"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
-                android:layout_toEndOf="@+id/tv_event"
                 android:layout_marginEnd="@dimen/activity_vertical_margin"
+                android:layout_toEndOf="@+id/eventHeaderName"
                 android:gravity="end"
+                app:drawableEndCompat="@drawable/ic_outline_edit_24"
                 app:layout_constraintTop_toTopOf="parent" />
         </RelativeLayout>
     </Toolbar>
 
     <TextView
-        android:id="@+id/tv_event_name"
+        android:id="@+id/eventSmallName"
         style="@style/h2"
-        android:textColor="@color/color_primary"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
         android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:text="@string/tv_done_event_name"
+        android:textColor="@color/color_primary"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tb_event"
-        />
+        app:layout_constraintTop_toBottomOf="@+id/tb_event" />
 
     <TextView
-        android:id="@+id/tv_date"
+        android:id="@+id/eventDate"
         style="@style/p_grey"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
         android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
+        android:drawablePadding="16dp"
         android:text="@string/tv_event_item_date"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_event_name"
-
         app:drawableStartCompat="@drawable/ic_calendar"
+
         app:drawableTint="@color/color_primary"
-        android:drawablePadding="16dp"
-        />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/eventSmallName" />
 
     <TextView
-        android:id="@+id/tv_location"
+        android:id="@+id/eventLocationName"
         style="@style/p_grey"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
         android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:text="@string/tv_location"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_date"
-
-        app:drawableStartCompat="@drawable/icon_location"
-        app:drawableTint="@color/color_primary"
+        android:layout_marginTop="16dp"
         android:drawablePadding="16dp"
-        />
+        android:text="@string/tv_location"
+        app:drawableStartCompat="@drawable/icon_location"
+
+        app:drawableTint="@color/color_primary"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/eventDate" />
 
     <TextView
         android:id="@+id/tv_groups"
         style="@style/p_grey"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
         android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_location"
-
-        app:drawableStartCompat="@drawable/ic_group"
-        app:drawableTint="@color/color_primary"
+        android:layout_marginTop="16dp"
         android:drawablePadding="16dp"
-        />
+        app:drawableStartCompat="@drawable/ic_group"
+
+        app:drawableTint="@color/color_primary"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/eventLocationName" />
 
     <com.google.android.material.chip.ChipGroup
         android:id="@+id/chip_group"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:drawablePadding="16dp"
         app:drawableStartCompat="@drawable/icon_location"
         app:drawableTint="@color/color_primary"
-        android:drawablePadding="16dp"
 
         app:layout_constraintStart_toEndOf="@id/tv_groups"
-        app:layout_constraintTop_toBottomOf="@+id/tv_location"
-       >
+        app:layout_constraintTop_toBottomOf="@+id/eventLocationName">
 
         <com.google.android.material.chip.Chip
-            android:id="@+id/chip_komyuniti"
+            android:id="@+id/eventKomyunitiName"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:text="@string/chip_groups" />
@@ -155,8 +148,8 @@
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         app:cardBackgroundColor="@color/grey1"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_groups">
 
         <LinearLayout
@@ -169,11 +162,11 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/notes"
-                android:textAppearance="?attr/textAppearanceHeadline6"
                 android:drawableStart="@drawable/ic_note"
+                android:drawablePadding="16dp"
                 android:drawableTint="@color/color_primary"
-                android:drawablePadding="16dp"/>
+                android:text="@string/notes"
+                android:textAppearance="?attr/textAppearanceHeadline6" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -193,13 +186,11 @@
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         app:cardBackgroundColor="@color/grey1"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/card_notes">
 
-    <include
-        layout="@layout/card_view"
-        />
+        <include layout="@layout/card_view" />
     </com.google.android.material.card.MaterialCardView>
 
     <com.google.android.material.card.MaterialCardView
@@ -207,11 +198,12 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
+        android:visibility="gone"
         app:cardBackgroundColor="@color/grey1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/card_checklist">
-        android:visibility="gone"
+
 
         <include layout="@layout/card_view" />
     </com.google.android.material.card.MaterialCardView>
@@ -224,12 +216,21 @@
         android:layout_marginBottom="62dp"
         android:clickable="true"
         android:focusable="true"
+        android:src="@drawable/ic_chat"
         app:backgroundTint="@color/color_primary"
-        app:tint="@android:color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:src="@drawable/ic_chat" />
+        app:tint="@android:color/white" />
 
+    <TextView
+        android:id="@+id/noKomyunitiStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="No komyuniti associated"
+        android:visibility="gone"
+        app:layout_constraintStart_toEndOf="@+id/tv_groups"
+        app:layout_constraintTop_toBottomOf="@+id/eventLocationName" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

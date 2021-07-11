@@ -20,8 +20,8 @@
             android:id="@+id/action_navigation_events_to_newEvent"
             app:destination="@id/newEvent" />
         <action
-            android:id="@+id/action_navigation_events_to_doneEventViewFragment"
-            app:destination="@id/doneEventViewFragment" />
+            android:id="@+id/action_navigation_events_to_eventFragment"
+            app:destination="@id/eventFragment" />
     </fragment>
 
     <fragment
@@ -96,21 +96,15 @@
         <action
             android:id="@+id/action_newEvent_to_navigation_events"
             app:destination="@id/navigation_events" />
-    </fragment>
-    <fragment
-        android:id="@+id/doneEventViewFragment"
-        android:name="com.example.komyuniti.ui.events.DoneEventViewFragment"
-        android:label="done_event_view_fragment"
-        tools:layout="@layout/done_event_view_fragment">
         <action
-            android:id="@+id/action_doneEventViewFragment_to_newEvent"
-            app:destination="@id/newEvent" />
+            android:id="@+id/action_newEvent_to_eventFragment"
+            app:destination="@id/eventFragment" />
         <action
-            android:id="@+id/action_doneEventViewFragment_to_navigation_events"
-            app:destination="@id/navigation_events" />
+            android:id="@+id/action_newEvent_to_addKomyunitiFragment"
+            app:destination="@id/addKomyunitiFragment" />
         <action
-            android:id="@+id/action_doneEventViewFragment_to_chatFragment"
-            app:destination="@id/chatFragment" />
+            android:id="@+id/action_newEvent_to_newEventAddMembersFragment"
+            app:destination="@id/newEventAddMembersFragment" />
     </fragment>
     <fragment
         android:id="@+id/chatFragment"
@@ -118,8 +112,8 @@
         android:label="ChatFragment"
         tools:layout="@layout/fragment_chat">
         <action
-            android:id="@+id/action_chatFragment_to_doneEventViewFragment"
-            app:destination="@id/doneEventViewFragment" />
+            android:id="@+id/action_chatFragment_to_eventFragment"
+            app:destination="@id/eventFragment" />
     </fragment>
     <fragment
         android:id="@+id/friendProfileFragment"
@@ -138,14 +132,17 @@
             android:id="@+id/action_komyunitiFragment_to_navigation_profile"
             app:destination="@id/navigation_profile" />
         <action
-            android:id="@+id/action_komyunitiFragment_to_doneEventViewFragment"
-            app:destination="@id/doneEventViewFragment" />
-        <action
             android:id="@+id/action_komyunitiFragment_to_friendProfileFragment"
             app:destination="@id/friendProfileFragment" />
         <action
             android:id="@+id/action_komyunitiFragment_to_fragmentAddMember"
             app:destination="@id/fragmentAddMember" />
+        <action
+            android:id="@+id/action_komyunitiFragment_to_eventFragment"
+            app:destination="@id/eventFragment" />
+        <action
+            android:id="@+id/action_komyunitiFragment_to_newEvent"
+            app:destination="@id/newEvent" />
     </fragment>
     <fragment
         android:id="@+id/fragmentAddMember"
@@ -176,5 +173,33 @@
         <action
             android:id="@+id/action_fragmentCreateKomyunitiChooseMembers_to_fragmentCreateKomyuniti"
             app:destination="@id/fragmentCreateKomyuniti" />
+    </fragment>
+    <fragment
+        android:id="@+id/eventFragment"
+        android:name="com.example.komyuniti.ui.event.EventFragment"
+        android:label="fragment_event"
+        tools:layout="@layout/fragment_event" >
+        <action
+            android:id="@+id/action_eventFragment_to_chatFragment"
+            app:destination="@id/chatFragment" />
+        <action
+            android:id="@+id/action_eventFragment_to_navigation_events"
+            app:destination="@id/navigation_events" />
+    </fragment>
+    <fragment
+        android:id="@+id/addKomyunitiFragment"
+        android:name="com.example.komyuniti.ui.newEvent.addKomyuniti.AddKomyunitiFragment"
+        android:label="AddKomyunitiFragment" >
+        <action
+            android:id="@+id/action_addKomyunitiFragment_to_newEvent"
+            app:destination="@id/newEvent" />
+    </fragment>
+    <fragment
+        android:id="@+id/newEventAddMembersFragment"
+        android:name="com.example.komyuniti.ui.newEvent.addMembers.NewEventAddMembersFragment"
+        android:label="NewEventAddMembersFragment" >
+        <action
+            android:id="@+id/action_newEventAddMembersFragment_to_newEvent"
+            app:destination="@id/newEvent" />
     </fragment>
 </navigation>

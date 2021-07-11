@@ -11,6 +11,7 @@ import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.example.komyuniti.R
 import com.example.komyuniti.models.Event
+import com.example.komyuniti.ui.event.EventViewModel
 import java.time.format.DateTimeFormatter
 
 
@@ -49,7 +50,7 @@ class EventAdapter(
             itemView.setOnClickListener {
                 // set eventId in event detail viewModel
                 val position: Int = adapterPosition
-                val viewModel = ViewModelProvider(activity).get(DoneEventViewModel::class.java)
+                val viewModel = ViewModelProvider(activity).get(EventViewModel::class.java)
                 viewModel.setEventId(data[position].id)
 
                 // route to details view
