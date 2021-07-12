@@ -109,7 +109,7 @@ class LoginFragment : Fragment() {
                     Navigation.findNavController(view)
                         .navigate(R.id.action_loginFragment_to_main_navigation)
                 } else {
-                    Toast.makeText(activity, "Invalid email or password!", Toast.LENGTH_LONG).show()
+                    //Toast.makeText(activity, "Invalid email or password!", Toast.LENGTH_LONG).show()
                 }
             }
         }

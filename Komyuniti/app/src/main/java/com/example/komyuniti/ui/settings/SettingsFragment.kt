@@ -95,6 +95,8 @@ class SettingsFragment : Fragment() {
             // use commit as apply doesnt work in this case because the app will be shutdown
             preferences.edit().remove("accessToken").commit()
             preferences.edit().remove("curUserId").commit()
+            val mainAct = activity as MainActivity
+            mainAct.makeToast("Komyuniti logout successful")
 
             /*
             Exit the whole app as workaround to route back to login because introducing
@@ -161,12 +163,14 @@ class SettingsFragment : Fragment() {
                 binding.etCurrentPassword.editText?.setText("")
                 binding.etNewPassword.editText?.setText("")
             } else {
-                withContext(Dispatchers.Main) {
-                    val toast =
-                        Toast.makeText(activity, "Current password is incorrect", Toast.LENGTH_LONG)
-                    toast.setGravity(Gravity.TOP or Gravity.CENTER_HORIZONTAL, 0, 0)
-                    toast.show()
+                if(res.errors?.get(0)?.message == "Password is incorrect") {
+                    mainAct.makeToast("Current password was incorrect")
+                } else {
+                    withContext(Dispatchers.Main) {
+                        Toast.makeText(activity, "Couldn't update password", Toast.LENGTH_LONG).show()
+                    }
                 }
+
             }
         }
     }
@@ -174,7 +178,12 @@ class SettingsFragment : Fragment() {
     private fun initSave(binding: FragmentSettingsBinding) {
         binding.saveSettings.setOnClickListener{
             updateInfo(binding)
-            updatePassword(binding)
+            val old_pw: String = binding.etCurrentPassword.editText?.text.toString()
+            val new_pw: String = binding.etNewPassword.editText?.text.toString()
+            if (old_pw != "" || new_pw != "") {
+                updatePassword(binding)
+            }
+
             hideKeyboard()
 
 /*            if(profilePic!=null) {
