@@ -46,6 +46,7 @@ class EventFragment : Fragment() {
         initNavigation()
         initSettings(apollo)
         loadData(apollo)
+        initExtras()
 
         return binding.root
     }
@@ -60,11 +61,14 @@ class EventFragment : Fragment() {
             viewModel.getEvent().observe(viewLifecycleOwner, {
                 if (it != null) {
                     //shorten name if to long for header
-                    binding.eventHeaderName.text = if(it.name?.length!! > 12) it.name?.subSequence(0,12).toString() else it.name
+                    binding.eventHeaderName.text =
+                        if (it.name?.length!! > 12) it.name.subSequence(0, 12)
+                            .toString() else it.name
                     binding.eventSmallName.text = it.name
                     val dateStr = it.date?.format(DateTimeFormatter.ofPattern("dd.MM.yyyy"))
                     binding.eventDate.text = dateStr
-                    binding.eventLocationName.text = it.address
+                    binding.eventLocationName.text =
+                        if (it.address != null && it.address.isNotEmpty()) it.address else "No address given"
 
                     // show komyuniti
                     if (it.komyuniti != null) {
@@ -73,10 +77,11 @@ class EventFragment : Fragment() {
                         binding.noKomyunitiStatus.visibility = GONE
 
                         // route to komyuniti on click
-                        binding.eventKomyunitiName.setOnClickListener{ view ->
+                        binding.eventKomyunitiName.setOnClickListener { view ->
                             // set komyunitiId in komyuniti view model
                             val komyunitiViewModel = ViewModelProvider(requireActivity()).get(
-                                KomyunitiViewModel::class.java)
+                                KomyunitiViewModel::class.java
+                            )
                             komyunitiViewModel.setKomyuniti(it.komyuniti.id)
                             Navigation.findNavController(view)
                                 .navigate(R.id.action_eventFragment_to_komyunitiFragment)
@@ -127,15 +132,16 @@ class EventFragment : Fragment() {
                                 // user cancels dialog
                             })
                         builder.create().show()
-                            true
-                        }
-                        //navigate to edit event fragment
-                        R.id.settingsEditEvent -> {
-                            Navigation.findNavController(it).navigate(R.id.action_eventFragment_to_editEventFragment)
-                            true
-                        }
-                        else -> false
+                        true
                     }
+                    //navigate to edit event fragment
+                    R.id.settingsEditEvent -> {
+                        Navigation.findNavController(it)
+                            .navigate(R.id.action_eventFragment_to_editEventFragment)
+                        true
+                    }
+                    else -> false
+                }
             }
 
             // display menu
@@ -178,6 +184,15 @@ class EventFragment : Fragment() {
             } else {
                 Toast.makeText(activity, "Cannot open the chat currently", Toast.LENGTH_LONG).show()
             }
+        }
+    }
+
+    private fun initExtras() {
+        binding.cardNotes.setOnClickListener{
+            Toast.makeText(activity, "Coming soon!", Toast.LENGTH_LONG).show()
+        }
+        binding.cardChecklist.setOnClickListener{
+            Toast.makeText(activity, "Coming soon!", Toast.LENGTH_LONG).show()
         }
     }
 }

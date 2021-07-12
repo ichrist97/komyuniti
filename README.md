@@ -31,4 +31,20 @@ gradlew :app:downloadApolloSchema --endpoint="http://localhost:3000/graphql" --s
 ## Backend
 
 The backend was implemented in another repository: [Look here!](https://gitlab.lrz.de/00000000014A650B/msp_backend)
+
+Make sure the backend is running, before starting the app.
+
+## Database
+
+A running version of MongoDB is needed to run this project! To install it see [this](https://docs.mongodb.com/manual/installation/)
+
+### Import existing data
+
+Some datasets to start with are provided in `development_assets/database`. To import these datasets into you mongodb, run the following commands:
+
+```
+mongorestore -h localhost:<MONGO_PORT> --drop -d msp <PATH-TO-DATABASE-MSP-IN-DEV-ASSETS>
+```
+
+As the last path take `development_assets/database/msp`
  
