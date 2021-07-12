@@ -31,10 +31,6 @@ class EditEventViewModel : ViewModel() {
         eventId.postValue(id)
     }
 
-    fun getEvent(): LiveData<Event?> {
-        return event
-    }
-
     fun setMembers(obj: List<User>) {
         members.postValue(obj)
     }
@@ -43,9 +39,6 @@ class EditEventViewModel : ViewModel() {
         return members
     }
 
-    fun setKomyuniti(obj: Komyuniti) {
-        komyuniti.postValue(obj)
-    }
 
     fun getKomyuniti(): LiveData<Komyuniti> {
         return komyuniti

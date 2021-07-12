@@ -15,13 +15,16 @@ import com.example.komyuniti.R
 import com.example.komyuniti.databinding.FragmentEditEventBinding
 import com.example.komyuniti.databinding.FragmentEventBinding
 import com.example.komyuniti.ui.event.EventViewModel
+import com.example.komyuniti.ui.newEvent.NewEventViewModel
 import java.time.format.DateTimeFormatter
 
 class EditEventFragment : Fragment() {
 
-    private lateinit var viewModel: EditEventViewModel
+    private lateinit var editEventViewModel: EditEventViewModel
     private lateinit var binding: FragmentEditEventBinding
     private lateinit var activityViewModel: MainViewModel
+    private lateinit var eventViewModel: EventViewModel
+    private lateinit var newEventViewModel: NewEventViewModel
 
 
     override fun onCreateView(
@@ -29,7 +32,9 @@ class EditEventFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        viewModel = ViewModelProvider(requireActivity()).get(EditEventViewModel::class.java)
+        editEventViewModel = ViewModelProvider(requireActivity()).get(EditEventViewModel::class.java)
+        eventViewModel = ViewModelProvider(requireActivity()).get(EventViewModel::class.java)
+        newEventViewModel = ViewModelProvider(requireActivity()).get(NewEventViewModel::class.java)
         activityViewModel = ViewModelProvider(
             activity as ViewModelStoreOwner
         ).get(MainViewModel::class.java)
@@ -51,12 +56,12 @@ class EditEventFragment : Fragment() {
     }
 
     private fun loadData(apollo: ApolloClient) {
-        val eventId = viewModel.getEventId().value
+        val eventId = eventViewModel.getEventId().value
         if (eventId != null) {
             // load data
-            viewModel.fetchEvent(apollo, eventId)
+            eventViewModel.fetchEvent(apollo, eventId)
             // set observer
-            viewModel.getEvent().observe(viewLifecycleOwner, {
+            eventViewModel.getEvent().observe(viewLifecycleOwner, {
                 if (it != null) {
                     binding.tiNameEvent.editText?.setText(it.name)
                     val dateStr = it.date?.format(DateTimeFormatter.ofPattern("dd.MM.yyyy"))
@@ -73,7 +78,7 @@ class EditEventFragment : Fragment() {
                         binding.noKomyunitiStatus.visibility = View.VISIBLE
                     }
                     //show friend
-                    viewModel.getMembers().observe(viewLifecycleOwner, {
+                    newEventViewModel.getMembers().observe(viewLifecycleOwner, {
                         if (it != null) {
                             binding.newEventAddMembersText.text = "Change members"
                         } else {
@@ -81,7 +86,7 @@ class EditEventFragment : Fragment() {
                         }
                     })
                     //add komyuniti
-                    viewModel.getKomyuniti().observe(viewLifecycleOwner, {
+                    newEventViewModel.getKomyuniti().observe(viewLifecycleOwner, {
                         if (it != null) {
                             binding.newEventAddKomyunitiText.text = "Change komyuniti"
                         } else {
