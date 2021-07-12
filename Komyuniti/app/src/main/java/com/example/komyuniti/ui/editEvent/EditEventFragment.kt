@@ -2,20 +2,23 @@ package com.example.komyuniti.ui.editEvent
 
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.ViewModelStoreOwner
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
 import com.apollographql.apollo.ApolloClient
+import com.apollographql.apollo.api.toInput
 import com.example.komyuniti.MainViewModel
 import com.example.komyuniti.R
 import com.example.komyuniti.databinding.FragmentEditEventBinding
-import com.example.komyuniti.databinding.FragmentEventBinding
 import com.example.komyuniti.ui.event.EventViewModel
 import com.example.komyuniti.ui.newEvent.NewEventViewModel
+import kotlinx.coroutines.launch
 import java.time.format.DateTimeFormatter
 
 class EditEventFragment : Fragment() {
@@ -42,16 +45,50 @@ class EditEventFragment : Fragment() {
         val apollo = activityViewModel.getApollo(requireContext())
 
         loadData(apollo)
-        initNavigation()
+        initNavigation(apollo)
         return binding.root
     }
 
-    private fun initNavigation() {
+    private fun initNavigation(apollo: ApolloClient) {
         binding.editEventGoBack.setOnClickListener {
             Navigation.findNavController(it).navigate(R.id.action_editEventFragment_to_eventFragment)
         }
         binding.saveEditEvent.setOnClickListener {
             Navigation.findNavController(it).navigate(R.id.action_editEventFragment_to_eventFragment)
+            saveData(apollo)
+        }
+    }
+
+    private fun saveData(apollo: ApolloClient) {
+        val eventId = eventViewModel.getEventId().value
+        if (eventId != null) {
+            // gather user input
+            val name = binding.eventNameInput.text.toString()
+            if (name.isEmpty()) {
+                Toast.makeText(activity, "Please pick a name", Toast.LENGTH_LONG).show()
+            }
+            val date = binding.eventDateInput.text.toString().toInput()
+            if (date.value?.isEmpty() == true) {
+                Toast.makeText(activity, "Please pick a date", Toast.LENGTH_LONG).show()
+            }
+            // address is optional
+            val address = binding.eventAddressInput.text.toString()
+
+            lifecycleScope.launch {
+                //async request with collected user data
+                val res: String? = editEventViewModel.updateEvent(
+                    id = eventId,
+                    apollo = apollo,
+                    name = name,
+                    date = date,
+                    address = address
+                )
+                if (res is String) {
+                    Toast.makeText(activity, res, Toast.LENGTH_LONG).show()
+                } else {
+                    Log.d("EditEventFragment failed to save data", res.toString())
+                }
+            }
         }
     }
 
@@ -77,27 +114,10 @@ class EditEventFragment : Fragment() {
                         binding.eventKomyunitiName.visibility = View.GONE
                         binding.noKomyunitiStatus.visibility = View.VISIBLE
                     }
-                    //show friend
-                    newEventViewModel.getMembers().observe(viewLifecycleOwner, {
-                        if (it != null) {
-                            binding.newEventAddMembersText.text = "Change members"
-                        } else {
-                            binding.newEventAddMembersText.text = "Add members"
-                        }
-                    })
-                    //add komyuniti
-                    newEventViewModel.getKomyuniti().observe(viewLifecycleOwner, {
-                        if (it != null) {
-                            binding.newEventAddKomyunitiText.text = "Change komyuniti"
-                        } else {
-                            binding.newEventAddKomyunitiText.text = "Add komyuniti"
-                        }
-                    })
-
                 }
             })
         } else {
-            Toast.makeText(activity, "Cannot load event", Toast.LENGTH_LONG).show()
+            Toast.makeText(activity, "Cannot load event data", Toast.LENGTH_LONG).show()
         }
     }
 }

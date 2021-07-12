@@ -52,13 +52,14 @@ class EventFragment : Fragment() {
 
     private fun loadData(apollo: ApolloClient) {
         val eventId = viewModel.getEventId().value
+        Log.d("event fragment id", eventId.toString())
         if (eventId != null) {
             // load data
             viewModel.fetchEvent(apollo, eventId)
             // set observer
             viewModel.getEvent().observe(viewLifecycleOwner, {
                 if (it != null) {
-                    binding.eventHeaderName.text = it.name
+                    //binding.eventHeaderName.text = it.name
                     binding.eventSmallName.text = it.name
                     val dateStr = it.date?.format(DateTimeFormatter.ofPattern("dd.MM.yyyy"))
                     binding.eventDate.text = dateStr
