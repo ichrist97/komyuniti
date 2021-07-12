@@ -192,7 +192,7 @@
 
 
     <TextView
-        android:id="@+id/tv_forgot_password"
+        android:id="@+id/tv_change_password"
         style="@style/TextViewStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

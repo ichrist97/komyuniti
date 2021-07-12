@@ -7,13 +7,16 @@ import android.Manifest
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
@@ -25,14 +28,16 @@ import androidx.navigation.Navigation
 import com.apollographql.apollo.api.Input
 import com.apollographql.apollo.api.Response
 import com.apollographql.apollo.api.toInput
+import com.example.komyuniti.MainActivity
 import com.example.komyuniti.MainViewModel
 import com.example.komyuniti.R
+import com.example.komyuniti.databinding.FragmentProfileBinding
 import com.example.komyuniti.databinding.FragmentSettingsBinding
 import com.example.komyuniti.models.User
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.util.*
+import kotlin.system.exitProcess
 
 
 //import com.example.komyuniti.ui.feed.SettingsViewModel
@@ -71,10 +76,33 @@ class SettingsFragment : Fragment() {
         editProfilePic(fragmentSettingsBinding)
         initSave(fragmentSettingsBinding)
         displayInfo(fragmentSettingsBinding)
-
+        initChangePassword(fragmentSettingsBinding)
+        initLogout(fragmentSettingsBinding)
         return root
     }
 
+    private fun initChangePassword(binding: FragmentSettingsBinding) {
+        binding.tvChangePassword.setOnClickListener {
+            updatePassword(binding)
+        }
+    }
+
+    private fun initLogout(binding: FragmentSettingsBinding) {
+        binding.settingsLogoutBtn.setOnClickListener { view: View ->
+            // remove token and curUser from preferences
+            val preferences: SharedPreferences =
+                context?.getSharedPreferences("Auth", Context.MODE_PRIVATE)!!
+            // use commit as apply doesnt work in this case because the app will be shutdown
+            preferences.edit().remove("accessToken").commit()
+            preferences.edit().remove("curUserId").commit()
+
+            /*
+            Exit the whole app as workaround to route back to login because introducing
+            the login navigation graph in the main navigation leads to an endless loop
+             */
+            exitProcess(-1)
+        }
+    }
 
 
     private fun displayInfo(binding: FragmentSettingsBinding) {
@@ -102,14 +130,13 @@ class SettingsFragment : Fragment() {
                 res = settingsViewModel.updateCurrentUserDetails(apollo, email, name)
             }
             // on success
+            val mainAct = activity as MainActivity
             if (res.data != null) {
-                Toast.makeText(
-                    activity,
-                    "Succesfully updated username and email!",
-                    Toast.LENGTH_LONG
-                ).show()
+                Log.d("Settings:", "Update Info" + res.data.toString())
+                mainAct.makeToast("Succesfully updated username and email!")
+
             } else {
-                Toast.makeText(activity, "Couldn't update details", Toast.LENGTH_LONG).show()
+                mainAct.makeToast("Couldn't update details")
             }
         }
     }
@@ -126,14 +153,10 @@ class SettingsFragment : Fragment() {
                 res = settingsViewModel.updatePassword(apollo, old_pw, new_pw)
             }
             // on success
+            val mainAct = activity as MainActivity
             if (res.data != null) {
                 withContext(Dispatchers.Main) {
-                    val toast = Toast.makeText(
-                        requireContext(),
-                        "Succesfully updated password", Toast.LENGTH_SHORT
-                    )
-                    toast.setGravity(Gravity.TOP or Gravity.CENTER_HORIZONTAL, 0, 0)
-                    toast.show()
+                    mainAct.makeToast("Successfully updated password")
                 }
                 binding.etCurrentPassword.editText?.setText("")
                 binding.etNewPassword.editText?.setText("")
@@ -152,6 +175,8 @@ class SettingsFragment : Fragment() {
         binding.saveSettings.setOnClickListener{
             updateInfo(binding)
             updatePassword(binding)
+            hideKeyboard()
+
 /*            if(profilePic!=null) {
                 val uri:Uri = saveImageToInternalStorage(R.drawable.flower8)
                 val profilePicImageView: ImageView = findViewById(R.id.galleryButton)
@@ -163,6 +188,18 @@ class SettingsFragment : Fragment() {
 
         }
 
+    }
+    fun Fragment.hideKeyboard() {
+        view?.let { activity?.hideKeyboard(it) }
+    }
+
+    fun Activity.hideKeyboard() {
+        hideKeyboard(currentFocus ?: View(this))
+    }
+
+    fun Context.hideKeyboard(view: View) {
+        val inputMethodManager = getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
     }
     // Method to save an image to internal storage
 /*    private fun saveImageToInternalStorage(drawableId:Int):Uri{

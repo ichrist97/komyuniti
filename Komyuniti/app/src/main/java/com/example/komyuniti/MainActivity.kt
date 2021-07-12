@@ -33,6 +33,14 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    fun makeToast(text: String) {
+        Toast.makeText(
+            this,
+            text,
+            Toast.LENGTH_LONG
+        ).show()
+    }
+
     fun setMainNavigationController() {
         //Controller für Bottom Navigation
         val navView: BottomNavigationView = binding.navView
