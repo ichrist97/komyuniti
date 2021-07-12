@@ -160,12 +160,16 @@ class ScanFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        codeScanner.startPreview()
+        if (this::codeScanner.isInitialized) {
+            codeScanner.startPreview()
+        }
     }
 
     override fun onPause() {
-        codeScanner.releaseResources()
         super.onPause()
+        if (this::codeScanner.isInitialized) {
+            codeScanner.releaseResources()
+        }
     }
 
 }
