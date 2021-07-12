@@ -68,12 +68,13 @@ class EditEventFragment : Fragment() {
         val month = c.get(Calendar.MONTH)
         val day = c.get(Calendar.DAY_OF_MONTH)
         binding.eventDateInput.setOnClickListener{
-            Log.d("DatePicker clicke", year.toString())
+            Log.d("DatePicker clicked", year.toString())
             val dpd = DatePickerDialog(
                 requireContext(),
-                DatePickerDialog.OnDateSetListener { view, mYear, mMonth, mDay ->
+                { view, mYear, mMonth, mDay ->
                     //set to textview
-                    binding.eventDateInput.setText("$mYear-$mMonth-$mDay")
+                    val correctedMonth = mMonth+1 //wrong month for some reason
+                    binding.eventDateInput.setText("$mYear-$correctedMonth-$mDay")
                 }, year, month, day)
             //show dialog
             dpd.show()
@@ -122,7 +123,7 @@ class EditEventFragment : Fragment() {
             eventViewModel.getEvent().observe(viewLifecycleOwner, {
                 if (it != null) {
                     binding.tiNameEvent.editText?.setText(it.name)
-                    val dateStr = it.date?.format(DateTimeFormatter.ofPattern("dd.MM.yyyy"))
+                    val dateStr = it.date?.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
                     binding.tiDateEvent.editText?.setText(dateStr)
                     binding.tiLocation.editText?.setText(it.address)
 
