@@ -6,6 +6,7 @@ import GetFriendsQuery
 import GetKomunitiesOverviewQuery
 import android.graphics.Bitmap
 import android.graphics.Color
+import android.net.Uri
 import android.util.Base64
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

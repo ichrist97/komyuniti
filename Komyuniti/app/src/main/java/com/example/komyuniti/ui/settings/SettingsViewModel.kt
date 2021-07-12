@@ -3,6 +3,7 @@ package com.example.komyuniti.ui.settings
 import CurrentUserDetailsQuery
 import UpdatePasswordMutation
 import UpdateUserDetailsMutation
+import android.net.Uri
 import androidx.lifecycle.ViewModel
 import com.apollographql.apollo.ApolloClient
 import com.apollographql.apollo.api.Input
@@ -11,11 +12,20 @@ import com.apollographql.apollo.coroutines.await
 import com.example.komyuniti.models.User
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import type.LoginInput
 import type.UpdatePasswordInput
 import type.UpdateUserDetailsInput
 
 class SettingsViewModel : ViewModel() {
+
+    private var profilePic: Uri? = null
+
+    fun setProfilePic(path: Uri) {
+        profilePic = path
+    }
+
+    fun getProfilePic(): Uri? {
+        return profilePic
+    }
 
     suspend fun getCurrentUserDetails(
         apollo: ApolloClient

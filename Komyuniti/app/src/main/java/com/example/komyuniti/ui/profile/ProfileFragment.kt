@@ -24,7 +24,7 @@ import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayout.*
 import java.security.*
 import com.example.komyuniti.models.User
-import com.example.komyuniti.ui.komyuniti.KomyunitiViewModel
+import com.example.komyuniti.ui.settings.SettingsViewModel
 import com.example.komyuniti.util.loadKeyPair
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
@@ -35,6 +35,7 @@ class ProfileFragment : Fragment() {
 
     private lateinit var profileViewModel: ProfileViewModel
     private lateinit var activityViewModel: MainViewModel
+    private lateinit var settingsViewModel: SettingsViewModel
 
     private var _binding: FragmentProfileBinding? = null
 
@@ -55,6 +56,8 @@ class ProfileFragment : Fragment() {
         ).get(MainViewModel::class.java)
         profileViewModel =
             ViewModelProvider(this).get(ProfileViewModel::class.java)
+        settingsViewModel =
+            ViewModelProvider(requireActivity()).get(SettingsViewModel::class.java)
 
         //navigation
         (activity as MainActivity).setMainNavigationController()
@@ -83,10 +86,19 @@ class ProfileFragment : Fragment() {
         initLogout(binding)
         initSettings(binding)
         initCreateKomyuniti()
-
         setCurrentUserName()
+        updateProfilePic(settingsViewModel)
 
         return root
+    }
+
+    private fun updateProfilePic(settingsViewModel: SettingsViewModel) {
+        lifecycleScope.launch {
+            if (settingsViewModel.getProfilePic() != null) {
+                val uriPic = settingsViewModel.getProfilePic()
+                binding.imageView.setImageURI(uriPic)
+            }
+        }
     }
 
     private fun initTabNavigation() {

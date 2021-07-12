@@ -12,7 +12,6 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
-import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -31,7 +30,6 @@ import com.apollographql.apollo.api.toInput
 import com.example.komyuniti.MainActivity
 import com.example.komyuniti.MainViewModel
 import com.example.komyuniti.R
-import com.example.komyuniti.databinding.FragmentProfileBinding
 import com.example.komyuniti.databinding.FragmentSettingsBinding
 import com.example.komyuniti.models.User
 import kotlinx.coroutines.Dispatchers
@@ -64,7 +62,7 @@ class SettingsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        settingsViewModel = ViewModelProvider(this).get(SettingsViewModel::class.java)
+        settingsViewModel = ViewModelProvider(requireActivity()).get(SettingsViewModel::class.java)
         activityViewModel = ViewModelProvider(activity as ViewModelStoreOwner).get(MainViewModel::class.java)
 
 
@@ -177,27 +175,25 @@ class SettingsFragment : Fragment() {
 
     private fun initSave(binding: FragmentSettingsBinding) {
         binding.saveSettings.setOnClickListener{
-            updateInfo(binding)
-            val old_pw: String = binding.etCurrentPassword.editText?.text.toString()
-            val new_pw: String = binding.etNewPassword.editText?.text.toString()
-            if (old_pw != "" || new_pw != "") {
-                updatePassword(binding)
+            lifecycleScope.launch {
+                updateInfo(binding)
+                val old_pw: String = binding.etCurrentPassword.editText?.text.toString()
+                val new_pw: String = binding.etNewPassword.editText?.text.toString()
+                if (old_pw != "" || new_pw != "") {
+                    updatePassword(binding)
+                }
             }
-
+            //display profile pic preview if available
+            if (this::profilePic.isInitialized) {
+                lifecycleScope.launch {
+                    settingsViewModel.setProfilePic(profilePic)
+                }
+            }
             hideKeyboard()
-
-/*            if(profilePic!=null) {
-                val uri:Uri = saveImageToInternalStorage(R.drawable.flower8)
-                val profilePicImageView: ImageView = findViewById(R.id.galleryButton)
-
-                // Display the internal storage saved image in image view
-                image_view_saved.setImageURI(uri)
-            }*/
-            //upload image if set
-
         }
 
     }
+
     fun Fragment.hideKeyboard() {
         view?.let { activity?.hideKeyboard(it) }
     }
@@ -210,44 +206,6 @@ class SettingsFragment : Fragment() {
         val inputMethodManager = getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
         inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
     }
-    // Method to save an image to internal storage
-/*    private fun saveImageToInternalStorage(drawableId:Int):Uri{
-        // Get the image from drawable resource as drawable object
-        val drawable = ContextCompat.getDrawable(requireContext(),drawableId)
-
-        // Get the bitmap from drawable object
-        val bitmap = (drawable as BitmapDrawable).bitmap
-
-        // Get the context wrapper instance
-        val wrapper = ContextWrapper(requireContext())
-
-        // Initializing a new file
-        // The bellow line return a directory in internal storage
-        var file = wrapper.getDir("images", Context.MODE_PRIVATE)
-
-
-        // Create a file to save the image
-        file = File(file, "${UUID.randomUUID()}.jpg")
-
-        try {
-            // Get the file output stream
-            val stream: OutputStream = FileOutputStream(file)
-
-            // Compress bitmap
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream)
-
-            // Flush the stream
-            stream.flush()
-
-            // Close stream
-            stream.close()
-        } catch (e: IOException){ // Catch the exception
-            e.printStackTrace()
-        }
-
-        // Return the saved image uri
-        return Uri.parse(file.absolutePath)
-    }*/
 
 
     private fun editProfilePic(binding: FragmentSettingsBinding) {
@@ -343,9 +301,10 @@ class SettingsFragment : Fragment() {
     //handle result of picked image
     override fun onActivityResult(requestCode: Int, resultCode: Int, imageData: Intent?) {
         if (resultCode == Activity.RESULT_OK && requestCode == IMAGE_PICK_CODE){
-            fragmentSettingsBinding.imageView.setImageURI(imageData?.data)
-            profilePic = imageData?.data!!
-//            val input = UserImageUploadInput(imageData?.data)
+            lifecycleScope.launch {
+                fragmentSettingsBinding.imageView.setImageURI(imageData?.data)
+                profilePic = imageData?.data!!
+            }
         }
     }
 
