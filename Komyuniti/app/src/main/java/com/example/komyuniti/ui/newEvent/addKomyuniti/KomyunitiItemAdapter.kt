@@ -47,18 +47,21 @@ class KomyunitiItemAdapter(
 
                 // add or remove
                 val alreadySelected =
-                    viewModel.getSelectedKomyuniti().value?.id == data[position].id
+                    viewModel.getSelectedKomyuniti().value != null && viewModel.getSelectedKomyuniti().value!!.id == data[position].id
                 viewModel.setSelectedKomyuniti(data[position]) // overwrite selected value
 
                 viewModel.getSelectedKomyuniti().observe(viewLifecycleOwner, {
-                    val nowSelected =
-                        viewModel.getSelectedKomyuniti().value?.id == data[position].id
-                    if (alreadySelected && nowSelected) {
-                        checked.visibility = GONE
-                    } else if (!alreadySelected && nowSelected) {
-                        checked.visibility = VISIBLE
-                    } else {
-                        checked.visibility = GONE
+                    if (it != null) {
+                        val nowSelected = it.id == data[position].id
+                        if (alreadySelected && nowSelected) {
+                            checked.visibility = GONE
+                            viewModel.setSelectedKomyuniti(null)
+                        } else if (!alreadySelected && nowSelected) {
+                            checked.visibility = VISIBLE
+                        } else {
+                            viewModel.setSelectedKomyuniti(null)
+                            checked.visibility = GONE
+                        }
                     }
                 })
             }

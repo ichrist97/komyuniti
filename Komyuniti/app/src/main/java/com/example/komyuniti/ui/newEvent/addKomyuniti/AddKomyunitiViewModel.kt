@@ -15,17 +15,17 @@ import kotlinx.coroutines.launch
 class AddKomyunitiViewModel : ViewModel() {
 
     private val komyunities = MutableLiveData<List<Komyuniti>?>()
-    private val selectedKomyuniti = MutableLiveData<Komyuniti>()
+    private val selectedKomyuniti = MutableLiveData<Komyuniti?>()
 
     fun getKomyunities(): LiveData<List<Komyuniti>?> {
         return komyunities
     }
 
-    fun setSelectedKomyuniti(obj: Komyuniti) {
+    fun setSelectedKomyuniti(obj: Komyuniti?) {
         selectedKomyuniti.postValue(obj)
     }
 
-    fun getSelectedKomyuniti(): LiveData<Komyuniti> {
+    fun getSelectedKomyuniti(): LiveData<Komyuniti?> {
         return selectedKomyuniti
     }
 
