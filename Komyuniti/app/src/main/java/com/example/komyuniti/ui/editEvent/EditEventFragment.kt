@@ -1,5 +1,6 @@
 package com.example.komyuniti.ui.editEvent
 
+import android.app.DatePickerDialog
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.util.Log
@@ -20,6 +21,7 @@ import com.example.komyuniti.ui.event.EventViewModel
 import com.example.komyuniti.ui.newEvent.NewEventViewModel
 import kotlinx.coroutines.launch
 import java.time.format.DateTimeFormatter
+import java.util.*
 
 class EditEventFragment : Fragment() {
 
@@ -46,6 +48,7 @@ class EditEventFragment : Fragment() {
 
         loadData(apollo)
         initNavigation(apollo)
+        showDatePicker()
         return binding.root
     }
 
@@ -56,6 +59,24 @@ class EditEventFragment : Fragment() {
         binding.saveEditEvent.setOnClickListener {
             Navigation.findNavController(it).navigate(R.id.action_editEventFragment_to_eventFragment)
             saveData(apollo)
+        }
+    }
+
+    private fun showDatePicker() {
+        val c = Calendar.getInstance()
+        val year = c.get(Calendar.YEAR)
+        val month = c.get(Calendar.MONTH)
+        val day = c.get(Calendar.DAY_OF_MONTH)
+        binding.eventDateInput.setOnClickListener{
+            Log.d("DatePicker clicke", year.toString())
+            val dpd = DatePickerDialog(
+                requireContext(),
+                DatePickerDialog.OnDateSetListener { view, mYear, mMonth, mDay ->
+                    //set to textview
+                    binding.eventDateInput.setText("$mYear-$mMonth-$mDay")
+                }, year, month, day)
+            //show dialog
+            dpd.show()
         }
     }
 

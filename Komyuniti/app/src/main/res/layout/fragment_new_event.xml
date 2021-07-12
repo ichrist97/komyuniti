@@ -103,6 +103,7 @@
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toEndOf="@+id/ti_name_event"
         app:layout_constraintStart_toStartOf="parent"
+
         app:layout_constraintTop_toBottomOf="@+id/ti_name_event"
         app:startIconDrawable="@drawable/ic_calendar"
         app:startIconTint="@color/color_primary">
@@ -111,7 +112,7 @@
             android:id="@+id/eventDateInput"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="2020-01-01"
+            android:focusableInTouchMode="false"
             app:layout_constraintEnd_toEndOf="@+id/ti_name_event"
             app:layout_constraintStart_toEndOf="@+id/ti_name_event" />
 
@@ -233,6 +234,7 @@
                 android:drawableTint="@color/color_primary"
                 android:text="Add members"
                 android:textAppearance="?attr/textAppearanceHeadline6" />
+
         </LinearLayout>
 
     </com.google.android.material.card.MaterialCardView>

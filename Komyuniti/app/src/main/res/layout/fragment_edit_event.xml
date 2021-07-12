@@ -111,7 +111,7 @@
             android:id="@+id/eventDateInput"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="2020-01-01"
+            android:focusableInTouchMode="false"
             app:layout_constraintEnd_toEndOf="@+id/ti_name_event"
             app:layout_constraintStart_toEndOf="@+id/ti_name_event" />
 

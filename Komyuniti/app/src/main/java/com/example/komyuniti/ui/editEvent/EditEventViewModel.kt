@@ -2,6 +2,7 @@ package com.example.komyuniti.ui.editEvent
 
 import GetEventQuery
 import UpdateEventMutation
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -51,7 +52,7 @@ class EditEventViewModel : ViewModel() {
             )
             res = apollo.mutate(UpdateEventMutation(input = input)).await()
         }
-
+        Log.d("updateEvent result data", res.data.toString())
         return when {
             res.data == null || res.data?.updateEvent == null -> "Couldn't save data"
             res.errors?.get(0)?.message?.isNotEmpty() == true -> res.errors?.get(0)?.message.toString()

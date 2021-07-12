@@ -59,7 +59,8 @@ class EventFragment : Fragment() {
             // set observer
             viewModel.getEvent().observe(viewLifecycleOwner, {
                 if (it != null) {
-                    //binding.eventHeaderName.text = it.name
+                    //shorten name if to long for header
+                    binding.eventHeaderName.text = if(it.name?.length!! > 12) it.name?.subSequence(0,12).toString() else it.name
                     binding.eventSmallName.text = it.name
                     val dateStr = it.date?.format(DateTimeFormatter.ofPattern("dd.MM.yyyy"))
                     binding.eventDate.text = dateStr
@@ -84,7 +85,6 @@ class EventFragment : Fragment() {
                         binding.eventKomyunitiName.visibility = GONE
                         binding.noKomyunitiStatus.visibility = VISIBLE
                     }
-
                 }
             })
         } else {

@@ -1,7 +1,9 @@
 package com.example.komyuniti.ui.newEvent
 
+import android.app.DatePickerDialog
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -17,6 +19,7 @@ import com.example.komyuniti.databinding.FragmentNewEventBinding
 import com.example.komyuniti.models.Event
 import com.example.komyuniti.ui.event.EventViewModel
 import kotlinx.coroutines.launch
+import java.util.*
 
 
 class NewEvent : Fragment() {
@@ -41,9 +44,28 @@ class NewEvent : Fragment() {
         initCreateEvent(apollo)
         observeKomyuniti()
         observeMembers()
+        showDatePicker()
 
         navigation(binding)
         return binding.root
+    }
+
+    private fun showDatePicker() {
+        val c = Calendar.getInstance()
+        val year = c.get(Calendar.YEAR)
+        val month = c.get(Calendar.MONTH)
+        val day = c.get(Calendar.DAY_OF_MONTH)
+        binding.eventDateInput.setOnClickListener{
+            Log.d("DatePicker clicke", year.toString())
+            val dpd = DatePickerDialog(
+                requireContext(),
+                DatePickerDialog.OnDateSetListener { view, mYear, mMonth, mDay ->
+                    //set to textview
+                    binding.eventDateInput.setText("$mYear-$mMonth-$mDay")
+                }, year, month, day)
+            //show dialog
+            dpd.show()
+        }
     }
 
     private fun observeKomyuniti() {
