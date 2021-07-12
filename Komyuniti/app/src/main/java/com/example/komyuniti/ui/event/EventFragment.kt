@@ -20,6 +20,7 @@ import com.example.komyuniti.MainViewModel
 import com.example.komyuniti.R
 import com.example.komyuniti.databinding.FragmentEventBinding
 import com.example.komyuniti.ui.events.chat.ChatViewModel
+import com.example.komyuniti.ui.komyuniti.KomyunitiViewModel
 import kotlinx.coroutines.launch
 import java.time.format.DateTimeFormatter
 
@@ -68,6 +69,16 @@ class EventFragment : Fragment() {
                         binding.eventKomyunitiName.text = it.komyuniti.name
                         binding.eventKomyunitiName.visibility = VISIBLE
                         binding.noKomyunitiStatus.visibility = GONE
+
+                        // route to komyuniti on click
+                        binding.eventKomyunitiName.setOnClickListener{ view ->
+                            // set komyunitiId in komyuniti view model
+                            val komyunitiViewModel = ViewModelProvider(requireActivity()).get(
+                                KomyunitiViewModel::class.java)
+                            komyunitiViewModel.setKomyuniti(it.komyuniti.id)
+                            Navigation.findNavController(view)
+                                .navigate(R.id.action_eventFragment_to_komyunitiFragment)
+                        }
                     } else {
                         binding.eventKomyunitiName.visibility = GONE
                         binding.noKomyunitiStatus.visibility = VISIBLE

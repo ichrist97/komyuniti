@@ -1,9 +1,11 @@
 package com.example.komyuniti.ui.events
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProvider
@@ -12,6 +14,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.komyuniti.R
 import com.example.komyuniti.models.Event
 import com.example.komyuniti.ui.event.EventViewModel
+import com.squareup.picasso.MemoryPolicy
+import com.squareup.picasso.NetworkPolicy
+import com.squareup.picasso.Picasso
 import java.time.format.DateTimeFormatter
 
 
@@ -32,7 +37,7 @@ class EventAdapter(
         navigationDest: Int
     ) :
         RecyclerView.ViewHolder(view) {
-        val notificationButton: Button
+        val eventItemPic: ImageView
         val komyunitiName: TextView
         val eventName: TextView
         val cntPeople: TextView
@@ -40,7 +45,7 @@ class EventAdapter(
 
         init {
             // Define click listener for the ViewHolder's View.
-            notificationButton = view.findViewById(R.id.btn_notification)
+            eventItemPic = view.findViewById(R.id.eventItemPic)
             komyunitiName = view.findViewById(R.id.tv_event_item_title)
             eventName = view.findViewById(R.id.tv_event_name)
             cntPeople = view.findViewById(R.id.tv_event_item_number_of_people)
@@ -61,8 +66,6 @@ class EventAdapter(
 
         fun bind(eventItem: Event) {
             // bind data
-            // TODO actual notification num
-            notificationButton.text = "1"
             komyunitiName.text = eventItem.komyuniti?.name
             eventName.text = eventItem.name
             // TODO actual count of people in event
@@ -73,8 +76,27 @@ class EventAdapter(
                 DateTimeFormatter.ofPattern("dd.MM.yyyy")
             )
             date.text = dateStr
+
+            loadPic(eventItemPic)
+        }
+
+        private fun loadPic(imageView: ImageView) {
+            // bind event item picture with random cat picture
+            val url = "https://loremflickr.com/1080/720/cat"
+            Picasso.get().load(url).networkPolicy(NetworkPolicy.NO_CACHE)
+                .memoryPolicy(MemoryPolicy.NO_CACHE)
+                .into(imageView, object : com.squareup.picasso.Callback {
+                    override fun onSuccess() {
+                        Log.d("EventAdapter", "Loaded new event picture")
+                    }
+
+                    override fun onError(e: java.lang.Exception?) {
+                        Log.e("EventAdapter", "Error while loading new picture")
+                    }
+                })
         }
     }
+
 
     // Create new views (invoked by the layout manager)
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {

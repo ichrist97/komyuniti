@@ -70,7 +70,18 @@ class NewEvent : Fragment() {
         binding.createEvent.setOnClickListener { view ->
             // gather info from user input
             val name = binding.eventNameInput.text.toString()
+            if (name.isEmpty()) {
+                Toast.makeText(activity, "Please pick a name", Toast.LENGTH_LONG).show()
+                return@setOnClickListener
+            }
+
             val date = binding.eventDateInput.text.toString()
+            if (date.isEmpty()) {
+                Toast.makeText(activity, "Please pick a date", Toast.LENGTH_LONG).show()
+                return@setOnClickListener
+            }
+
+            // these two are optional
             val address = binding.eventAddressInput.text.toString()
             val komyuniti = viewModel.getKomyuniti().value
 
