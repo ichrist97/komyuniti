@@ -17,6 +17,10 @@ import com.example.komyuniti.ui.event.EventViewModel
 import com.squareup.picasso.MemoryPolicy
 import com.squareup.picasso.NetworkPolicy
 import com.squareup.picasso.Picasso
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.Dispatchers.Main
+import kotlinx.coroutines.launch
 import java.time.format.DateTimeFormatter
 
 
@@ -83,17 +87,19 @@ class EventAdapter(
         private fun loadPic(imageView: ImageView) {
             // bind event item picture with random cat picture
             val url = "https://loremflickr.com/1080/720/cat"
-            Picasso.get().load(url).networkPolicy(NetworkPolicy.NO_CACHE)
-                .memoryPolicy(MemoryPolicy.NO_CACHE)
-                .into(imageView, object : com.squareup.picasso.Callback {
-                    override fun onSuccess() {
-                        Log.d("EventAdapter", "Loaded new event picture")
-                    }
+            CoroutineScope(Main).launch {
+                Picasso.get().load(url).networkPolicy(NetworkPolicy.NO_CACHE)
+                    .memoryPolicy(MemoryPolicy.NO_CACHE)
+                    .into(imageView, object : com.squareup.picasso.Callback {
+                        override fun onSuccess() {
+                            Log.d("EventAdapter", "Loaded new event picture")
+                        }
 
-                    override fun onError(e: java.lang.Exception?) {
-                        Log.e("EventAdapter", "Error while loading new picture")
-                    }
-                })
+                        override fun onError(e: java.lang.Exception?) {
+                            Log.e("EventAdapter", "Error while loading new picture")
+                        }
+                    })
+            }
         }
     }
 

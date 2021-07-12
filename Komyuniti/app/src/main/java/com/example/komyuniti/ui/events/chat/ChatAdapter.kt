@@ -45,7 +45,7 @@ class ChatAdapter(private var chatMessages: List<ChatMessage>?, private val curr
             text.text = item.text
             val dateStr = item.createdAt.format(DateTimeFormatter.ofPattern("dd.MM.yyyy"))
             date.text = dateStr
-            val timeStr = item.createdAt.format(
+            val timeStr = item.time.format(
                 DateTimeFormatter.ofPattern("hh:mm")
             )
             time.text = timeStr

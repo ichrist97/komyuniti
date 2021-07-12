@@ -3,12 +3,15 @@ package com.example.komyuniti.ui.newEvent
 import android.app.DatePickerDialog
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.ViewModelStoreOwner
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
@@ -45,9 +48,58 @@ class NewEvent : Fragment() {
         observeKomyuniti()
         observeMembers()
         showDatePicker()
+        watchInput()
 
         navigation(binding)
         return binding.root
+    }
+
+    private fun watchInput() {
+        // initialize with viewModel values
+        binding.eventNameInput.setText(viewModel.name.value)
+        binding.eventAddressInput.setText(viewModel.address.value)
+
+        // event name
+        binding.eventNameInput.addTextChangedListener(object : TextWatcher {
+
+            override fun afterTextChanged(s: Editable) {
+                // save new input in viewModel
+                viewModel.name.postValue(s.toString())
+            }
+
+            override fun beforeTextChanged(
+                s: CharSequence, start: Int,
+                count: Int, after: Int
+            ) {
+            }
+
+            override fun onTextChanged(
+                s: CharSequence, start: Int,
+                before: Int, count: Int
+            ) {
+            }
+        })
+
+        // event location
+        binding.eventAddressInput.addTextChangedListener(object : TextWatcher {
+
+            override fun afterTextChanged(s: Editable) {
+                // save new input in viewModel
+                viewModel.address.postValue(s.toString())
+            }
+
+            override fun beforeTextChanged(
+                s: CharSequence, start: Int,
+                count: Int, after: Int
+            ) {
+            }
+
+            override fun onTextChanged(
+                s: CharSequence, start: Int,
+                before: Int, count: Int
+            ) {
+            }
+        })
     }
 
     private fun showDatePicker() {
@@ -55,17 +107,24 @@ class NewEvent : Fragment() {
         val year = c.get(Calendar.YEAR)
         val month = c.get(Calendar.MONTH)
         val day = c.get(Calendar.DAY_OF_MONTH)
-        binding.eventDateInput.setOnClickListener{
+        binding.eventDateInput.setOnClickListener {
             Log.d("DatePicker clicke", year.toString())
             val dpd = DatePickerDialog(
                 requireContext(),
                 DatePickerDialog.OnDateSetListener { view, mYear, mMonth, mDay ->
-                    //set to textview
-                    binding.eventDateInput.setText("$mYear-$mMonth-$mDay")
-                }, year, month, day)
+                    //set in viewModel
+
+                    viewModel.date.postValue("$mYear-$mMonth-$mDay")
+                }, year, month, day
+            )
             //show dialog
             dpd.show()
         }
+
+        // show change in ui
+        viewModel.date.observe(viewLifecycleOwner, {
+            binding.eventDateInput.setText(it)
+        })
     }
 
     private fun observeKomyuniti() {
@@ -106,6 +165,7 @@ class NewEvent : Fragment() {
             // these two are optional
             val address = binding.eventAddressInput.text.toString()
             val komyuniti = viewModel.getKomyuniti().value
+            val members = viewModel.getMembers().value
 
             lifecycleScope.launch {
                 val result: Event? = viewModel.createEvent(
@@ -113,7 +173,8 @@ class NewEvent : Fragment() {
                     name,
                     date,
                     address = address,
-                    komyunitiId = komyuniti?.id
+                    komyunitiId = komyuniti?.id,
+                    members = members
                 )
 
                 // on success route to created event
@@ -122,6 +183,14 @@ class NewEvent : Fragment() {
                     val eventViewModel =
                         ViewModelProvider(requireActivity()).get(EventViewModel::class.java)
                     eventViewModel.setEventId(result.id)
+
+                    // empty current viewModel
+                    viewModel.name.postValue("")
+                    viewModel.date.postValue("")
+                    viewModel.address.postValue("")
+                    viewModel.setKomyuniti(null)
+                    viewModel.setMembers(listOf())
+
                     // route to event
                     Navigation.findNavController(view)
                         .navigate(R.id.action_newEvent_to_eventFragment)

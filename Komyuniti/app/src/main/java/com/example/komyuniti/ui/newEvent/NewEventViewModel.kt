@@ -19,14 +19,18 @@ import type.CreateEventInput
 
 class NewEventViewModel : ViewModel() {
 
-    private val komyuniti = MutableLiveData<Komyuniti>()
+    val date = MutableLiveData<String>()
+    val name = MutableLiveData<String>()
+    val address = MutableLiveData<String>()
+
+    private val komyuniti = MutableLiveData<Komyuniti?>()
     private val members = MutableLiveData<List<User>>()
 
-    fun setKomyuniti(obj: Komyuniti) {
+    fun setKomyuniti(obj: Komyuniti?) {
         komyuniti.postValue(obj)
     }
 
-    fun getKomyuniti(): LiveData<Komyuniti> {
+    fun getKomyuniti(): LiveData<Komyuniti?> {
         return komyuniti
     }
 

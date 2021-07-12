@@ -40,8 +40,11 @@ class ChatFragment : Fragment() {
         val apollo = activityViewModel.getApollo(requireContext())
 
         // show event name
-        val shortTitle = viewModel.getEvent().value?.name?.subSequence(0,12)
-        binding.chatEventName.text = shortTitle
+        var title: String? = viewModel.getEvent().value?.name
+        if (viewModel.getEvent().value != null && viewModel.getEvent().value!!.name?.length!! > 12) {
+            title = viewModel.getEvent().value?.name?.subSequence(0, 12).toString()
+        }
+        binding.chatEventName.text = title
 
         // show chat messages
         lifecycleScope.launch {
