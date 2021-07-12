@@ -16,20 +16,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/tv_history"
-        style="@style/TextViewStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:clickable="true"
-        android:text="@string/tv_history"
-        android:textSize="@dimen/text_size_next_to_title"
-        app:layout_constraintBottom_toBottomOf="@+id/tv_events"
-        app:layout_constraintEnd_toStartOf="@+id/tv_events"
-        app:layout_constraintHorizontal_bias="0.2"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/tv_events" />
-
     <androidx.cardview.widget.CardView
         android:id="@+id/tabs_in_events_cardview"
         android:layout_width="match_parent"

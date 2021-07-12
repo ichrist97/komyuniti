@@ -59,7 +59,7 @@ class NewEventViewModel : ViewModel() {
             val input = CreateEventInput(
                 name = name,
                 date = date,
-                address = if (address != null) Input.fromNullable(address) else Input.absent(),
+                address = if (address != null && address.isNotEmpty()) Input.fromNullable(address) else Input.absent(),
                 komyunitiId = if (komyunitiId != null) Input.fromNullable(komyunitiId) else Input.absent(),
                 userIds = if (userIds.isNotEmpty()) Input.fromNullable(userIds) else Input.absent(),
             )

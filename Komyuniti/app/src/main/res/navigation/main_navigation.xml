@@ -186,6 +186,9 @@
             android:id="@+id/action_eventFragment_to_navigation_events"
             app:destination="@id/navigation_events" />
         <action
+            android:id="@+id/action_eventFragment_to_komyunitiFragment"
+            app:destination="@id/komyunitiFragment" />
+        <action
             android:id="@+id/action_eventFragment_to_editEventFragment"
             app:destination="@id/editEventFragment" />
     </fragment>
