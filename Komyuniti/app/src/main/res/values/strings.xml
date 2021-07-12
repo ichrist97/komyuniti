@@ -53,7 +53,8 @@
     <string name="checklist">Checklists</string>
     <string name="expenses">Expenses</string>
     <string name="count_entrys">Count entrys</string>
-
+    <!-- Edit Event -->
+    <string name="edit_event">Edit Event</string>
 
 
     <!--    alle Strings für Profile-->

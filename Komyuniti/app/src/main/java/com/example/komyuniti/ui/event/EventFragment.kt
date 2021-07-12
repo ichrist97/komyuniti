@@ -115,11 +115,15 @@ class EventFragment : Fragment() {
                                 // user cancels dialog
                             })
                         builder.create().show()
-
-                        true
+                            true
+                        }
+                        //navigate to edit event fragment
+                        R.id.settingsEditEvent -> {
+                            Navigation.findNavController(it).navigate(R.id.action_eventFragment_to_editEventFragment)
+                            true
+                        }
+                        else -> false
                     }
-                    else -> false
-                }
             }
 
             // display menu
